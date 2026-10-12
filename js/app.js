@@ -14,6 +14,7 @@ const CATEGORIES = [
   { name: '스튜디오', ico: '◫' },
   { name: '드레스', ico: '♢' },
   { name: '메이크업', ico: '✿' },
+  { name: '헬퍼', ico: '♡' },
   { name: '헤어변형', ico: '∿' },
   { name: '아이폰스냅', ico: '▢' },
   { name: '본식스냅', ico: '◎' },
@@ -26,23 +27,34 @@ const CATEGORIES = [
   { name: '예복·한복', ico: '◇' },
 ];
 
+// 카테고리별 시장 평균가 (프로토타입용 예시) — 가격 비공개 업체에 참고용으로 표시
+const CATEGORY_AVG = {
+  플래너: '동행 80~150만 원', 웨딩홀: '식대 5~8만 원', 스튜디오: '150~250만 원', 드레스: '200~350만 원',
+  메이크업: '40~70만 원', 헬퍼: '15~30만 원', 헤어변형: '40~60만 원', 아이폰스냅: '40~55만 원',
+  본식스냅: '80~150만 원', 식전영상: '20~40만 원', 웨딩플라워: '20~40만 원', 웨딩소품: '5~20만 원',
+  모바일청첩장: '3~8만 원', 본식사회자: '30~50만 원', 축의대: '15~25만 원', '예복·한복': '80~150만 원',
+};
+
+// price: null → 가격 비공개('상담 후 안내'), schedule: false → 일정 미공개('일정 문의')
 const VENDORS = [
-  { id: 1, name: '필름하루 스냅', cat: '아이폰스냅', region: '서울 · 제주', type: '1인 작가', price: '35~75만 원', tier: '표준', rating: 4.9, reviews: 38, ph: 1, h: 220 },
-  { id: 2, name: '오월의 헤어', cat: '헤어변형', region: '서울 강남', type: '1인 숍', price: '40~60만 원', tier: '표준', rating: 4.8, reviews: 52, ph: 5, h: 260 },
-  { id: 3, name: '플랜비 웨딩', cat: '플래너', region: '서울 · 경기', type: '프리랜서 플래너', price: '상담 무료 · 동행 120만 원', tier: '표준', rating: 4.7, reviews: 21, ph: 2, h: 180 },
-  { id: 4, name: '라메르 빈티지', cat: '드레스', region: '서울 성수', type: '빈티지 숍', price: '180~320만 원', tier: '가성비', rating: 4.9, reviews: 44, ph: 3, h: 280 },
-  { id: 5, name: '하우스 오브 린넨', cat: '웨딩홀', region: '경기 양평', type: '하우스 웨딩', price: '식대 6.5만 원~', tier: '표준', rating: 4.6, reviews: 17, ph: 4, h: 200 },
-  { id: 6, name: '모먼트 본식스냅', cat: '본식스냅', region: '전국', type: '2인 팀', price: '90~150만 원', tier: '프리미엄', rating: 4.8, reviews: 63, ph: 6, h: 240 },
-  { id: 7, name: '오늘의 청첩', cat: '모바일청첩장', region: '온라인', type: '미니게임 청첩장', price: '3~8만 원', tier: '가성비', rating: 4.9, reviews: 120, ph: 2, h: 190 },
-  { id: 8, name: '들꽃 아틀리에', cat: '웨딩플라워', region: '서울 연남', type: '1인 플로리스트', price: '부케 15~35만 원', tier: '표준', rating: 4.7, reviews: 29, ph: 1, h: 250 },
-  { id: 9, name: '스튜디오 무드', cat: '스튜디오', region: '서울 청담', type: '스튜디오', price: '150~280만 원', tier: '프리미엄', rating: 4.6, reviews: 48, ph: 6, h: 210 },
-  { id: 10, name: '결 메이크업', cat: '메이크업', region: '서울 압구정', type: '원장 1:1', price: '40~70만 원', tier: '표준', rating: 4.8, reviews: 36, ph: 5, h: 230 },
-  { id: 11, name: '프레임 필름', cat: '식전영상', region: '온라인', type: '1인 제작', price: '15~40만 원', tier: '가성비', rating: 4.7, reviews: 27, ph: 3, h: 180 },
-  { id: 12, name: '목소리 좋은 MC 지훈', cat: '본식사회자', region: '서울 · 경기', type: '전문 사회자', price: '30~50만 원', tier: '표준', rating: 4.9, reviews: 41, ph: 4, h: 200 },
-  { id: 13, name: '굿모먼트 축의대', cat: '축의대', region: '서울 · 경기', type: '대행 서비스', price: '15~25만 원', tier: '가성비', rating: 4.5, reviews: 12, ph: 2, h: 170 },
-  { id: 14, name: '소소한 소품', cat: '웨딩소품', region: '온라인', type: '핸드메이드', price: '1~20만 원', tier: '가성비', rating: 4.8, reviews: 88, ph: 1, h: 210 },
-  { id: 15, name: '테일러 정', cat: '예복·한복', region: '서울 종로', type: '맞춤 예복', price: '80~150만 원', tier: '표준', rating: 4.7, reviews: 19, ph: 6, h: 240 },
-  { id: 16, name: '제주 바람스냅', cat: '아이폰스냅', region: '제주', type: '1인 작가', price: '45~90만 원', tier: '표준', rating: 4.9, reviews: 57, ph: 4, h: 270 },
+  { id: 1, name: '필름하루 스냅', cat: '아이폰스냅', region: '서울 · 제주', type: '1인 작가', price: '35~75만 원', tier: '표준', insta: true, intro: true, moods: ['#야외스냅', '#필름감성', '#내추럴'], verified: 30, rating: 4.9, reviews: 38, ph: 1, h: 220 },
+  { id: 2, name: '오월의 헤어', cat: '헤어변형', region: '서울 강남', type: '1인 숍', price: '40~60만 원', tier: '표준', insta: true, intro: false, moods: ['#유니크헤어', '#빈티지'], verified: 41, rating: 4.8, reviews: 52, ph: 5, h: 260 },
+  { id: 3, name: '플랜비 웨딩', cat: '플래너', region: '서울 · 경기', type: '프리랜서 플래너', price: '상담 무료 · 동행 120만 원', tier: '표준', schedule: false, insta: false, intro: true, moods: ['#클래식', '#미니멀'], verified: 15, rating: 4.7, reviews: 21, ph: 2, h: 180 },
+  { id: 4, name: '라메르 빈티지', cat: '드레스', region: '서울 성수', type: '빈티지 숍', price: '180~320만 원', tier: '가성비', insta: true, intro: true, moods: ['#빈티지', '#클래식'], verified: 33, rating: 4.9, reviews: 44, ph: 3, h: 280 },
+  { id: 5, name: '하우스 오브 린넨', cat: '웨딩홀', region: '경기 양평', type: '하우스 웨딩', price: null, tier: '표준', insta: true, intro: false, moods: ['#하우스웨딩', '#내추럴'], verified: 9, rating: 4.6, reviews: 17, ph: 4, h: 200 },
+  { id: 6, name: '모먼트 본식스냅', cat: '본식스냅', region: '전국', type: '2인 팀', price: '90~150만 원', tier: '프리미엄', insta: true, intro: true, moods: ['#클래식', '#필름감성'], verified: 50, rating: 4.8, reviews: 63, ph: 6, h: 240 },
+  { id: 7, name: '오늘의 청첩', cat: '모바일청첩장', region: '온라인', type: '미니게임 청첩장', price: '3~8만 원', tier: '가성비', insta: false, intro: true, moods: ['#미니멀'], verified: 90, rating: 4.9, reviews: 120, ph: 2, h: 190 },
+  { id: 8, name: '들꽃 아틀리에', cat: '웨딩플라워', region: '서울 연남', type: '1인 플로리스트', price: '부케 15~35만 원', tier: '표준', insta: true, intro: false, moods: ['#내추럴', '#빈티지', '#야외스냅'], verified: 18, rating: 4.7, reviews: 29, ph: 1, h: 250 },
+  { id: 9, name: '스튜디오 무드', cat: '스튜디오', region: '서울 청담', type: '스튜디오', price: null, tier: '프리미엄', insta: true, intro: true, moods: ['#클래식', '#미니멀'], verified: 30, rating: 4.6, reviews: 48, ph: 6, h: 210 },
+  { id: 10, name: '결 메이크업', cat: '메이크업', region: '서울 압구정', type: '원장 1:1', price: '40~70만 원', tier: '표준', insta: false, intro: false, moods: ['#클래식', '#내추럴'], verified: 22, rating: 4.8, reviews: 36, ph: 5, h: 230 },
+  { id: 11, name: '프레임 필름', cat: '식전영상', region: '온라인', type: '1인 제작', price: '15~40만 원', tier: '가성비', insta: false, intro: false, moods: ['#필름감성'], verified: 20, rating: 4.7, reviews: 27, ph: 3, h: 180 },
+  { id: 12, name: '목소리 좋은 MC 지훈', cat: '본식사회자', region: '서울 · 경기', type: '전문 사회자', price: '30~50만 원', tier: '표준', schedule: false, insta: false, intro: true, moods: ['#클래식'], verified: 28, rating: 4.9, reviews: 41, ph: 4, h: 200 },
+  { id: 13, name: '굿모먼트 축의대', cat: '축의대', region: '서울 · 경기', type: '대행 서비스', price: '15~25만 원', tier: '가성비', insta: false, intro: false, moods: ['#미니멀'], verified: 5, rating: 4.5, reviews: 12, ph: 2, h: 170 },
+  { id: 14, name: '소소한 소품', cat: '웨딩소품', region: '온라인', type: '핸드메이드', price: '1~20만 원', tier: '가성비', insta: true, intro: true, moods: ['#빈티지', '#하우스웨딩'], verified: 60, rating: 4.8, reviews: 88, ph: 1, h: 210 },
+  { id: 15, name: '테일러 정', cat: '예복·한복', region: '서울 종로', type: '맞춤 예복', price: null, schedule: false, tier: '표준', insta: false, intro: false, moods: ['#클래식'], verified: 10, rating: 4.7, reviews: 19, ph: 6, h: 240 },
+  { id: 16, name: '제주 바람스냅', cat: '아이폰스냅', region: '제주', type: '1인 작가', price: '45~90만 원', tier: '표준', insta: true, intro: true, moods: ['#야외스냅', '#내추럴'], verified: 45, rating: 4.9, reviews: 57, ph: 4, h: 270 },
+  { id: 17, name: '손길 웨딩헬퍼', cat: '헬퍼', region: '서울 · 경기', type: '1인 헬퍼', price: '본식 15~25만 원', tier: '가성비', insta: false, intro: true, moods: ['#클래식'], verified: 25, rating: 4.9, reviews: 34, ph: 5, h: 200 },
+  { id: 18, name: '하루 헬퍼팀', cat: '헬퍼', region: '전국', type: '2인 팀', price: '본식+2부 20~35만 원', tier: '표준', insta: false, intro: false, moods: ['#내추럴'], verified: 8, rating: 4.7, reviews: 15, ph: 3, h: 230 },
 ];
 
 const REVIEWS = [
@@ -61,6 +73,7 @@ const WISHLIST = [
   { name: '웨딩 소품', cost: 20 },
   { name: '본식 사회자', cost: 40 },
   { name: '축의대 대행', cost: 20 },
+  { name: '웨딩 헬퍼', cost: 20 },
 ];
 
 const BASE_CATS = [
@@ -119,8 +132,30 @@ function toast(msg) {
   toast._t = setTimeout(() => t.classList.remove('show'), 1800);
 }
 
-function vendorCard(v, { masonry = false } = {}) {
-  const verified = v.reviews > 20 ? `<span class="verified">✔ 인증후기 ${v.reviews}</span>` : `<span>후기 ${v.reviews}</span>`;
+function priceHTML(price, cat) {
+  if (price) return `<div class="v-price">${price}</div>`;
+  const avg = CATEGORY_AVG[cat];
+  return `<div class="v-price muted-price">상담 후 안내</div>${avg ? `<div class="v-avg">${cat} 평균 ${avg}</div>` : ''}`;
+}
+
+// 추천 이유: 내 무드 태그 · 진단 가격대 · 인증 후기만으로 계산 (중립 기준)
+const myMoods = () => $$('#screen-onboarding .mood.active').map((m) => m.textContent.trim());
+const TIER_ORDER = ['가성비', '표준', '프리미엄'];
+const myTier = () => (budget.tier < 1 ? '가성비' : budget.tier > 1 ? '프리미엄' : '표준');
+
+function recoReasons(v) {
+  const reasons = [];
+  const mood = v.moods.find((m) => myMoods().includes(m));
+  if (mood) reasons.push(`${mood} 일치`);
+  if (TIER_ORDER.indexOf(v.tier) <= TIER_ORDER.indexOf(myTier())) reasons.push('예산 범위 안');
+  if (v.verified >= 30) reasons.push('인증 후기 많음');
+  return reasons;
+}
+
+const whyHTML = (reasons) => (reasons.length ? `<div class="why">${reasons.map((r) => `<span>${r}</span>`).join('')}</div>` : '');
+
+function vendorCard(v, { masonry = false, reasons = null } = {}) {
+  const verified = `<span>후기 ${v.reviews} · <span class="verified">✔ 인증 ${v.verified}</span></span>`;
   return `
     <a class="v-card" href="#vendor" data-vendor="${v.id}">
       <div style="position:relative">
@@ -131,7 +166,8 @@ function vendorCard(v, { masonry = false } = {}) {
         <span class="tag">${v.cat}</span>
         <h4>${v.name}</h4>
         <div class="v-meta">${v.region} · ${v.type}</div>
-        <div class="v-price">${v.price}</div>
+        ${priceHTML(v.price, v.cat)}
+        ${reasons ? whyHTML(reasons) : ''}
         <div class="v-foot"><span>★ ${v.rating}</span>${verified}</div>
       </div>
     </a>`;
@@ -168,11 +204,18 @@ function renderCalendar(el, { year, month, status }) {
 let currentVendor = VENDORS[0];
 let dirCat = '전체';
 
+// 스플래시는 첫 방문 시 1회만 (선택하면 기억)
+const SPLASH_KEY = 'ww-splash-done';
+const splashDone = () => { try { return localStorage.getItem(SPLASH_KEY) === '1'; } catch { return false; } };
+const markSplashDone = () => { try { localStorage.setItem(SPLASH_KEY, '1'); } catch { /* 저장 불가 환경 무시 */ } };
+
 function route() {
-  const [hashName, query] = (location.hash.slice(1) || 'home').split('?');
+  const defaultScreen = splashDone() ? 'home' : 'splash';
+  const [hashName, query] = (location.hash.slice(1) || defaultScreen).split('?');
   const name = $(`#screen-${hashName}`) ? hashName : 'home';
   const params = new URLSearchParams(query || '');
 
+  document.body.classList.toggle('is-splash', name === 'splash');
   $$('.screen').forEach((s) => s.classList.toggle('active', s.id === `screen-${name}`));
   $$('[data-nav]').forEach((a) => a.classList.toggle('active', a.dataset.nav === name.split('-')[0]));
   $('.gnb-menu').classList.remove('open');
@@ -181,6 +224,8 @@ function route() {
     if (params.get('cat')) dirCat = params.get('cat');
     renderDirectory();
   }
+  if (name === 'guide') showGuide(1);
+  if (name === 'partner-join') showPj(0);
   if (name === 'budget-result') renderReport();
   if (name === 'vendor') renderVendor();
   window.scrollTo({ top: 0 });
@@ -195,7 +240,7 @@ function renderHome() {
   $('#myVendors').innerHTML = [1, 2, 4, 3].map((id) => vendorCard(VENDORS.find((v) => v.id === id))).join('');
 }
 
-/* ---------- 온보딩 / 간편입점 공통 스텝 ---------- */
+/* ---------- 온보딩 스텝 ---------- */
 function makeStepper(stepSel, progressSel, noSel, total, onDone) {
   let step = 1;
   const show = () => {
@@ -217,10 +262,71 @@ const obStepper = makeStepper('.ob-step', '#obProgress', '#obStepNo', 4, () => {
   obStepper.reset();
 });
 
-const pjStepper = makeStepper('.pj-step', '#pjProgress', '#pjStepNo', 4, (advance) => {
-  advance();
-  $('#pjActions').style.display = 'none';
-});
+/* ---------- 업체 프로필 만들기 (필수 → 골라서 추가) ---------- */
+const PJ_OPTIONAL = ['insta', 'schedule', 'price', 'intro'];
+const PJ_LABELS = { insta: '인스타 연동', schedule: '예약 일정', price: '가격', intro: '상세 소개' };
+let pjIdx = 0;
+
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const pjPicked = () => $$('.pick-card.active').map((c) => c.dataset.opt);
+const pjSequence = () => ['basic', 'mood', 'pick', ...PJ_OPTIONAL.filter((k) => pjPicked().includes(k)), 'done'];
+
+function showPj(idx) {
+  const seq = pjSequence();
+  pjIdx = Math.min(Math.max(idx, 0), seq.length - 1);
+  const key = seq[pjIdx];
+  const total = seq.length - 1; // 완료 화면은 단계 수에서 제외
+  const no = Math.min(pjIdx + 1, total);
+  $$('.pj-step').forEach((s) => s.classList.toggle('active', s.dataset.key === key));
+  $('#pjStepNo').textContent = no;
+  $('#pjTotal').textContent = total;
+  $('#pjProgress').style.width = `${(no / total) * 100}%`;
+  $('#pjActions').style.display = key === 'done' ? 'none' : 'flex';
+  $('[data-action="pj-next"]').textContent = seq[pjIdx + 1] === 'done' ? '완료' : '다음';
+  if (key === 'done') renderPjPreview();
+}
+
+function pjNext() {
+  if (pjSequence()[pjIdx] === 'mood' && !$$('#pjMoods .chip.active').length) {
+    $('#pjMoodError').classList.add('show');
+    return;
+  }
+  showPj(pjIdx + 1);
+}
+
+function renderPjPreview() {
+  const picked = pjPicked();
+  const cat = $('#pjCats .chip.active')?.textContent || '업종';
+  const moods = $$('#pjMoods .chip.active').map((c) => c.textContent);
+  const priceMode = $('#pjPriceMode .chip.active').dataset.price;
+  const price = picked.includes('price') && priceMode !== 'none'
+    ? `${$('#pjPriceMin').value} ~ ${$('#pjPriceMax').value}` : null;
+  $('#pjPreview').innerHTML = `
+    <div class="v-card">
+      <span class="ph ph-1" style="height:150px"></span>
+      <div class="v-body">
+        <span class="tag">${esc(cat)}</span>
+        <h4>${esc($('#pjName').value || '업체명')}</h4>
+        ${$('#pjRegion').value.trim() ? `<div class="v-meta">${esc($('#pjRegion').value.trim())}</div>` : ''}
+        ${priceHTML(price && esc(price), cat)}
+        <div class="tag-row">${moods.map((m) => `<span class="tag">${esc(m)}</span>`).join('')}</div>
+      </div>
+    </div>`;
+  const later = PJ_OPTIONAL.filter((k) => !picked.includes(k)).map((k) => PJ_LABELS[k]);
+  $('#pjLater').textContent = later.length ? `${later.join(' · ')}은(는) 대시보드에서 언제든 추가할 수 있어요.` : '';
+}
+
+/* ---------- 새내기 가이드 (카드 넘기기) ---------- */
+const GUIDE_TOTAL = 4;
+let guideStep = 1;
+
+function showGuide(step) {
+  guideStep = Math.min(Math.max(step, 1), GUIDE_TOTAL);
+  $$('.guide-card').forEach((c) => c.classList.toggle('active', +c.dataset.gcard === guideStep));
+  $$('#guideDots i').forEach((d, i) => d.classList.toggle('on', i === guideStep - 1));
+  $('[data-action="guide-prev"]').style.visibility = guideStep === 1 ? 'hidden' : 'visible';
+  $('#guideActions').style.display = guideStep === GUIDE_TOTAL ? 'none' : 'flex';
+}
 
 /* ---------- 예산 진단 ---------- */
 const budget = {
@@ -318,9 +424,12 @@ function renderReport() {
     rows.push(`<tr><td>${w.name}</td><td>${won(w.cost * 0.7)}</td><td>${won(w.cost)}</td><td>${won(w.cost * 1.5)}</td></tr>`));
   $('#rpTable tbody').innerHTML = rows.join('');
 
-  const tierName = budget.tier < 1 ? '가성비' : budget.tier > 1 ? '프리미엄' : '표준';
-  const matched = VENDORS.filter((v) => v.tier === tierName || wishNames.some((w) => w.startsWith(v.cat))).slice(0, 4);
-  $('#rpVendors').innerHTML = matched.map((v) => vendorCard(v)).join('');
+  const moods = myMoods();
+  const matched = VENDORS
+    .filter((v) => recoReasons(v).includes('예산 범위 안') || wishNames.some((w) => w.includes(v.cat)))
+    .sort((a, b) => vendorScore(b, moods) - vendorScore(a, moods))
+    .slice(0, 4);
+  $('#rpVendors').innerHTML = matched.map((v) => vendorCard(v, { reasons: recoReasons(v) })).join('');
 }
 
 /* ---------- 타임라인 ---------- */
@@ -369,15 +478,44 @@ function updateTimelineProgress() {
 }
 
 /* ---------- 디렉토리 ---------- */
+/* 취향 맞춤순: 정보 충실도 + 후기(인증 가중) + 취향 일치. 구독 · 결제 여부는 반영하지 않음 */
+function vendorScore(v, myMoods) {
+  const info = [v.insta, v.schedule !== false, !!v.price, v.intro].filter(Boolean).length; // 0~4
+  const review = Math.log2(1 + v.reviews) * 2 + Math.log2(1 + v.verified) * 4;
+  const moodMatch = v.moods.filter((m) => myMoods.includes(m)).length;
+  return info * 6 + review + moodMatch * 8;
+}
+
+// 핀터레스트형 배치를 가로 순서로: 순위대로 가장 짧은 기둥에 차례로 넣음
+function masonryColumns() {
+  const w = $('#dirGrid').clientWidth || window.innerWidth;
+  return w >= 1000 ? 4 : w >= 700 ? 3 : 2;
+}
+
 function renderDirectory() {
   $('#catTabs').innerHTML = CATEGORIES.map((c) =>
     `<button class="cat-tab ${c.name === dirCat ? 'active' : ''}" data-cat="${c.name}">${c.name}</button>`).join('');
-  const list = dirCat === '전체' ? VENDORS : VENDORS.filter((v) => v.cat === dirCat);
+  const moods = myMoods();
+  const list = (dirCat === '전체' ? VENDORS : VENDORS.filter((v) => v.cat === dirCat))
+    .slice().sort((a, b) => vendorScore(b, moods) - vendorScore(a, moods));
   $('#dirCount').textContent = list.length;
-  $('#dirGrid').innerHTML = list.length
-    ? list.map((v) => vendorCard(v, { masonry: true })).join('')
-    : '<p class="muted">아직 입점한 업체가 없어요. 곧 만나요!</p>';
+  if (!list.length) {
+    $('#dirGrid').innerHTML = '<p class="muted">아직 소개된 업체가 없어요. 곧 만나요!</p>';
+    return;
+  }
+  const cols = Array.from({ length: masonryColumns() }, () => ({ h: 0, html: '' }));
+  list.forEach((v) => {
+    const col = cols.reduce((min, c) => (c.h < min.h ? c : min));
+    col.html += vendorCard(v, { masonry: true });
+    col.h += v.h + 170; // 사진 높이 + 카드 본문 대략치
+  });
+  $('#dirGrid').innerHTML = cols.map((c) => `<div class="masonry-col">${c.html}</div>`).join('');
+  renderDirectory.cols = cols.length;
 }
+
+window.addEventListener('resize', () => {
+  if ($('#screen-directory').classList.contains('active') && masonryColumns() !== renderDirectory.cols) renderDirectory();
+});
 
 /* ---------- 업체 상세 ---------- */
 function renderVendor() {
@@ -385,8 +523,21 @@ function renderVendor() {
   $('#vdName').textContent = v.name;
   $('#vdCat').textContent = v.cat;
   $('#vdMeta').textContent = `${v.region} | ${v.type}`;
-  $('#vdPrice').textContent = v.price;
+  const avg = CATEGORY_AVG[v.cat] || '';
+  $('#vdPriceLabel').textContent = v.price ? '평균 견적' : '가격';
+  $('#vdPrice').textContent = v.price || '상담 후 안내';
+  $('#vdPriceAvg').hidden = !!v.price || !avg;
+  $('#vdPriceAvg').textContent = `${v.cat} 시장 평균 ${avg}`;
+  $('#vdPriceOpen').hidden = !v.price;
+  $('#vdPriceClosed').hidden = !!v.price;
+  $('#vdAvgCat').textContent = v.cat;
+  $('#vdAvgRange').textContent = avg || '-';
+  $('#vdSchedOpen').hidden = v.schedule === false;
+  $('#vdSchedClosed').hidden = v.schedule !== false;
   $('.tier-badge').textContent = v.tier;
+  const reasons = recoReasons(v);
+  $('#vdWhy').hidden = !reasons.length;
+  $('#vdWhyChips').innerHTML = reasons.map((r) => `<span>${r}</span>`).join('');
   $('#vdReviews').innerHTML = REVIEWS.slice(0, 2).map(reviewCard).join('');
   renderCalendar($('#vdCal'), {
     year: 2027, month: 5,
@@ -397,6 +548,8 @@ function renderVendor() {
 /* ---------- 이벤트 위임 ---------- */
 document.addEventListener('click', (e) => {
   const t = e.target;
+
+  if (t.closest('[data-splash-done]')) markSplashDone();
 
   // 업체 카드 클릭 → 상세
   const card = t.closest('[data-vendor]');
@@ -421,9 +574,14 @@ document.addEventListener('click', (e) => {
       $$('.vd-panel').forEach((p) => p.classList.toggle('active', p.dataset.panel === single.dataset.tab));
     }
     if (single.classList.contains('seg-btn')) renderTimeline();
+    if (single.dataset.price) {
+      $$('[data-price-panel]').forEach((p) => { p.hidden = !p.dataset.pricePanel.split(' ').includes(single.dataset.price); });
+    }
   }
-  const multi = t.closest('[data-multi] > button, .mood, .import-grid .ph');
+  const multi = t.closest('[data-multi] > button, .mood, .import-grid .ph, .pick-card');
   if (multi) multi.classList.toggle(multi.classList.contains('ph') ? 'sel' : 'active');
+  if (multi?.closest('#pjMoods')) $('#pjMoodError').classList.remove('show');
+  if (multi?.classList.contains('pick-card')) showPj(pjIdx); // 고른 항목 수에 맞춰 단계 수 갱신
 
   // 예산 프리셋
   const preset = t.closest('[data-preset] > .chip');
@@ -459,17 +617,19 @@ document.addEventListener('click', (e) => {
   const ph = t.closest('.phase-head');
   if (ph) ph.closest('.phase').classList.toggle('collapsed');
 
-  // 입점 캘린더 토글
+  // 업체 프로필 만들기 · 일정 캘린더 토글
   const day = t.closest('#pjCal .d:not(.empty)');
   if (day) { day.classList.toggle('ok'); day.classList.toggle('no'); }
 
   // 기타 액션
   const action = t.closest('[data-action]')?.dataset.action;
   if (action === 'toggle-menu') $('.gnb-menu').classList.toggle('open');
+  if (action === 'guide-next') showGuide(guideStep + 1);
+  if (action === 'guide-prev') showGuide(guideStep - 1);
   if (action === 'ob-next') obStepper.next();
   if (action === 'ob-prev') obStepper.prev();
-  if (action === 'pj-next') pjStepper.next();
-  if (action === 'pj-prev') pjStepper.prev();
+  if (action === 'pj-next') pjNext();
+  if (action === 'pj-prev') { if (pjIdx === 0) history.back(); else showPj(pjIdx - 1); }
   if (action === 'like') {
     const b = t.closest('[data-action]');
     b.classList.toggle('liked');
@@ -510,7 +670,8 @@ updatePreview();
 renderTimeline();
 renderDirectory();
 $('#reviewFeed').innerHTML = REVIEWS.map(reviewCard).join('');
-$('#pjCats').innerHTML = CATEGORIES.slice(1).map((c) =>
+$('#bizCats').innerHTML = CATEGORIES.slice(1).map((c) => `<span>${c.ico} ${c.name}</span>`).join('');
+$('#pjCats').innerHTML =CATEGORIES.slice(1).map((c) =>
   `<button class="chip ${c.name === '아이폰스냅' ? 'active' : ''}">${c.name}</button>`).join('');
 renderCalendar($('#pjCal'), { year: 2027, month: 4, status: (d, dow) => (dow === 0 || dow === 6 ? 'ok' : 'no') });
 renderCalendar($('#dashCal'), { year: 2026, month: 9, status: (d) => ([3, 10, 17, 18, 25].includes(d) ? 'booked' : d < 12 ? 'no' : 'ok') });

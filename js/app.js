@@ -84,38 +84,56 @@ const BASE_CATS = [
 ];
 const WISH_COLOR = '#e6a5b4';
 
-const PHASES = [
-  { title: 'Phase 1. 준비 시작 & 웨딩홀 계약', from: 12, to: 10, tasks: [
-    { t: '결혼 결심 및 양가 첫 인사', d: '양가 부모님께 인사 드리고 결혼 허락 받기' },
-    { t: '결혼식 예산 논의', d: '양가 지원금 및 자체 예산 조율, 총예산 설정', link: ['예산 진단', '#budget'] },
-    { t: '웨딩홀 계약 (최우선)', d: '인기 홀은 1년 전 예약 오픈 시점에 바로 투어', link: ['웨딩홀 보기', '#directory?cat=웨딩홀'] },
-  ]},
-  { title: 'Phase 2. 준비 방식 결정 & 스드메 베이스캠프', from: 10, to: 8, tasks: [
-    { t: '준비 방식 결정', d: '플래너(동행/비동행) vs 워크인 셀프', link: ['플래너 비교', '#directory?cat=플래너'] },
-    { t: '스드메 업체 선정 및 조합 확정', d: '워크인: 스튜디오·드레스·메이크업 개별 서칭 및 예약', link: ['스튜디오 보기', '#directory?cat=스튜디오'] },
-    { t: '커스텀 조합 및 제휴 범위 확정', d: '토탈 vs 비토탈, 헤어변형·예복·한복 제휴/개별 분류', mode: 'planner' },
-  ]},
-  { title: 'Phase 3. 주요 품목 계약 & 일정 확정', from: 8, to: 6, tasks: [
-    { t: '신혼여행 예약', d: '해외는 항공권 가격 변동 고려해 미리 예약' },
-    { t: '상견례', d: '양가 부모님 일정 조율' },
-    { t: '신랑 예복 & 웨딩밴드 계약', d: '제작 기간 2~3달, 스튜디오 촬영일 역산', link: ['예복 보기', '#directory?cat=예복·한복'] },
-  ]},
-  { title: 'Phase 4. 스튜디오 촬영 준비 & 드레스 투어', from: 6, to: 4, tasks: [
-    { t: '드레스 투어', d: '2~3곳 방문, 본식 드레스 4벌 정도 피팅', link: ['드레스 보기', '#directory?cat=드레스'] },
-    { t: '헤어변형 예약', d: '1인 숍이 많아 스튜디오 일정 확정 직후 바로 예약', link: ['헤어변형 보기', '#directory?cat=헤어변형'] },
-    { t: '스튜디오 촬영', d: '야외/실내 스튜디오 촬영 진행' },
-  ]},
-  { title: 'Phase 5. 촬영 후속 조치 & 청첩장 준비', from: 4, to: 2, tasks: [
-    { t: '사진 보정 및 모바일 청첩장 제작', d: '스튜디오 보정본은 약 3개월 소요 — 사설 보정 업체 고려', link: ['청첩장 보기', '#directory?cat=모바일청첩장'] },
-    { t: '혼주 한복 대여/맞춤 피팅', d: '본식 2~4개월 전 양가 어머니 동행', link: ['한복 보기', '#directory?cat=예복·한복'] },
-    { t: '청첩장 모임 시작', d: '지인·동료들에게 소식 전하기' },
-  ]},
-  { title: 'Phase 6. 본식 최종 점검 & 마무리', from: 1, to: 0, tasks: [
-    { t: '촬영 드레스 셀렉 (비토탈)', d: '6벌 피팅 후 촬영용 3~4벌 결정' },
-    { t: '본식 드레스 셀렉 및 가봉', d: '체형에 맞게 가봉' },
-    { t: '본식 최종 미팅', d: '식순·음악·연출 확정, 시식', link: ['사회자 보기', '#directory?cat=본식사회자'] },
-    { t: '본식 당일 & 신혼여행 출발', d: '축하해요! 🎉' },
-  ]},
+/* 타임라인 단계 (기획서 표준 타임라인 기준) */
+const TL_PHASES = [
+  { title: '준비 시작 & 웨딩홀', from: 12, to: 10 },
+  { title: '준비 방식 & 스드메', from: 10, to: 8 },
+  { title: '주요 계약', from: 8, to: 6 },
+  { title: '촬영 준비', from: 6, to: 4 },
+  { title: '청첩장 & 본식 준비', from: 4, to: 2 },
+  { title: '최종 점검', from: 1, to: 0 },
+];
+
+/* 기본 제안 항목 (세분화) — [단계, id, 제목, 설명, 관련 링크, 태그] */
+const DIR = (cat) => ['업체 보기', `#directory?cat=${cat}`];
+const TL_DEFAULT = [
+  [0, 'greet', '양가 인사', '양가 부모님께 인사 드리고 결혼 허락 받기'],
+  [0, 'budget', '예산 논의', '양가 지원금과 우리 예산을 맞춰 총예산 정하기', ['예산 진단', '#budget']],
+  [0, 'hall-tour', '웨딩홀 투어', '인기 홀은 1년 전 예약 오픈 시점에 바로 투어', DIR('웨딩홀')],
+  [0, 'hall-contract', '웨딩홀 계약', '날짜와 대략적인 하객 규모가 여기서 정해져요'],
+  [1, 'method', '준비 방식 결정', '플래너(동행 · 비동행 · 일부동행) vs 워크인', ['새내기 가이드', '#guide']],
+  [1, 'planner', '플래너 상담', '동행 범위와 스드메 조합 상담', DIR('플래너'), '플래너 이용 시'],
+  [1, 'studio', '스튜디오 선정', '토탈 vs 비토탈 함께 결정', DIR('스튜디오')],
+  [1, 'dress-shop', '드레스샵 선정', '촬영 · 본식 드레스샵 정하기', DIR('드레스')],
+  [1, 'makeup', '메이크업 선정', '촬영 · 본식 메이크업 숍 정하기', DIR('메이크업')],
+  [1, 'main-snap', '본식스냅 예약', '인기 작가는 일찍 마감돼요', DIR('본식스냅')],
+  [1, 'iphone-snap', '아이폰/야외스냅 예약', '제주 · 야외 촬영은 날씨 좋은 날짜가 빨리 차요', DIR('아이폰스냅')],
+  [2, 'meet', '상견례', '양가 부모님 일정 조율'],
+  [2, 'honeymoon', '신혼여행 예약', '해외는 항공권 가격 변동을 고려해 미리 예약'],
+  [2, 'suit', '예복 맞춤/대여', '제작 기간과 촬영일을 역산해서 계약', DIR('예복·한복')],
+  [2, 'ring-tour', '웨딩밴드 투어', '제작에 2~3달 걸려요'],
+  [2, 'ring-contract', '웨딩밴드 계약', '촬영 2~3달 전까지 계약'],
+  [3, 'dress-tour', '드레스 투어', '2~3곳 방문, 본식 드레스 4벌 정도 피팅', DIR('드레스')],
+  [3, 'hair', '헤어변형 예약', '1인 숍이 많아 스튜디오 일정 확정 직후 바로 예약', DIR('헤어변형')],
+  [3, 'shoot-dress', '촬영 드레스 셀렉', '6벌 정도 피팅 후 촬영용 3~4벌 결정', null, '비토탈'],
+  [3, 'shoot', '스튜디오 촬영', '야외/실내 스튜디오 촬영'],
+  [4, 'photo-select', '사진 셀렉', '촬영 원본에서 보정할 사진 고르기'],
+  [4, 'retouch', '보정', '스튜디오 보정은 약 3개월 — 사설 보정도 고려'],
+  [4, 'm-invite', '모바일 청첩장', '보정본 일정에 맞춰 제작', DIR('모바일청첩장')],
+  [4, 'p-invite', '종이 청첩장', '디자인 · 수량 정하고 주문'],
+  [4, 'hanbok', '혼주 한복 피팅', '양가 어머니 동행, 대여 또는 맞춤', DIR('예복·한복')],
+  [4, 'invite-meet', '청첩장 모임', '지인 · 동료들에게 소식 전하기'],
+  [4, 'video', '식전영상 제작', '사진 · 영상 소스 미리 모아두기', DIR('식전영상')],
+  [4, 'mc', '사회자 섭외', '지인 또는 전문 사회자', DIR('본식사회자')],
+  [4, 'flower', '부케/플라워 예약', '드레스 · 홀 분위기에 맞춰서', DIR('웨딩플라워')],
+  [5, 'main-dress', '본식 드레스 셀렉', '본식 때 입을 드레스 최종 결정'],
+  [5, 'fitting', '가봉', '체형에 맞게 가봉'],
+  [5, 'final-meet', '본식 최종 미팅', '식순 · 음악 · 연출 확정'],
+  [5, 'tasting', '시식', '웨딩홀 시식이 가능하면 진행'],
+  [5, 'helper', '헬퍼 확정', '드레스샵 포함 여부 확인', DIR('헬퍼')],
+  [5, 'gift-desk', '축의대 확정', '지인 또는 대행 서비스', DIR('축의대')],
+  [5, 'wedding', '본식 당일', '축하해요! 🎉'],
+  [5, 'trip', '신혼여행 출발', '즐거운 여행 되세요'],
 ];
 
 /* ---------- 공통 ---------- */
@@ -211,7 +229,8 @@ const markSplashDone = () => { try { localStorage.setItem(SPLASH_KEY, '1'); } ca
 
 function route() {
   const defaultScreen = splashDone() ? 'home' : 'splash';
-  const [hashName, query] = (location.hash.slice(1) || defaultScreen).split('?');
+  let [hashName, query] = (location.hash.slice(1) || defaultScreen).split('?');
+  if (hashName === 'timeline') { hashName = 'mypage'; query = 'tab=timeline'; } // 타임라인은 내 웨딩 안으로 이동
   const name = $(`#screen-${hashName}`) ? hashName : 'home';
   const params = new URLSearchParams(query || '');
 
@@ -228,6 +247,8 @@ function route() {
   if (name === 'partner-join') showPj(0);
   if (name === 'budget-result') renderReport();
   if (name === 'vendor') renderVendor();
+  if (name === 'mypage') showMyTab(params.get('tab') || 'timeline');
+  if (drawerItem) closeDrawer();
   window.scrollTo({ top: 0 });
 }
 window.addEventListener('hashchange', route);
@@ -432,49 +453,330 @@ function renderReport() {
   $('#rpVendors').innerHTML = matched.map((v) => vendorCard(v, { reasons: recoReasons(v) })).join('');
 }
 
-/* ---------- 타임라인 ---------- */
-function renderTimeline() {
-  const input = $('#weddingDate');
-  const date = new Date(input.value);
+/* ---------- 내 타임라인 ---------- */
+// 항목 상태: 순서 = 배열 순서, phase로 단계 구분. hidden(뺀 항목) · custom(직접 추가) · date · memo는 다음 단계에서 사용
+const defaultItems = () => TL_DEFAULT.map(([phase, id, t, d, link, tag]) => ({
+  id, phase, t, d, link: link || null, tag: tag || null, done: false, hidden: false, custom: false, date: null, memo: '',
+}));
+let tlItems = defaultItems();
+
+function weddingInfo() {
+  const value = $('#weddingDate').value;
   const today = new Date();
   today.setHours(0, 0, 0, 0);
-  const days = Math.ceil((date - today) / 86400000);
-  const months = days / 30.4;
+  const days = Math.ceil((new Date(value) - today) / 86400000);
+  let nowIdx = TL_PHASES.findIndex((p) => days / 30.4 >= p.to);
+  if (nowIdx === -1) nowIdx = TL_PHASES.length - 1;
+  return { value, days, nowIdx };
+}
 
+// 처음 열었을 때 이미 지난 단계의 항목은 완료로 표시
+const markPastDone = () => { const { nowIdx } = weddingInfo(); tlItems.forEach((it) => { it.done = it.phase < nowIdx; }); };
+
+/* ---------- 저장 (이 브라우저에만, localStorage) ---------- */
+const TL_KEY = 'ww-timeline-v1';
+const DEFAULT_WEDDING = '2027-06-12';
+
+function saveTimeline() {
+  try {
+    localStorage.setItem(TL_KEY, JSON.stringify({ wedding: $('#weddingDate').value, items: tlItems }));
+  } catch { /* 저장할 수 없는 환경(시크릿 창 등)은 무시 */ }
+}
+
+// 저장된 순서 · 사용자 입력은 유지하고, 기본 항목의 문구는 최신으로 갱신. 새로 생긴 기본 항목은 해당 단계 끝에 추가
+function loadTimeline() {
+  let saved = null;
+  try { saved = JSON.parse(localStorage.getItem(TL_KEY)); } catch { saved = null; }
+  if (!saved || !Array.isArray(saved.items)) { markPastDone(); return; }
+  if (saved.wedding) $('#weddingDate').value = saved.wedding;
+  const defaults = new Map(defaultItems().map((it) => [it.id, it]));
+  const restored = saved.items
+    .filter((it) => it.custom || defaults.has(it.id))
+    .map((it) => (it.custom ? it : { ...it, t: defaults.get(it.id).t, d: defaults.get(it.id).d, link: defaults.get(it.id).link, tag: defaults.get(it.id).tag }));
+  tlItems = restored;
+  defaults.forEach((it, id) => {
+    if (!restored.some((r) => r.id === id)) { tlItems.push(it); moveItem(id, it.phase); }
+  });
+}
+
+function resetTimeline() {
+  if (!confirm('타임라인을 처음 상태로 되돌릴까요?\n순서 · 숨긴 항목 · 직접 추가한 항목 · 날짜 · 메모가 모두 초기화돼요.')) return;
+  try { localStorage.removeItem(TL_KEY); } catch { /* 무시 */ }
+  $('#weddingDate').value = DEFAULT_WEDDING;
+  tlItems = defaultItems();
+  markPastDone();
+  $('#tlHiddenList').hidden = true;
+  renderTimeline();
+  toast('기본 타임라인으로 되돌렸어요');
+}
+
+function renderTimeline() {
+  const { value, days, nowIdx } = weddingInfo();
   $('#ddayText').textContent = days > 0 ? `D-${days}` : days === 0 ? 'D-Day' : `D+${-days}`;
-  $('#ddayDate').textContent = input.value.replaceAll('-', '.');
+  $('#ddayDate').textContent = value.replaceAll('-', '.');
 
-  let nowIdx = PHASES.findIndex((p) => months >= p.to);
-  if (nowIdx === -1) nowIdx = PHASES.length - 1;
-  const planner = $('#screen-timeline .seg-btn.active').textContent.includes('플래너');
+  const openPhases = new Set($$('#timelineList .phase:not(.collapsed)').map((p) => +p.dataset.phase));
+  const firstRender = !$('#timelineList .phase');
 
-  $('#timelineList').innerHTML = PHASES.map((p, i) => {
-    const state = i < nowIdx ? 'past collapsed' : i === nowIdx ? 'now' : 'collapsed';
-    const tasks = p.tasks.map((t) => {
-      if (t.mode === 'planner' && !planner) return '';
-      const done = i < nowIdx;
-      const link = t.link ? `<a class="link-more" href="${t.link[1]}">${t.link[0]} →</a>` : '<span></span>';
-      const mode = t.mode === 'planner' ? '<span class="tag mode-tag">플래너</span>' : '';
-      return `<label class="task ${done ? 'done' : ''}"><input type="checkbox" ${done ? 'checked' : ''} /><div><b>${t.t}</b>${mode}<p>${t.d}</p></div>${link}</label>`;
-    }).join('');
-    const badge = i === nowIdx ? '<span class="tag tag-new">지금 할 일</span>' : i < nowIdx ? '<span class="tag tag-ok">완료</span>' : '';
+  $('#timelineList').innerHTML = TL_PHASES.map((p, i) => {
+    const items = tlItems.filter((it) => it.phase === i && !it.hidden);
+    const doneCount = items.filter((it) => it.done).length;
+    const open = firstRender ? i === nowIdx : openPhases.has(i);
+    const state = `${i < nowIdx ? 'past' : i === nowIdx ? 'now' : ''} ${open ? '' : 'collapsed'}`;
+    const badge = i === nowIdx ? '<span class="tag tag-new">지금 할 일</span>' : '';
+    const rows = items.map((it, idx) => `
+      <div class="tl-item ${it.done ? 'done' : ''}" data-item="${it.id}">
+        <span class="tl-handle" title="끌어서 순서 · 단계 변경">⠿</span>
+        <input type="checkbox" class="tl-check" ${it.done ? 'checked' : ''} aria-label="${esc(it.t)} 완료" />
+        <div class="tl-main">
+          <b>${esc(it.t)}</b>${it.tag ? `<span class="tag mode-tag">${it.tag}</span>` : ''}
+          ${it.d ? `<p>${esc(it.d)}</p>` : ''}
+          ${it.date || it.memo ? `<div class="tl-meta">${it.date ? `<span>📅 ${fmtMD(it.date)}</span>` : ''}${it.memo ? '<span>📝 메모</span>' : ''}</div>` : ''}
+        </div>
+        <div class="tl-side">
+          ${it.link ? `<a class="link-more" href="${it.link[1]}">${it.link[0]} →</a>` : ''}
+          <span class="tl-arrows">
+            <button data-move="up" aria-label="위로" ${idx === 0 ? 'disabled' : ''}>↑</button>
+            <button data-move="down" aria-label="아래로" ${idx === items.length - 1 ? 'disabled' : ''}>↓</button>
+          </span>
+        </div>
+      </div>`).join('');
     return `
-      <div class="phase ${state}">
+      <div class="phase ${state}" data-phase="${i}">
         <div class="card">
-          <div class="phase-head"><h3>${p.title} ${badge}</h3><span class="when">D-${p.from}~${p.to}개월</span></div>
-          <div class="phase-body">${tasks}</div>
+          <div class="phase-head">
+            <h3>Phase ${i + 1}. ${p.title} ${badge}</h3>
+            <span class="when">D-${p.from}~${p.to}개월 · ${doneCount}/${items.length}</span>
+          </div>
+          <div class="phase-body">
+            ${rows || '<p class="muted sm tl-empty">항목이 없어요. 여기로 끌어다 놓을 수 있어요.</p>'}
+            <div class="tl-add" data-phase="${i}">
+              <button class="text-btn" data-action="tl-add-open">+ 항목 추가</button>
+              <div class="tl-add-form" hidden>
+                <input type="text" class="tl-add-input" placeholder="예: 브라이덜 샤워, 웨딩 네일" maxlength="40" />
+                <button class="btn btn-primary btn-sm" data-action="tl-add-save">추가</button>
+                <button class="btn btn-ghost btn-sm" data-action="tl-add-cancel">취소</button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>`;
   }).join('');
+
+  const hidden = tlItems.filter((it) => it.hidden);
+  $('#tlHiddenBtn').hidden = !hidden.length;
+  $('#tlHiddenBtn').textContent = `숨긴 항목 ${hidden.length}개 ${$('#tlHiddenList').hidden ? '▾' : '▴'}`;
+  if (!hidden.length) $('#tlHiddenList').hidden = true;
+  $('#tlHiddenList').innerHTML = hidden.map((it) => `
+    <div class="tl-hidden-row">
+      <span><b>${esc(it.t)}</b> <small class="muted">Phase ${it.phase + 1}</small></span>
+      <button class="btn btn-ghost btn-sm" data-restore="${it.id}">되살리기</button>
+    </div>`).join('');
+
   updateTimelineProgress();
+  renderMyCalendar();
+  saveTimeline(); // 모든 변경은 renderTimeline을 거치므로 여기서 한 번에 저장
 }
 
+/* 순서 · 단계 변경: 배열에서 빼서 목표 단계의 beforeId 앞(없으면 단계 맨 끝)에 넣음 */
+function moveItem(id, toPhase, beforeId = null) {
+  const from = tlItems.findIndex((it) => it.id === id);
+  if (from < 0 || id === beforeId) return;
+  const [item] = tlItems.splice(from, 1);
+  item.phase = toPhase;
+  let at = beforeId ? tlItems.findIndex((it) => it.id === beforeId) : -1;
+  if (at < 0) {
+    const lastInPhase = tlItems.map((it) => it.phase).lastIndexOf(toPhase);
+    at = lastInPhase >= 0 ? lastInPhase + 1 : tlItems.length;
+  }
+  tlItems.splice(at, 0, item);
+}
+
+function nudgeItem(id, dir) {
+  const item = tlItems.find((it) => it.id === id);
+  const siblings = tlItems.filter((it) => it.phase === item.phase && !it.hidden);
+  const idx = siblings.indexOf(item);
+  const target = siblings[idx + (dir === 'up' ? -1 : 1)];
+  if (!target) return;
+  if (dir === 'up') moveItem(id, item.phase, target.id);
+  else moveItem(target.id, item.phase, id);
+  renderTimeline();
+}
+
+/* 드래그 앤 드롭 (손잡이를 잡았을 때만 끌 수 있음) */
+let dragId = null;
+const clearDropMarks = () => $$('.drop-before, .drop-after, .drop-into').forEach((el) => el.classList.remove('drop-before', 'drop-after', 'drop-into'));
+
+document.addEventListener('mousedown', (e) => {
+  const handle = e.target.closest('.tl-handle');
+  if (handle) handle.closest('.tl-item').draggable = true;
+});
+document.addEventListener('dragstart', (e) => {
+  const row = e.target.closest?.('.tl-item');
+  if (!row) return;
+  dragId = row.dataset.item;
+  e.dataTransfer.effectAllowed = 'move';
+  e.dataTransfer.setData('text/plain', dragId);
+  row.classList.add('dragging');
+});
+document.addEventListener('dragover', (e) => {
+  if (!dragId) return;
+  const row = e.target.closest('.tl-item');
+  const phase = e.target.closest('.phase');
+  if (!phase) return;
+  e.preventDefault();
+  clearDropMarks();
+  if (row && row.dataset.item !== dragId) {
+    const r = row.getBoundingClientRect();
+    row.classList.add(e.clientY < r.top + r.height / 2 ? 'drop-before' : 'drop-after');
+  } else if (!row) {
+    phase.classList.add('drop-into');
+  }
+});
+document.addEventListener('drop', (e) => {
+  if (!dragId) return;
+  const phase = e.target.closest('.phase');
+  if (!phase) return;
+  e.preventDefault();
+  const toPhase = +phase.dataset.phase;
+  const row = e.target.closest('.tl-item');
+  if (row && row.dataset.item === dragId) return; // 제자리에 놓으면 그대로
+  let beforeId = null;
+  if (row && row.dataset.item !== dragId) {
+    if (row.classList.contains('drop-before')) beforeId = row.dataset.item;
+    else {
+      const visible = tlItems.filter((it) => it.phase === toPhase && !it.hidden && it.id !== dragId);
+      const next = visible[visible.findIndex((it) => it.id === row.dataset.item) + 1];
+      beforeId = next ? next.id : null;
+    }
+  }
+  const prevPhase = tlItems.find((it) => it.id === dragId).phase;
+  moveItem(dragId, toPhase, beforeId);
+  phase.classList.remove('collapsed');
+  renderTimeline();
+  if (prevPhase !== toPhase) toast(`Phase ${toPhase + 1}(으)로 옮겼어요`);
+});
+document.addEventListener('dragend', () => {
+  $$('.tl-item[draggable="true"]').forEach((r) => { r.draggable = false; r.classList.remove('dragging'); });
+  clearDropMarks();
+  dragId = null;
+});
+
 function updateTimelineProgress() {
-  const all = $$('#timelineList .task input');
-  const done = all.filter((c) => c.checked).length;
-  const pct = all.length ? Math.round((done / all.length) * 100) : 0;
+  const visible = tlItems.filter((it) => !it.hidden);
+  const done = visible.filter((it) => it.done).length;
+  const pct = visible.length ? Math.round((done / visible.length) * 100) : 0;
   $('#tlBar').style.width = `${pct}%`;
-  $('#tlPct').textContent = `${pct}% 완료 (${done}/${all.length})`;
+  $('#tlPct').textContent = `${pct}% 완료 (${done}/${visible.length})`;
+}
+
+function showMyTab(tab) {
+  $$('.my-tab').forEach((b) => b.classList.toggle('active', b.dataset.mytab === tab));
+  $$('.my-panel').forEach((p) => p.classList.toggle('active', p.dataset.mypanel === tab));
+}
+
+/* ---------- 내 캘린더 ---------- */
+const pad2 = (n) => String(n).padStart(2, '0');
+const ymd = (d) => `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}`;
+const fmtMD = (s) => { const [, m, d] = s.split('-'); return `${+m}/${+d}`; };
+const calView = { y: new Date().getFullYear(), m: new Date().getMonth() };
+
+function renderMyCalendar() {
+  const { y, m } = calView;
+  $('#mcTitle').textContent = `${y}년 ${m + 1}월`;
+  const first = new Date(y, m, 1).getDay();
+  const days = new Date(y, m + 1, 0).getDate();
+  const today = ymd(new Date());
+  const wedding = $('#weddingDate').value;
+  const byDate = {};
+  tlItems.filter((it) => it.date && !it.hidden).forEach((it) => { (byDate[it.date] = byDate[it.date] || []).push(it); });
+
+  let html = ['일', '월', '화', '수', '목', '금', '토'].map((d) => `<div class="mc-dow">${d}</div>`).join('');
+  for (let i = 0; i < first; i++) html += '<div class="mc-cell empty"></div>';
+  for (let d = 1; d <= days; d++) {
+    const key = `${y}-${pad2(m + 1)}-${pad2(d)}`;
+    const items = byDate[key] || [];
+    const chips = items.slice(0, 2).map((it) =>
+      `<button class="mc-chip ${it.done ? 'done' : ''}" data-open="${it.id}">${esc(it.t)}</button>`).join('');
+    const more = items.length > 2 ? `<span class="mc-more">+${items.length - 2}</span>` : '';
+    const cls = [key === today ? 'today' : '', key === wedding ? 'wedding' : '', (first + d - 1) % 7 === 0 ? 'sun' : ''].join(' ');
+    html += `<div class="mc-cell ${cls}"><span class="mc-day">${d}${key === wedding ? ' 💍' : ''}</span>${chips}${more}</div>`;
+  }
+  $('#mcGrid').innerHTML = html;
+}
+
+/* ---------- 항목 상세 패널 ---------- */
+let drawerItem = null;
+
+// 단계 시기에 맞춘 추천 날짜 (본식일에서 단계 중간 개월 수만큼 앞)
+function suggestDate(phase) {
+  const p = TL_PHASES[phase];
+  const d = new Date($('#weddingDate').value);
+  d.setMonth(d.getMonth() - Math.round((p.from + p.to) / 2));
+  return ymd(d);
+}
+
+function openDrawer(id) {
+  drawerItem = tlItems.find((it) => it.id === id);
+  if (!drawerItem) return;
+  const it = drawerItem;
+  const p = TL_PHASES[it.phase];
+  $('#dwPhase').textContent = `Phase ${it.phase + 1}. ${p.title} · D-${p.from}~${p.to}개월`;
+  $('#dwTitle').textContent = it.t;
+  $('#dwDesc').textContent = it.d;
+  $('#dwDesc').hidden = it.custom || !it.d;
+  $('#dwEdit').hidden = !it.custom; // 직접 추가한 항목만 이름 · 설명 수정
+  $('#dwTitleInput').value = it.t;
+  $('#dwDescInput').value = it.d;
+  $('#dwPhaseSel').innerHTML = TL_PHASES.map((ph, i) =>
+    `<option value="${i}" ${i === it.phase ? 'selected' : ''}>Phase ${i + 1}. ${ph.title} (D-${ph.from}~${ph.to}개월)</option>`).join('');
+  $('#dwDone').checked = it.done;
+  $('#dwMemo').value = it.memo;
+  $('#dwMemoSaved').textContent = '';
+  $('#dwLink').hidden = !it.link;
+  if (it.link) { $('#dwLink').href = it.link[1]; $('#dwLink').textContent = `${it.link[0]} →`; }
+  updateDrawerDate();
+  $('#tlDrawer').classList.add('open');
+  $('#tlDrawer').setAttribute('aria-hidden', 'false');
+  $('#drawerBackdrop').hidden = false;
+}
+
+function updateDrawerDate() {
+  const it = drawerItem;
+  $('#dwDate').value = it.date || suggestDate(it.phase);
+  $('#dwAddBtn').textContent = it.date ? '날짜 변경' : '캘린더에 추가';
+  $('#dwRemoveCal').hidden = !it.date;
+  $('#dwDateInfo').textContent = it.date
+    ? `캘린더에 ${fmtMD(it.date)}로 추가돼 있어요.`
+    : '추천 시기에 맞춰 날짜를 미리 채워 뒀어요. 바꿔도 돼요.';
+}
+
+function closeDrawer() {
+  $('#tlDrawer').classList.remove('open');
+  $('#tlDrawer').setAttribute('aria-hidden', 'true');
+  $('#drawerBackdrop').hidden = true;
+  drawerItem = null;
+}
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && drawerItem) closeDrawer();
+  if (e.target.matches?.('.tl-add-input')) {
+    if (e.key === 'Enter') { e.preventDefault(); addCustomItem(e.target.closest('.tl-add')); }
+    if (e.key === 'Escape') e.target.closest('.tl-add').querySelector('[data-action="tl-add-cancel"]').click();
+  }
+});
+
+/* 직접 항목 추가 */
+function addCustomItem(box) {
+  const input = box.querySelector('.tl-add-input');
+  const title = input.value.trim();
+  if (!title) { toast('항목 이름을 입력해 주세요'); input.focus(); return; }
+  const phase = +box.dataset.phase;
+  const id = `c${Date.now()}`;
+  tlItems.push({ id, phase, t: title, d: '', link: null, tag: '직접 추가', done: false, hidden: false, custom: true, date: null, memo: '' });
+  moveItem(id, phase); // 해당 단계 맨 끝으로
+  renderTimeline();
+  toast(`Phase ${phase + 1}에 '${title}'을(를) 추가했어요`);
 }
 
 /* ---------- 디렉토리 ---------- */
@@ -551,6 +853,23 @@ document.addEventListener('click', (e) => {
 
   if (t.closest('[data-splash-done]')) markSplashDone();
 
+  // 타임라인 순서 ↑↓ · 되살리기
+  const mover = t.closest('[data-move]');
+  if (mover) { nudgeItem(mover.closest('[data-item]').dataset.item, mover.dataset.move); return; }
+  const restore = t.closest('[data-restore]');
+  if (restore) {
+    tlItems.find((it) => it.id === restore.dataset.restore).hidden = false;
+    renderTimeline();
+    toast('타임라인에 되살렸어요');
+    return;
+  }
+
+  // 타임라인 항목 · 캘린더 칩 → 상세 패널
+  const openBtn = t.closest('[data-open]');
+  if (openBtn) { openDrawer(openBtn.dataset.open); return; }
+  const row = t.closest('.tl-item');
+  if (row && !t.closest('.tl-check, .tl-handle, a, button')) { openDrawer(row.dataset.item); return; }
+
   // 업체 카드 클릭 → 상세
   const card = t.closest('[data-vendor]');
   if (card) {
@@ -573,7 +892,7 @@ document.addEventListener('click', (e) => {
     if (single.classList.contains('vd-tab')) {
       $$('.vd-panel').forEach((p) => p.classList.toggle('active', p.dataset.panel === single.dataset.tab));
     }
-    if (single.classList.contains('seg-btn')) renderTimeline();
+    if (single.dataset.mytab) showMyTab(single.dataset.mytab);
     if (single.dataset.price) {
       $$('[data-price-panel]').forEach((p) => { p.hidden = !p.dataset.pricePanel.split(' ').includes(single.dataset.price); });
     }
@@ -624,6 +943,49 @@ document.addEventListener('click', (e) => {
   // 기타 액션
   const action = t.closest('[data-action]')?.dataset.action;
   if (action === 'toggle-menu') $('.gnb-menu').classList.toggle('open');
+  if (action === 'cal-prev' || action === 'cal-next') {
+    const d = new Date(calView.y, calView.m + (action === 'cal-next' ? 1 : -1), 1);
+    calView.y = d.getFullYear(); calView.m = d.getMonth();
+    renderMyCalendar();
+  }
+  if (action === 'cal-today') { calView.y = new Date().getFullYear(); calView.m = new Date().getMonth(); renderMyCalendar(); }
+  if (action === 'drawer-close') closeDrawer();
+  if (action === 'dw-hide' && drawerItem) {
+    drawerItem.hidden = true;
+    closeDrawer();
+    renderTimeline();
+    toast('타임라인에서 뺐어요 · 숨긴 항목에서 되살릴 수 있어요');
+  }
+  if (action === 'tl-hidden-toggle') {
+    $('#tlHiddenList').hidden = !$('#tlHiddenList').hidden;
+    renderTimeline();
+  }
+  if (action === 'tl-add-open' || action === 'tl-add-cancel') {
+    const box = t.closest('.tl-add');
+    const opening = action === 'tl-add-open';
+    box.querySelector('.tl-add-form').hidden = !opening;
+    box.querySelector('[data-action="tl-add-open"]').hidden = opening;
+    if (opening) box.querySelector('.tl-add-input').focus();
+  }
+  if (action === 'tl-add-save') addCustomItem(t.closest('.tl-add'));
+  if (action === 'tl-reset') resetTimeline();
+  if (action === 'dw-add-cal' && drawerItem) {
+    const value = $('#dwDate').value;
+    if (!value) { toast('날짜를 골라주세요'); return; }
+    const isNew = !drawerItem.date;
+    drawerItem.date = value;
+    const d = new Date(value);
+    calView.y = d.getFullYear(); calView.m = d.getMonth(); // 추가한 달로 캘린더 이동
+    renderTimeline();
+    updateDrawerDate();
+    toast(isNew ? `캘린더 ${fmtMD(value)}에 추가했어요` : `${fmtMD(value)}로 날짜를 바꿨어요`);
+  }
+  if (action === 'dw-remove-cal' && drawerItem) {
+    drawerItem.date = null;
+    renderTimeline();
+    updateDrawerDate();
+    toast('캘린더에서 뺐어요');
+  }
   if (action === 'guide-next') showGuide(guideStep + 1);
   if (action === 'guide-prev') showGuide(guideStep - 1);
   if (action === 'ob-next') obStepper.next();
@@ -642,6 +1004,17 @@ document.addEventListener('click', (e) => {
 
 document.addEventListener('input', (e) => {
   const t = e.target;
+  if ((t.id === 'dwTitleInput' || t.id === 'dwDescInput') && drawerItem) {
+    if (t.id === 'dwTitleInput' && t.value.trim()) drawerItem.t = t.value.trim();
+    if (t.id === 'dwDescInput') drawerItem.d = t.value.trim();
+    $('#dwTitle').textContent = drawerItem.t;
+    renderTimeline();
+  }
+  if (t.id === 'dwMemo' && drawerItem) {
+    drawerItem.memo = t.value;
+    $('#dwMemoSaved').textContent = '· 저장됨';
+    renderTimeline();
+  }
   if (t.matches('[data-weight]')) {
     const i = +t.dataset.weight;
     budget.weights[i] = +t.value;
@@ -657,9 +1030,24 @@ document.addEventListener('input', (e) => {
 
 document.addEventListener('change', (e) => {
   if (e.target.id === 'weddingDate') renderTimeline();
-  if (e.target.matches('#timelineList .task input')) {
-    e.target.closest('.task').classList.toggle('done', e.target.checked);
-    updateTimelineProgress();
+  if (e.target.id === 'dwPhaseSel' && drawerItem) {
+    const to = +e.target.value;
+    moveItem(drawerItem.id, to);
+    const p = TL_PHASES[to];
+    $('#dwPhase').textContent = `Phase ${to + 1}. ${p.title} · D-${p.from}~${p.to}개월`;
+    $(`#timelineList .phase[data-phase="${to}"]`)?.classList.remove('collapsed');
+    renderTimeline();
+    updateDrawerDate();
+    toast(`Phase ${to + 1}(으)로 옮겼어요`);
+  }
+  if (e.target.id === 'dwDone' && drawerItem) {
+    drawerItem.done = e.target.checked;
+    renderTimeline();
+  }
+  if (e.target.matches('.tl-check')) {
+    const item = tlItems.find((it) => it.id === e.target.closest('[data-item]').dataset.item);
+    item.done = e.target.checked;
+    renderTimeline();
   }
 });
 
@@ -667,6 +1055,7 @@ document.addEventListener('change', (e) => {
 renderHome();
 renderBudgetInputs();
 updatePreview();
+loadTimeline();
 renderTimeline();
 renderDirectory();
 $('#reviewFeed').innerHTML = REVIEWS.map(reviewCard).join('');

@@ -15,7 +15,6 @@
     <a href="#home" class="logo">Wedding<span>Way</span></a>
     <nav class="gnb-menu">
       <a href="#budget" data-nav="budget">예산 진단</a>
-      <a href="#timeline" data-nav="timeline">타임라인</a>
       <a href="#directory" data-nav="directory">업체 디렉토리</a>
       <a href="#reviews" data-nav="reviews">실후기</a>
       <a href="#mypage" data-nav="mypage">내 웨딩</a>
@@ -97,9 +96,9 @@
 
     <h3 class="flow-title">② 보조 플로우</h3>
     <div class="flow">
-      <a href="#mypage" class="flow-node"><b>내 웨딩</b></a>
+      <a href="#mypage" class="flow-node"><b>내 웨딩</b><small>타임라인 · 캘린더 / 예산 · 찜</small></a>
       <span class="flow-arrow">↔</span>
-      <a href="#timeline" class="flow-node"><b>D-Day 타임라인</b><small>Phase 1~6 체크리스트</small></a>
+      <a href="#timeline" class="flow-node"><b>내 타임라인</b><small>세부 항목 · 메모 · 캘린더</small></a>
       <span class="flow-arrow">→</span>
       <a href="#directory" class="flow-node"><b>단계별 추천 업체</b></a>
     </div>
@@ -135,7 +134,7 @@
       <a href="#onboarding">03 온보딩 진단</a>
       <a href="#budget">04 예산 진단 입력</a>
       <a href="#budget-result">05 예산 진단 리포트</a>
-      <a href="#timeline">06 D-Day 타임라인</a>
+      <a href="#timeline">06 내 타임라인 · 캘린더</a>
       <a href="#directory">07 업체 디렉토리</a>
       <a href="#vendor">08 업체 상세</a>
       <a href="#reviews">09 실후기 피드</a>
@@ -480,33 +479,6 @@
   </div>
 </section>
 
-<!-- ============ 5. 타임라인 ============ -->
-<section class="screen" id="screen-timeline">
-  <div class="container">
-    <div class="tl-head card">
-      <div>
-        <span class="eyebrow">My Wedding Roadmap</span>
-        <h1 class="dday" id="ddayText">D-243</h1>
-        <p class="muted">본식 <b id="ddayDate">2027.06.12</b> · 준비 방식 <b>워크인(셀프)</b></p>
-      </div>
-      <div class="tl-controls">
-        <label class="field inline"><span>예식일</span><input type="date" id="weddingDate" value="2027-06-12" /></label>
-        <div class="seg" data-single>
-          <button class="seg-btn">플래너 이용</button>
-          <button class="seg-btn active">워크인</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="tl-progress">
-      <div class="tl-progress-bar"><i id="tlBar"></i></div>
-      <span id="tlPct">0% 완료</span>
-    </div>
-
-    <div class="timeline" id="timelineList"></div>
-  </div>
-</section>
-
 <!-- ============ 6. 디렉토리 ============ -->
 <section class="screen" id="screen-directory">
   <div class="container">
@@ -693,51 +665,90 @@
   </div>
 </section>
 
-<!-- ============ 10. 내 웨딩 ============ -->
+<!-- ============ 10. 내 웨딩 (타임라인 · 캘린더 / 예산 · 찜) ============ -->
 <section class="screen" id="screen-mypage">
   <div class="container">
-    <div class="page-head">
-      <span class="eyebrow">My Wedding</span>
-      <h1>민지 ♥ 준호 님의 웨딩</h1>
-    </div>
-    <div class="dash-grid">
-      <div class="card dash-dday">
-        <small>본식까지</small>
-        <strong>D-243</strong>
-        <p>2027.06.12 (토) · 더채플 강남</p>
-        <a href="#timeline" class="link-more">타임라인 보기 →</a>
+    <div class="my-head card">
+      <div>
+        <span class="eyebrow">My Wedding</span>
+        <h1>민지 ♥ 준호 님의 웨딩</h1>
+        <p class="muted">본식 <b id="ddayDate">2027.06.12</b> · 더채플 강남</p>
       </div>
-      <div class="card">
-        <small class="muted">예산 사용 현황</small>
-        <div class="dash-money"><b>1,420만</b> / 3,000만 원</div>
-        <div class="mini-bar"><i style="width:47%"></i></div>
-        <a href="#budget-result" class="link-more">진단 리포트 →</a>
-      </div>
-      <div class="card">
-        <small class="muted">이번 달 할 일</small>
-        <ul class="todo">
-          <li class="done">웨딩홀 계약</li>
-          <li>준비 방식 결정</li>
-          <li>스드메 업체 서칭</li>
-        </ul>
+      <div class="my-head-right">
+        <strong class="dday" id="ddayText">D-243</strong>
+        <label class="field inline"><span>예식일</span><input type="date" id="weddingDate" value="2027-06-12" /></label>
       </div>
     </div>
 
-    <div class="card">
-      <h3>예산 항목별 확정 현황</h3>
-      <table class="range-table">
-        <thead><tr><th>항목</th><th>권장 예산</th><th>확정 금액</th><th>상태</th></tr></thead>
-        <tbody>
-          <tr><td>예식장</td><td>870만</td><td>920만</td><td><span class="tag tag-warn">+50만</span></td></tr>
-          <tr><td>스드메</td><td>1,040만</td><td>-</td><td><span class="tag">탐색 중</span></td></tr>
-          <tr><td>아이폰스냅</td><td>45만</td><td>48만</td><td><span class="tag tag-ok">계약 완료</span></td></tr>
-          <tr><td>헤어변형</td><td>50만</td><td>-</td><td><span class="tag">미정</span></td></tr>
-        </tbody>
-      </table>
+    <div class="my-tabs" data-single>
+      <button class="my-tab active" data-mytab="timeline">타임라인 · 캘린더</button>
+      <button class="my-tab" data-mytab="budget">예산 · 찜</button>
     </div>
 
-    <div class="section-head"><h2>찜한 업체</h2><a href="#directory" class="link-more">디렉토리 →</a></div>
-    <div class="vendor-grid small" id="myVendors"></div>
+    <div class="my-panel active" data-mypanel="timeline">
+      <div class="card my-cal">
+        <div class="mc-head">
+          <button class="mc-nav" data-action="cal-prev" aria-label="이전 달">◀</button>
+          <h3 id="mcTitle">2026년 10월</h3>
+          <button class="mc-nav" data-action="cal-next" aria-label="다음 달">▶</button>
+          <button class="btn btn-ghost btn-sm mc-today" data-action="cal-today">오늘</button>
+        </div>
+        <div class="mc-grid" id="mcGrid"></div>
+        <p class="muted sm mc-hint">타임라인 항목을 눌러 날짜를 정하면 여기에 표시돼요.</p>
+      </div>
+
+      <div class="tl-toolbar">
+        <div class="tl-title">
+          <h2>내 타임라인</h2>
+          <button class="text-btn" id="tlHiddenBtn" data-action="tl-hidden-toggle" hidden>숨긴 항목 0개</button>
+        </div>
+        <div class="tl-progress">
+          <div class="tl-progress-bar"><i id="tlBar"></i></div>
+          <span id="tlPct">0% 완료</span>
+        </div>
+      </div>
+      <div class="card tl-hidden-list" id="tlHiddenList" hidden></div>
+      <div class="tl-help">
+        <p class="muted sm">⠿ 를 끌어서 순서나 단계를 바꾸고, 항목을 누르면 날짜 · 메모를 추가할 수 있어요. 변경 내용은 이 브라우저에 저장돼요.</p>
+        <button class="text-btn tl-reset" data-action="tl-reset">기본값으로 되돌리기</button>
+      </div>
+      <div class="timeline" id="timelineList"></div>
+    </div>
+
+    <div class="my-panel" data-mypanel="budget">
+      <div class="dash-grid two">
+        <div class="card">
+          <small class="muted">예산 사용 현황</small>
+          <div class="dash-money"><b>1,420만</b> / 3,000만 원</div>
+          <div class="mini-bar"><i style="width:47%"></i></div>
+          <a href="#budget-result" class="link-more">진단 리포트 →</a>
+        </div>
+        <div class="card">
+          <small class="muted">이번 달 할 일</small>
+          <ul class="todo">
+            <li class="done">웨딩홀 계약</li>
+            <li>준비 방식 결정</li>
+            <li>스드메 업체 서칭</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>예산 항목별 확정 현황</h3>
+        <table class="range-table">
+          <thead><tr><th>항목</th><th>권장 예산</th><th>확정 금액</th><th>상태</th></tr></thead>
+          <tbody>
+            <tr><td>예식장</td><td>870만</td><td>920만</td><td><span class="tag tag-warn">+50만</span></td></tr>
+            <tr><td>스드메</td><td>1,040만</td><td>-</td><td><span class="tag">탐색 중</span></td></tr>
+            <tr><td>아이폰스냅</td><td>45만</td><td>48만</td><td><span class="tag tag-ok">계약 완료</span></td></tr>
+            <tr><td>헤어변형</td><td>50만</td><td>-</td><td><span class="tag">미정</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="section-head"><h2>찜한 업체</h2><a href="#directory" class="link-more">디렉토리 →</a></div>
+      <div class="vendor-grid small" id="myVendors"></div>
+    </div>
   </div>
 </section>
 
@@ -966,12 +977,47 @@
   <a href="#home" data-nav="home">⌂<span>홈</span></a>
   <a href="#budget" data-nav="budget">₩<span>예산</span></a>
   <a href="#directory" data-nav="directory">▦<span>디렉토리</span></a>
-  <a href="#timeline" data-nav="timeline">◷<span>타임라인</span></a>
+  <a href="#reviews" data-nav="reviews">★<span>실후기</span></a>
   <a href="#mypage" data-nav="mypage">♡<span>내 웨딩</span></a>
 </nav>
 
 <!-- 프로토타입 화면 이동 버튼 -->
 <a href="#flow" class="proto-fab" title="화면 구성 · 플로우 보기">플로우 맵</a>
+
+<!-- 타임라인 항목 상세 패널 -->
+<div class="drawer-backdrop" id="drawerBackdrop" data-action="drawer-close" hidden></div>
+<aside class="drawer" id="tlDrawer" aria-hidden="true" aria-labelledby="dwTitle">
+  <div class="drawer-head">
+    <span class="eyebrow" id="dwPhase">Phase 1</span>
+    <button class="drawer-close" data-action="drawer-close" aria-label="닫기">✕</button>
+  </div>
+  <h2 id="dwTitle">항목</h2>
+  <p class="muted" id="dwDesc"></p>
+  <div class="dw-edit" id="dwEdit" hidden>
+    <label class="field"><span>항목 이름</span><input type="text" id="dwTitleInput" maxlength="40" /></label>
+    <label class="field"><span>설명 <small class="muted">선택</small></span><input type="text" id="dwDescInput" maxlength="60" placeholder="예: 친구들과 함께" /></label>
+  </div>
+  <label class="dw-phase"><span>단계</span><select id="dwPhaseSel"></select></label>
+  <label class="dw-done"><input type="checkbox" id="dwDone" /> 완료했어요</label>
+
+  <div class="dw-section">
+    <h4>📅 일정</h4>
+    <div class="dw-date-row">
+      <input type="date" id="dwDate" />
+      <button class="btn btn-primary btn-sm" data-action="dw-add-cal" id="dwAddBtn">캘린더에 추가</button>
+    </div>
+    <p class="muted sm" id="dwDateInfo"></p>
+    <button class="text-btn" data-action="dw-remove-cal" id="dwRemoveCal" hidden>캘린더에서 빼기</button>
+  </div>
+
+  <div class="dw-section">
+    <h4>📝 메모 <small class="muted" id="dwMemoSaved"></small></h4>
+    <textarea id="dwMemo" rows="5" placeholder="예: 드레스샵 3곳 예약함, 토요일 2시"></textarea>
+  </div>
+
+  <a class="btn btn-ghost btn-block" id="dwLink" href="#directory" hidden>관련 업체 보기</a>
+  <button class="dw-hide" data-action="dw-hide">내 타임라인에서 빼기</button>
+</aside>
 
 <div class="toast" id="toast"></div>
 

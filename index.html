@@ -331,9 +331,9 @@
       <h2>생각하는 총 예산은요?</h2>
       <p class="muted">시장 평균 프리셋 중에 고르거나 직접 입력하세요.</p>
       <div class="chip-group big" data-single>
-        <button class="chip">2천만 원대</button>
-        <button class="chip active">3~4천만 원대</button>
-        <button class="chip">5천만 원 이상</button>
+        <button class="chip">3천만 원대</button>
+        <button class="chip active">4~5천만 원대</button>
+        <button class="chip">6천만 원 이상</button>
         <button class="chip">직접 입력</button>
       </div>
       <div class="hint-box">💡 하객 100~200명 · 웨딩홀 기준, 비슷한 커플의 평균 예산은 <b>약 3,200만 원</b>이에요.</div>
@@ -367,7 +367,7 @@
     <div class="page-head">
       <span class="eyebrow">Smart Budget Diagnosis</span>
       <h1>스마트 예산 진단</h1>
-      <p class="muted">총예산 · 가격대 · 위시리스트 · 중요도를 넣으면 시장 평균가 기준으로 분배해 드려요.</p>
+      <p class="muted">총예산 · 위시리스트 · 중요도를 넣으면 시장 평균가 기준으로 나누고, 우리 예산이 어느 수준인지 알려드려요.</p>
     </div>
 
     <div class="budget-layout">
@@ -379,31 +379,23 @@
             <span>만 원</span>
           </div>
           <div class="chip-group" data-preset>
-            <button class="chip" data-v="2500">2천만 원대</button>
-            <button class="chip active" data-v="3000">3~4천만 원대</button>
-            <button class="chip" data-v="5000">5천만 원 이상</button>
+            <button class="chip" data-v="3000">3천만 원대</button>
+            <button class="chip active" data-v="4500">4~5천만 원대</button>
+            <button class="chip" data-v="7000">6천만 원 이상</button>
           </div>
           <button class="text-btn">하객 수 · 예식 형태로 추천받기 →</button>
+          <div class="tier-result" id="tierResult"></div>
         </div>
 
         <div class="card">
-          <h3><span class="num">2</span> 가격대 레이어</h3>
-          <div class="tier-list" id="tierList">
-            <button class="tier" data-tier="0.9"><b>가성비 · 인디 중심</b><small>거품을 빼고 알뜰하게 준비</small><em>×0.9</em></button>
-            <button class="tier active" data-tier="1.0"><b>표준 · 인기 조합</b><small>대중적이고 선호도 높은 조합</small><em>×1.0</em></button>
-            <button class="tier" data-tier="1.1"><b>프리미엄 · 하이엔드</b><small>퀄리티와 유명 스냅·홀 중심</small><em>×1.1</em></button>
-          </div>
-        </div>
-
-        <div class="card">
-          <h3><span class="num">3</span> 추가 위시리스트 <small class="muted">복수 선택</small></h3>
+          <h3><span class="num">2</span> 추가 위시리스트 <small class="muted">복수 선택 · 기타 준비 비용 안에서 써요</small></h3>
           <div class="wish-grid" id="wishList"></div>
         </div>
 
         <div class="card">
-          <h3><span class="num">4</span> 중요도 조절</h3>
-          <p class="muted sm">더 신경 쓰고 싶은 항목은 오른쪽으로, 덜 중요한 항목은 왼쪽으로.</p>
-          <div id="weightList"></div>
+          <h3><span class="num">3</span> 예산 항목 · 중요도</h3>
+          <p class="muted sm">총예산을 웨딩웨이 기준표 비율과 중요도대로 나눠요. 더 신경 쓰고 싶은 항목은 오른쪽으로, 안 하는 항목은 ✕로 빼세요.</p>
+          <div id="budgetItems"></div>
         </div>
       </div>
 
@@ -411,9 +403,10 @@
         <div class="card sticky">
           <span class="eyebrow">실시간 미리보기</span>
           <div class="preview-total">
-            <small>예상 총비용</small>
+            <small>총예산</small>
             <strong id="pvTotal">-</strong>
             <span class="tag" id="pvTag">-</span>
+            <div class="pv-tier" id="pvTier"></div>
           </div>
           <div class="pie" id="pvPie"></div>
           <ul class="legend" id="pvLegend"></ul>
@@ -434,10 +427,7 @@
         <h2 id="rpHeadline">-</h2>
         <p class="muted" id="rpDesc">-</p>
       </div>
-      <div class="gauge">
-        <div class="gauge-bar"><i id="rpGauge"></i><span class="gauge-mark" style="left:90.9%"></span></div>
-        <div class="gauge-scale"><span>0</span><span>110%</span></div>
-      </div>
+      <div class="tier-result in-report" id="rpTier"></div>
     </div>
 
     <div class="report-grid">
@@ -451,10 +441,10 @@
       <div class="card">
         <h3>항목별 권장 금액 구간</h3>
         <table class="range-table" id="rpTable">
-          <thead><tr><th>항목</th><th>저가</th><th>권장</th><th>고가</th></tr></thead>
+          <thead><tr><th>항목</th><th>권장 금액</th><th>수준</th><th id="rpRangeHead">표준형 기준</th></tr></thead>
           <tbody></tbody>
         </table>
-        <p class="muted sm">* 시장 평균 통계 기반 예시 수치입니다.</p>
+        <p class="muted sm">* 웨딩웨이 기준표(가성비형 2,500만~3,500만 · 표준형 3,500만~5,500만 · 하이엔드형 6,000만 원 이상) 기준이에요. 기본 배분은 총예산에 맞춰 항목별 기준 금액의 중간값 비율로 나눠요. 가성비형 기타 준비 비용은 임시값이에요.</p>
       </div>
     </div>
 

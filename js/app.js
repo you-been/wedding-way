@@ -76,13 +76,51 @@ const WISHLIST = [
   { name: '웨딩 헬퍼', cost: 20 },
 ];
 
-const BASE_CATS = [
-  { name: '예식장', ratio: 0.30, color: '#b5546a' },
-  { name: '스드메', ratio: 0.40, color: '#6b5b95' },
-  { name: '기본 스냅', ratio: 0.15, color: '#d29b2a' },
-  { name: '기타', ratio: 0.15, color: '#8fb8a5' },
+/* 예산 항목 — 기본 5개 (웨딩웨이 기준표 항목). 모두 뺄 수 있음
+   스드메는 묶음 항목: 하위(스튜디오 · 드레스 · 메이크업)를 각각 조절하고 뺄 수 있음 (share: 스드메 안 기본 비율)
+   기타 준비 비용 = 위시리스트 예산 */
+const BUDGET_CATALOG = [
+  { id: 'hall', name: '예식장 · 식대', color: '#b5546a' },
+  { id: 'sdm', name: '스드메', color: '#6b5b95', subs: [
+    { id: 'studio', name: '스튜디오', share: 0.40 },
+    { id: 'dress', name: '드레스', share: 0.35 },
+    { id: 'makeup', name: '메이크업', share: 0.25 },
+  ] },
+  { id: 'gift', name: '예물 · 예복', color: '#8fb8a5' },
+  { id: 'honeymoon', name: '신혼여행', color: '#d29b2a' },
+  { id: 'etc', name: '기타 준비 비용', color: '#e6a5b4' },
 ];
-const WISH_COLOR = '#e6a5b4';
+
+/* 웨딩웨이 기준표 (만 원) — 항목별 [가성비형, 표준형, 하이엔드형] 의 [최소, 최대]
+   가성비형 '기타 준비 비용'은 기준표에 없어서 임시값(100~200만 원) */
+const REF_TABLE = {
+  hall: [[1800, 2100], [1900, 2400], [2500, 4000]],
+  sdm: [[350, 550], [500, 800], [800, 1500]],
+  gift: [[150, 350], [400, 900], [1000, 2500]],
+  honeymoon: [[200, 400], [400, 800], [800, 1500]],
+  etc: [[100, 200], [300, 600], [500, 1000]],
+};
+const ALLOC_ANCHORS = [3000, 4500, 8000]; // 각 수준의 대표 총예산 — 이때 항목별 기준표 중간값 비율로 나눔
+const CUSTOM_SHARE = 0.05; // 직접 추가한 항목의 기본 비중 (총예산 대비)
+
+// 기준점 i 에서 항목별 비중 = 기준표 중간값 / 중간값 합계
+function anchorShares(i) {
+  const mids = Object.entries(REF_TABLE).map(([k, r]) => [k, (r[i][0] + r[i][1]) / 2]);
+  const sum = mids.reduce((a, [, v]) => a + v, 0);
+  return Object.fromEntries(mids.map(([k, v]) => [k, v / sum]));
+}
+// 총예산 E 의 기본 비중: 기준점 사이는 선형 보간, 바깥은 끝 기준점 비중
+function defaultShares(E) {
+  const A = ALLOC_ANCHORS;
+  if (E <= A[0]) return anchorShares(0);
+  if (E >= A[A.length - 1]) return anchorShares(A.length - 1);
+  const i = A.findIndex((x) => E <= x);
+  const t = (E - A[i - 1]) / (A[i] - A[i - 1]);
+  const [s0, s1] = [anchorShares(i - 1), anchorShares(i)];
+  return Object.fromEntries(Object.keys(s0).map((k) => [k, s0[k] + (s1[k] - s0[k]) * t]));
+}
+const CUSTOM_COLORS = ['#9aaabf', '#c58aa1', '#cfb48a', '#7fa7b8', '#a99cc9'];
+const makeBudgetCat = (c) => ({ ...c, w: 1, open: false, subs: c.subs ? c.subs.map((s) => ({ ...s, w: 1 })) : null });
 
 /* 타임라인 단계 (기획서 표준 타임라인 기준) */
 const TL_PHASES = [
@@ -159,7 +197,7 @@ function priceHTML(price, cat) {
 // 추천 이유: 내 무드 태그 · 진단 가격대 · 인증 후기만으로 계산 (중립 기준)
 const myMoods = () => $$('#screen-onboarding .mood.active').map((m) => m.textContent.trim());
 const TIER_ORDER = ['가성비', '표준', '프리미엄'];
-const myTier = () => (budget.tier < 1 ? '가성비' : budget.tier > 1 ? '프리미엄' : '표준');
+const myTier = () => tierOf(budget.total).key; // 총예산으로 판정된 가격대
 
 function recoReasons(v) {
   const reasons = [];
@@ -352,43 +390,177 @@ function showGuide(step) {
 /* ---------- 예산 진단 ---------- */
 const budget = {
   total: 3000,
-  tier: 1.0,
   wish: new Set(['아이폰스냅', '헤어변형']),
-  weights: BASE_CATS.map(() => 1.0),
+  cats: BUDGET_CATALOG.map(makeBudgetCat), // 기준표 5개 항목 모두 기본
 };
+
+/* 가격대 레이어는 고르는 게 아니라 총예산으로 판정되는 결과 (웨딩웨이 기준표)
+   가성비형 2,500만~3,500만 · 표준형 3,500만~5,500만(빈 구간 5,500~6,000만 포함) · 하이엔드형 6,000만 원 이상 */
+const TIER_MIN = 2500;  // 가성비형 기준 최저 — 이보다 낮으면 안내
+const TIER_LOW = 3500;  // 이 금액 미만 → 가성비형
+const TIER_HIGH = 6000; // 이 금액 이상 → 하이엔드형
+const TIERS = [
+  { key: '가성비', name: '가성비형', desc: '실속 있는 웨딩홀 · 합리적인 스드메 · 국내 또는 근거리 여행' },
+  { key: '표준', name: '표준형', desc: '일반 웨딩홀 · 중급 스드메 · 해외 신혼여행' },
+  { key: '프리미엄', name: '하이엔드형', desc: '고급 예식장 · 프리미엄 스드메 · 고가 예물 · 럭셔리 여행' },
+];
+const tierOf = (amount) => TIERS[amount < TIER_LOW ? 0 : amount < TIER_HIGH ? 1 : 2];
+
+// 눈금: 가성비 · 표준 · 프리미엄 구간을 같은 폭으로 놓고 위치 표시
+function tierScaleHTML(total) {
+  const t = tierOf(total);
+  const pos = total < TIER_LOW ? (total / TIER_LOW) / 3
+    : total < TIER_HIGH ? 1 / 3 + ((total - TIER_LOW) / (TIER_HIGH - TIER_LOW)) / 3
+      : 2 / 3 + Math.min((total - TIER_HIGH) / TIER_HIGH, 1) / 3;
+  return `
+    <p class="tier-line">이 예산은 <b class="tier-name tier-${TIERS.indexOf(t)}">${t.name}</b> 수준이에요</p>
+    <div class="tier-scale">
+      ${TIERS.map((x) => `<span class="${x === t ? 'on' : ''}">${x.name.split(' · ')[0]}</span>`).join('')}
+      <i class="tier-marker" style="left:${(pos * 100).toFixed(1)}%"></i>
+    </div>
+    <div class="tier-ticks"><span>${won(TIER_LOW)}</span><span>${won(TIER_HIGH)}</span></div>
+    <p class="muted sm">${t.desc}</p>
+    ${total < TIER_MIN ? `<p class="tier-low-note">가성비형 기준(${won(TIER_MIN)})보다 낮은 예산이에요. 항목을 줄이거나 우선순위를 정해 보세요.</p>` : ''}`;
+}
 
 function renderBudgetInputs() {
   $('#wishList').innerHTML = WISHLIST.map((w) =>
     `<button class="wish ${budget.wish.has(w.name) ? 'active' : ''}" data-wish="${w.name}"><b>${w.name}</b><small>평균 ${won(w.cost)}</small></button>`).join('');
 
-  $('#weightList').innerHTML = BASE_CATS.map((c, i) => `
-    <div class="weight-row">
-      <label>${c.name}</label>
-      <input type="range" min="0.5" max="1.5" step="0.1" value="${budget.weights[i]}" data-weight="${i}" />
-      <output id="wOut${i}">×${budget.weights[i].toFixed(1)}</output>
-    </div>`).join('');
+  renderBudgetItems();
 }
 
-/* 기획서 디벨롭 1차 계산 로직
-   RawWeight_i = R_base,i × W_i  →  정규화
-   B_i = (E_total − U_extra) × Ratio_i × L_tier
-   C_est = Σ B_i + U_extra */
+/* 예산 항목 · 중요도 목록 (key: 'hall' 또는 'sdm.studio') */
+function budgetTarget(key) {
+  const [catId, subId] = key.split('.');
+  const cat = budget.cats.find((c) => c.id === catId);
+  return subId ? cat?.subs.find((s) => s.id === subId) : cat;
+}
+
+function renderBudgetItems() {
+  const row = (key, name, w, { sub = false, color = null, group = null } = {}) => `
+    <div class="bi-row ${sub ? 'sub' : ''}">
+      <span class="bi-name">${color ? `<i style="background:${color}"></i>` : ''}${sub ? 'ㄴ ' : ''}${esc(name)}${sub ? '' : `<small class="bi-note" data-bnote="${key}"></small>`}
+        ${group ? `<button class="bi-toggle" data-btoggle="${group.id}">${group.open ? '접기 ▴' : '세부 ▾'}</button>` : ''}</span>
+      <input type="range" min="0.5" max="1.5" step="0.1" value="${w}" data-bw="${key}" aria-label="${esc(name)} 중요도" />
+      <output data-bwout="${key}">×${w.toFixed(1)}</output>
+      <span class="bi-amount" data-bamt="${key}">-</span>
+      <button class="bi-del" data-bdel="${key}" aria-label="${esc(name)} 빼기" title="빼기">✕</button>
+    </div>`;
+
+  const rows = budget.cats.map((c) => {
+    if (!c.subs) return row(c.id, c.name, c.w, { color: c.color });
+    const catalogSubs = BUDGET_CATALOG.find((x) => x.id === c.id).subs;
+    const missing = catalogSubs.filter((s) => !c.subs.some((x) => x.id === s.id));
+    const subRows = c.open ? `
+      <div class="bi-subs">
+        ${c.subs.map((s) => row(`${c.id}.${s.id}`, s.name, s.w, { sub: true })).join('')}
+        ${missing.length ? `<div class="bi-sub-add">${missing.map((s) => `<button class="chip" data-badd="${c.id}.${s.id}">+ ${s.name}</button>`).join('')}</div>` : ''}
+      </div>` : '';
+    return row(c.id, c.name, c.w, { color: c.color, group: c }) + subRows;
+  }).join('');
+
+  const addable = BUDGET_CATALOG.filter((c) => !budget.cats.some((x) => x.id === c.id));
+  $('#budgetItems').innerHTML = `
+    ${rows || '<p class="muted sm bi-empty">예산 항목이 없어요. 아래에서 추가해 주세요.</p>'}
+    <div class="bi-add">
+      <span class="bi-add-label">+ 항목 추가</span>
+      ${addable.map((c) => `<button class="chip" data-badd="${c.id}">${c.name}</button>`).join('')}
+      <button class="chip" data-action="b-custom-open">+ 직접 입력</button>
+    </div>
+    <div class="bi-custom" hidden>
+      <input type="text" id="biCustomInput" maxlength="20" placeholder="예: 혼수, 신혼집 인테리어" />
+      <button class="btn btn-primary btn-sm" data-action="b-custom-save">추가</button>
+      <button class="btn btn-ghost btn-sm" data-action="b-custom-cancel">취소</button>
+    </div>`;
+}
+
+function addBudgetCat(key) {
+  const [catId, subId] = key.split('.');
+  const def = BUDGET_CATALOG.find((c) => c.id === catId);
+  if (subId) {
+    const cat = budget.cats.find((c) => c.id === catId);
+    cat.subs.push({ ...def.subs.find((s) => s.id === subId), w: 1 });
+    cat.subs.sort((a, b) => def.subs.findIndex((s) => s.id === a.id) - def.subs.findIndex((s) => s.id === b.id));
+  } else {
+    budget.cats.push(makeBudgetCat(def));
+  }
+}
+
+function addCustomBudgetCat() {
+  const input = $('#biCustomInput');
+  const name = input.value.trim();
+  if (!name) { toast('항목 이름을 입력해 주세요'); input.focus(); return; }
+  const used = budget.cats.filter((c) => c.custom).length;
+  budget.cats.push(makeBudgetCat({ id: `custom${Date.now()}`, name, color: CUSTOM_COLORS[used % CUSTOM_COLORS.length], custom: true }));
+  renderBudgetItems();
+  updatePreview();
+  toast(`'${name}' 항목을 추가했어요`);
+}
+
+function removeBudgetCat(key) {
+  const [catId, subId] = key.split('.');
+  const cat = budget.cats.find((c) => c.id === catId);
+  if (subId) {
+    cat.subs = cat.subs.filter((s) => s.id !== subId);
+    if (!cat.subs.length) budget.cats = budget.cats.filter((c) => c !== cat); // 하위가 모두 빠지면 묶음도 뺌
+  } else {
+    budget.cats = budget.cats.filter((c) => c !== cat);
+  }
+}
+
+/* 계산 로직 (기획서 디벨롭 1차 기반 + 웨딩웨이 기준표)
+   1) 항목별 기본 비중 = 총예산에 맞춘 기준표 중간값 비율(defaultShares). 직접 추가 항목은 CUSTOM_SHARE
+   2) RawWeight_i = 기본 비중 × 중요도 W_i (스드메 하위는 묶음 중요도 × 하위 중요도) → 정규화해서 총예산을 나눔
+   3) 항목 수준 = 금액을 기준표의 해당 항목 구간과 비교 (가성비형 최소보다 낮으면 '최저선 미만')
+   4) 위시리스트는 '기타 준비 비용' 안에서 씀 — 넘치면 초과분만큼 예상 총비용이 늘어남 */
 function calcBudget() {
   const E = budget.total;
   const U = WISHLIST.filter((w) => budget.wish.has(w.name)).reduce((s, w) => s + w.cost, 0);
-  const raw = BASE_CATS.map((c, i) => c.ratio * budget.weights[i]);
-  const sum = raw.reduce((a, b) => a + b, 0);
-  const items = BASE_CATS.map((c, i) => ({ ...c, amount: (E - U) * (raw[i] / sum) * budget.tier }));
-  if (U > 0) items.push({ name: '추가 위시리스트', color: WISH_COLOR, amount: U });
+  const shares = defaultShares(E);
+  const subShareSum = BUDGET_CATALOG.find((c) => c.id === 'sdm').subs.reduce((a, s) => a + s.share, 0);
+
+  const leaves = [];
+  budget.cats.forEach((c) => {
+    const share = shares[c.id] ?? CUSTOM_SHARE;
+    if (c.subs) c.subs.forEach((s) => leaves.push({ cat: c, sub: s, part: s.share / subShareSum, raw: share * (s.share / subShareSum) * s.w * c.w }));
+    else leaves.push({ cat: c, raw: share * c.w });
+  });
+  const sum = leaves.reduce((a, l) => a + l.raw, 0);
+  leaves.forEach((l) => { l.amount = sum ? E * (l.raw / sum) : 0; });
+
+  const judge = (amount, ranges) => (ranges
+    ? { ranges, level: TIERS[amount < ranges[1][0] ? 0 : amount < ranges[2][0] ? 1 : 2], belowFloor: amount < ranges[0][0] }
+    : { ranges: null, level: null, belowFloor: false });
+  const scaled = (ranges, f) => ranges.map(([a, b]) => [a * f, b * f]);
+
+  const base = budget.cats.map((c) => {
+    const ls = leaves.filter((l) => l.cat === c);
+    const amount = ls.reduce((a, l) => a + l.amount, 0);
+    const subs = c.subs ? ls.map((l) => ({ id: l.sub.id, name: l.sub.name, amount: l.amount, ...judge(l.amount, scaled(REF_TABLE.sdm, l.part)) })) : null;
+    const defaultAmt = shares[c.id] != null ? E * shares[c.id] : null;
+    return { id: c.id, name: c.name, color: c.color, amount, subs, defaultAmt, ...judge(amount, REF_TABLE[c.id] || null) };
+  });
+
+  // 위시리스트 = 기타 준비 비용 안에서 사용
+  const etc = base.find((b) => b.id === 'etc');
+  const etcAmt = etc ? etc.amount : 0;
+  const overflow = Math.max(U - etcAmt, 0);
+  if (etc) etc.legend = [{ name: `위시리스트 (${budget.wish.size}개)`, amount: Math.min(U, etcAmt) }, { name: '남은 금액', amount: Math.max(etcAmt - U, 0) }];
+
+  const items = [...base];
+  if (overflow > 0) items.push({ name: '위시리스트 초과분', color: '#c2453d', amount: overflow });
+  if (!sum) items.push({ name: '미배정', color: '#e8e1da', amount: E });
   const C = items.reduce((s, it) => s + it.amount, 0);
-  const rate = C / E;
+  // 최저선 판정은 실제로 돈이 나가는 단위(스드메는 하위 항목)로
+  const below = base.flatMap((b) => (b.subs ? b.subs : [b])).filter((it) => it.belowFloor).map((it) => it.name);
 
   let status;
-  if (U / E > 0.3 || rate > 1.1) status = { key: 'danger', label: '예산 초과 위험', cls: 'tag-danger' };
-  else if (rate > 1 || U / E > 0.15) status = { key: 'warn', label: '예산 빠듯', cls: 'tag-warn' };
+  if (below.length >= 2 || overflow > E * 0.05) status = { key: 'danger', label: '예산 초과 위험', cls: 'tag-danger' };
+  else if (below.length === 1 || overflow > 0 || E < TIER_MIN) status = { key: 'warn', label: '예산 빠듯', cls: 'tag-warn' };
   else status = { key: 'ok', label: '적정 예산', cls: 'tag-ok' };
 
-  return { E, U, C, rate, items, status };
+  return { E, U, C, items, base, below, status, tier: tierOf(E), etcAmt, overflow, hasEtc: !!etc };
 }
 
 function pieGradient(items, total) {
@@ -401,16 +573,40 @@ function pieGradient(items, total) {
 }
 
 function legendHTML(items, total) {
+  const pct = (a) => (total ? Math.round((a / total) * 100) : 0);
   return items.map((it) =>
-    `<li><i style="background:${it.color}"></i>${it.name}<span>${Math.round((it.amount / total) * 100)}% · ${won(it.amount)}</span></li>`).join('');
+    `<li><i style="background:${it.color}"></i>${esc(it.name)}<span>${pct(it.amount)}% · ${won(it.amount)}</span></li>${
+      (it.legend || it.subs || []).map((s) => `<li class="legend-sub">ㄴ ${s.name}<span>${won(s.amount)}</span></li>`).join('')}`).join('');
 }
 
 function updatePreview() {
   const r = calcBudget();
-  $('#pvTotal').textContent = won(r.C);
+  $('#pvTotal').textContent = won(r.E);
   const tag = $('#pvTag');
   tag.className = `tag ${r.status.cls}`;
   tag.textContent = r.status.label;
+  $('#pvTier').innerHTML = `<span class="tier-name tier-${TIERS.indexOf(r.tier)}">${r.tier.name}</span> 수준`;
+  // 예산 항목 목록의 금액 (슬라이더를 다시 그리지 않고 숫자만 갱신)
+  const setAmt = (key, x) => {
+    const el = $(`[data-bamt="${key}"]`);
+    if (!el) return;
+    el.textContent = won(x.amount);
+    el.classList.toggle('low', x.belowFloor);
+    el.title = x.belowFloor ? '가성비형 최소 금액보다 낮아요' : x.level ? `${x.level.name} 수준` : '';
+  };
+  r.base.forEach((b) => {
+    setAmt(b.id, b);
+    (b.subs || []).forEach((s) => setAmt(`${b.id}.${s.id}`, s));
+    const note = $(`[data-bnote="${b.id}"]`);
+    if (!note) return;
+    note.classList.toggle('over', b.id === 'etc' && r.overflow > 0);
+    note.textContent = b.id === 'etc' ? `위시리스트 ${won(r.U)} 사용${r.overflow > 0 ? ` · ${won(r.overflow)} 초과` : ''}`
+      : b.defaultAmt != null ? `기본 ${won(b.defaultAmt)}` : '';
+  });
+  $('#tierResult').innerHTML = tierScaleHTML(r.E);
+  // 입력 금액에 맞는 프리셋 칩 표시 (가성비형 · 표준형 · 하이엔드형 구간)
+  const presetIdx = r.E < TIER_LOW ? 0 : r.E < TIER_HIGH ? 1 : 2;
+  $$('[data-preset] > .chip').forEach((b, i) => b.classList.toggle('active', i === presetIdx));
   $('#pvPie').style.background = pieGradient(r.items, r.C);
   $('#pvLegend').innerHTML = legendHTML(r.items, r.C);
 }
@@ -424,25 +620,42 @@ function renderReport() {
     warn: '예산이 다소 빠듯해요',
     danger: '예산 초과 위험이 있어요',
   }[r.status.key];
+  const belowText = r.below.join(', ');
+  const overflowText = r.hasEtc
+    ? `위시리스트(${won(r.U)})가 기타 준비 비용(${won(r.etcAmt)})보다 ${won(r.overflow)} 많아요.`
+    : `기타 준비 비용 항목이 없어서 위시리스트 ${won(r.U)}가 예산 밖으로 나가요.`;
   const desc = {
-    ok: `입력하신 총예산 ${won(r.E)} 내에서 ${wishText}를 소화하기에 적정합니다.`,
-    warn: `총예산 ${won(r.E)} 기준 ${wishText}를 포함하면 여유가 적어요. 일부 항목의 중요도를 낮춰 보세요.`,
-    danger: `예상 총비용이 ${won(r.C)}로 부담이 커요. '가성비 · 인디 중심' 레이어로 조정하면 약 ${won(r.C - (r.E - r.U) * (budget.tier - 0.9))} 수준까지 낮출 수 있어요.`,
+    ok: `총예산 ${won(r.E)}은 ${r.tier.name} 수준이에요. ${wishText}도 기타 준비 비용 ${won(r.etcAmt)} 안에서 준비할 수 있어요.`,
+    warn: r.below.length
+      ? `${belowText}에 배정된 금액이 가성비형 최소 금액보다 낮아요. 중요도를 조정하거나 안 하는 항목을 빼 보세요.`
+      : r.overflow > 0
+        ? `${overflowText} 위시리스트를 줄이거나 기타 준비 비용의 중요도를 높여 보세요.`
+        : `총예산이 가성비형 기준(${won(TIER_MIN)})보다 낮아요. 꼭 필요한 항목부터 우선순위를 정해 보세요.`,
+    danger: r.below.length >= 2
+      ? `${belowText}에 배정된 금액이 가성비형 최소 금액보다 낮아요. 총예산을 늘리거나 안 하는 항목을 빼 보세요.`
+      : `${overflowText} 예상 총비용이 ${won(r.C)}로 늘어나요.`,
   }[r.status.key];
 
   $('#rpHeadline').textContent = headline;
   $('#rpDesc').textContent = desc;
-  const g = $('#rpGauge');
-  g.style.width = `${Math.min(r.rate / 1.1, 1) * 100}%`;
-  g.style.background = { ok: 'var(--ok)', warn: 'var(--warn)', danger: 'var(--danger)' }[r.status.key];
+  $('#rpTier').innerHTML = tierScaleHTML(r.E);
 
   $('#rpPie').style.background = pieGradient(r.items, r.C);
   $('#rpLegend').innerHTML = legendHTML(r.items, r.C);
 
-  const rows = r.items.filter((it) => it.name !== '추가 위시리스트').map((it) =>
-    `<tr><td>${it.name}</td><td>${won(it.amount * 0.8)}</td><td>${won(it.amount)}</td><td>${won(it.amount * 1.25)}</td></tr>`);
-  WISHLIST.filter((w) => budget.wish.has(w.name)).forEach((w) =>
-    rows.push(`<tr><td>${w.name}</td><td>${won(w.cost * 0.7)}</td><td>${won(w.cost)}</td><td>${won(w.cost * 1.5)}</td></tr>`));
+  const tierIdx = TIERS.indexOf(r.tier);
+  $('#rpRangeHead').textContent = `${r.tier.name} 기준`;
+  const levelTag = (it) => (!it.level ? '<span class="tag">-</span>'
+    : it.belowFloor ? '<span class="tag tag-danger">최저선 미만</span>'
+      : `<span class="tag tier-tag tier-${TIERS.indexOf(it.level)}">${it.level.name.replace("형", "")}</span>`);
+  const rangeText = (it) => (it.ranges ? `${won(it.ranges[tierIdx][0])} ~ ${won(it.ranges[tierIdx][1])}` : '-');
+  const tr = (it, sub = false) =>
+    `<tr class="${sub ? 'sub-row' : ''}"><td>${sub ? 'ㄴ ' : ''}${esc(it.name)}</td><td>${won(it.amount)}</td><td>${levelTag(it)}</td><td class="muted">${rangeText(it)}</td></tr>`;
+  const wishRows = (sub) => WISHLIST.filter((w) => budget.wish.has(w.name)).map((w) =>
+    `<tr class="${sub ? 'sub-row' : ''}"><td>${sub ? 'ㄴ ' : ''}${w.name}</td><td>${won(w.cost)}</td><td><span class="tag">평균가</span></td><td class="muted">위시리스트</td></tr>`).join('');
+  // 위시리스트는 기타 준비 비용 아래에 표시
+  const rows = r.base.map((it) => tr(it) + (it.subs || []).map((s) => tr(s, true)).join('') + (it.id === 'etc' ? wishRows(true) : ''));
+  if (!r.hasEtc) rows.push(wishRows(false));
   $('#rpTable tbody').innerHTML = rows.join('');
 
   const moods = myMoods();
@@ -510,8 +723,12 @@ function resetTimeline() {
   toast('기본 타임라인으로 되돌렸어요');
 }
 
+const WEDDING_ITEM = 'wedding'; // '본식 당일' 항목 — 날짜는 항상 예식일과 같음
+
 function renderTimeline() {
   const { value, days, nowIdx } = weddingInfo();
+  const weddingItem = tlItems.find((it) => it.id === WEDDING_ITEM);
+  if (weddingItem) weddingItem.date = value;
   $('#ddayText').textContent = days > 0 ? `D-${days}` : days === 0 ? 'D-Day' : `D+${-days}`;
   $('#ddayDate').textContent = value.replaceAll('-', '.');
 
@@ -605,7 +822,14 @@ function nudgeItem(id, dir) {
 
 /* 드래그 앤 드롭 (손잡이를 잡았을 때만 끌 수 있음) */
 let dragId = null;
-const clearDropMarks = () => $$('.drop-before, .drop-after, .drop-into').forEach((el) => el.classList.remove('drop-before', 'drop-after', 'drop-into'));
+let dropMark = null; // { el, cls } — 놓일 위치 표시. 위치가 바뀔 때만 갱신해서 깜빡임 방지
+
+function setDropMark(el, cls) {
+  if (dropMark && dropMark.el === el && dropMark.cls === cls) return;
+  if (dropMark) dropMark.el.classList.remove(dropMark.cls);
+  dropMark = el ? { el, cls } : null;
+  if (el) el.classList.add(cls);
+}
 
 document.addEventListener('mousedown', (e) => {
   const handle = e.target.closest('.tl-handle');
@@ -625,40 +849,39 @@ document.addEventListener('dragover', (e) => {
   const phase = e.target.closest('.phase');
   if (!phase) return;
   e.preventDefault();
-  clearDropMarks();
-  if (row && row.dataset.item !== dragId) {
+  if (row) {
+    if (row.dataset.item === dragId) { setDropMark(null); return; } // 제자리
     const r = row.getBoundingClientRect();
-    row.classList.add(e.clientY < r.top + r.height / 2 ? 'drop-before' : 'drop-after');
-  } else if (!row) {
-    phase.classList.add('drop-into');
+    setDropMark(row, e.clientY < r.top + r.height / 2 ? 'drop-before' : 'drop-after');
+  } else if (phase.classList.contains('collapsed') || e.target.closest('.phase-head') || !phase.querySelector('.tl-item')) {
+    setDropMark(phase, 'drop-into'); // 접힌 단계 · 단계 제목 · 빈 단계 위
   }
+  // 열린 단계의 항목 사이 빈 공간에서는 직전 표시를 그대로 유지
 });
 document.addEventListener('drop', (e) => {
-  if (!dragId) return;
-  const phase = e.target.closest('.phase');
-  if (!phase) return;
+  if (!dragId || !e.target.closest('.phase')) return;
   e.preventDefault();
-  const toPhase = +phase.dataset.phase;
-  const row = e.target.closest('.tl-item');
-  if (row && row.dataset.item === dragId) return; // 제자리에 놓으면 그대로
+  if (!dropMark) return; // 제자리에 놓으면 그대로
+  const { el, cls } = dropMark;
+  const phaseEl = cls === 'drop-into' ? el : el.closest('.phase');
+  const toPhase = +phaseEl.dataset.phase;
   let beforeId = null;
-  if (row && row.dataset.item !== dragId) {
-    if (row.classList.contains('drop-before')) beforeId = row.dataset.item;
-    else {
-      const visible = tlItems.filter((it) => it.phase === toPhase && !it.hidden && it.id !== dragId);
-      const next = visible[visible.findIndex((it) => it.id === row.dataset.item) + 1];
-      beforeId = next ? next.id : null;
-    }
+  if (cls === 'drop-before') beforeId = el.dataset.item;
+  if (cls === 'drop-after') {
+    const visible = tlItems.filter((it) => it.phase === toPhase && !it.hidden && it.id !== dragId);
+    const next = visible[visible.findIndex((it) => it.id === el.dataset.item) + 1];
+    beforeId = next ? next.id : null;
   }
   const prevPhase = tlItems.find((it) => it.id === dragId).phase;
   moveItem(dragId, toPhase, beforeId);
-  phase.classList.remove('collapsed');
+  setDropMark(null);
+  phaseEl.classList.remove('collapsed');
   renderTimeline();
   if (prevPhase !== toPhase) toast(`Phase ${toPhase + 1}(으)로 옮겼어요`);
 });
 document.addEventListener('dragend', () => {
   $$('.tl-item[draggable="true"]').forEach((r) => { r.draggable = false; r.classList.remove('dragging'); });
-  clearDropMarks();
+  setDropMark(null);
   dragId = null;
 });
 
@@ -689,7 +912,9 @@ function renderMyCalendar() {
   const today = ymd(new Date());
   const wedding = $('#weddingDate').value;
   const byDate = {};
-  tlItems.filter((it) => it.date && !it.hidden).forEach((it) => { (byDate[it.date] = byDate[it.date] || []).push(it); });
+  // 본식 당일은 칩 대신 💍 표시로만 보여줌 (중복 방지)
+  tlItems.filter((it) => it.date && !it.hidden && it.id !== WEDDING_ITEM).forEach((it) => { (byDate[it.date] = byDate[it.date] || []).push(it); });
+  const weddingVisible = tlItems.some((it) => it.id === WEDDING_ITEM && !it.hidden);
 
   let html = ['일', '월', '화', '수', '목', '금', '토'].map((d) => `<div class="mc-dow">${d}</div>`).join('');
   for (let i = 0; i < first; i++) html += '<div class="mc-cell empty"></div>';
@@ -700,7 +925,9 @@ function renderMyCalendar() {
       `<button class="mc-chip ${it.done ? 'done' : ''}" data-open="${it.id}">${esc(it.t)}</button>`).join('');
     const more = items.length > 2 ? `<span class="mc-more">+${items.length - 2}</span>` : '';
     const cls = [key === today ? 'today' : '', key === wedding ? 'wedding' : '', (first + d - 1) % 7 === 0 ? 'sun' : ''].join(' ');
-    html += `<div class="mc-cell ${cls}"><span class="mc-day">${d}${key === wedding ? ' 💍' : ''}</span>${chips}${more}</div>`;
+    const weddingMark = key !== wedding ? ''
+      : weddingVisible ? `<button class="mc-wedding" data-open="${WEDDING_ITEM}">💍 본식</button>` : '<span class="mc-wedding">💍 본식</span>';
+    html += `<div class="mc-cell ${cls}"><span class="mc-day">${d}</span>${weddingMark}${chips}${more}</div>`;
   }
   $('#mcGrid').innerHTML = html;
 }
@@ -743,6 +970,15 @@ function openDrawer(id) {
 
 function updateDrawerDate() {
   const it = drawerItem;
+  const isWedding = it.id === WEDDING_ITEM;
+  $('#dwDate').disabled = isWedding;
+  $('#dwAddBtn').hidden = isWedding;
+  if (isWedding) {
+    $('#dwDate').value = it.date;
+    $('#dwRemoveCal').hidden = true;
+    $('#dwDateInfo').textContent = `본식 당일은 예식일(${fmtMD(it.date)})로 자동 설정돼요. 예식일은 화면 위에서 바꿀 수 있어요.`;
+    return;
+  }
   $('#dwDate').value = it.date || suggestDate(it.phase);
   $('#dwAddBtn').textContent = it.date ? '날짜 변경' : '캘린더에 추가';
   $('#dwRemoveCal').hidden = !it.date;
@@ -760,6 +996,7 @@ function closeDrawer() {
 
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape' && drawerItem) closeDrawer();
+  if (e.target.id === 'biCustomInput' && e.key === 'Enter') { e.preventDefault(); addCustomBudgetCat(); }
   if (e.target.matches?.('.tl-add-input')) {
     if (e.key === 'Enter') { e.preventDefault(); addCustomItem(e.target.closest('.tl-add')); }
     if (e.key === 'Escape') e.target.closest('.tl-add').querySelector('[data-action="tl-add-cancel"]').click();
@@ -911,13 +1148,13 @@ document.addEventListener('click', (e) => {
     updatePreview();
   }
 
-  // 가격대 레이어
-  const tier = t.closest('[data-tier]');
-  if (tier) {
-    $$('#tierList .tier').forEach((b) => b.classList.toggle('active', b === tier));
-    budget.tier = +tier.dataset.tier;
-    updatePreview();
-  }
+  // 예산 항목: 빼기 · 추가 · 스드메 세부 펼치기 · 직접 입력
+  const bDel = t.closest('[data-bdel]');
+  if (bDel) { removeBudgetCat(bDel.dataset.bdel); renderBudgetItems(); updatePreview(); }
+  const bAdd = t.closest('[data-badd]');
+  if (bAdd) { addBudgetCat(bAdd.dataset.badd); renderBudgetItems(); updatePreview(); }
+  const bToggle = t.closest('[data-btoggle]');
+  if (bToggle) { const c = budget.cats.find((x) => x.id === bToggle.dataset.btoggle); c.open = !c.open; renderBudgetItems(); updatePreview(); }
 
   // 위시리스트
   const wish = t.closest('[data-wish]');
@@ -942,6 +1179,11 @@ document.addEventListener('click', (e) => {
 
   // 기타 액션
   const action = t.closest('[data-action]')?.dataset.action;
+  if (action === 'b-custom-open' || action === 'b-custom-cancel') {
+    $('.bi-custom').hidden = action === 'b-custom-cancel';
+    if (action === 'b-custom-open') $('#biCustomInput').focus();
+  }
+  if (action === 'b-custom-save') addCustomBudgetCat();
   if (action === 'toggle-menu') $('.gnb-menu').classList.toggle('open');
   if (action === 'cal-prev' || action === 'cal-next') {
     const d = new Date(calView.y, calView.m + (action === 'cal-next' ? 1 : -1), 1);
@@ -1015,10 +1257,9 @@ document.addEventListener('input', (e) => {
     $('#dwMemoSaved').textContent = '· 저장됨';
     renderTimeline();
   }
-  if (t.matches('[data-weight]')) {
-    const i = +t.dataset.weight;
-    budget.weights[i] = +t.value;
-    $(`#wOut${i}`).textContent = `×${(+t.value).toFixed(1)}`;
+  if (t.matches('[data-bw]')) {
+    budgetTarget(t.dataset.bw).w = +t.value;
+    $(`[data-bwout="${t.dataset.bw}"]`).textContent = `×${(+t.value).toFixed(1)}`;
     updatePreview();
   }
   if (t.id === 'bTotal') {

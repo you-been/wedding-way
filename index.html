@@ -168,7 +168,6 @@
           <small>예상 총비용</small>
           <strong>2,940만 원</strong>
           <div class="mini-bar"><i style="width:82%"></i></div>
-          <span class="tag tag-ok">적정 예산</span>
         </div>
       </div>
     </div>
@@ -333,7 +332,7 @@
       <div class="chip-group big" data-single>
         <button class="chip">3천만 원대</button>
         <button class="chip active">4~5천만 원대</button>
-        <button class="chip">6천만 원 이상</button>
+        <button class="chip">5,500만 원 이상</button>
         <button class="chip">직접 입력</button>
       </div>
       <div class="hint-box">💡 하객 100~200명 · 웨딩홀 기준, 비슷한 커플의 평균 예산은 <b>약 3,200만 원</b>이에요.</div>
@@ -367,35 +366,37 @@
     <div class="page-head">
       <span class="eyebrow">Smart Budget Diagnosis</span>
       <h1>스마트 예산 진단</h1>
-      <p class="muted">총예산 · 위시리스트 · 중요도를 넣으면 시장 평균가 기준으로 나누고, 우리 예산이 어느 수준인지 알려드려요.</p>
+      <p class="muted">항목을 고르면 평균가로 총예산을 계산해 드려요. 중요도에 따라 나만의 예산을 계획해 보세요!</p>
     </div>
 
     <div class="budget-layout">
       <div class="budget-form">
         <div class="card">
-          <h3><span class="num">1</span> 총 결혼 예산</h3>
-          <div class="money-input">
-            <input type="number" id="bTotal" value="3000" step="100" min="500" />
-            <span>만 원</span>
-          </div>
-          <div class="chip-group" data-preset>
-            <button class="chip" data-v="3000">3천만 원대</button>
-            <button class="chip active" data-v="4500">4~5천만 원대</button>
-            <button class="chip" data-v="7000">6천만 원 이상</button>
-          </div>
-          <button class="text-btn">하객 수 · 예식 형태로 추천받기 →</button>
-          <div class="tier-result" id="tierResult"></div>
+          <h3><span class="num">1</span> 기본 항목</h3>
+          <div id="basicItems"></div>
         </div>
 
         <div class="card">
-          <h3><span class="num">2</span> 추가 위시리스트 <small class="muted">복수 선택 · 기타 준비 비용 안에서 써요</small></h3>
-          <div class="wish-grid" id="wishList"></div>
+          <h3><span class="num">2</span> 추가 위시리스트 <small class="muted">기타 준비 비용에 포함</small></h3>
+          <div class="wl-summary" id="wishSummary"></div>
+          <div id="wishList"></div>
         </div>
 
         <div class="card">
           <h3><span class="num">3</span> 예산 항목 · 중요도</h3>
-          <p class="muted sm">총예산을 웨딩웨이 기준표 비율과 중요도대로 나눠요. 더 신경 쓰고 싶은 항목은 오른쪽으로, 안 하는 항목은 ✕로 빼세요.</p>
+          <p class="muted sm">📌 고정한 항목은 총예산을 바꿔도 그대로예요.</p>
           <div id="budgetItems"></div>
+        </div>
+
+        <div class="card">
+          <h3><span class="num">4</span> 총 결혼 예산</h3>
+          <p class="est-line" id="estLine"></p>
+          <div class="money-input">
+            <input type="number" id="bTotal" value="3000" step="100" min="0" aria-label="총 결혼 예산 (만 원)" />
+            <span>만 원</span>
+          </div>
+          <p class="total-diff" id="totalDiff"></p>
+          <div class="tier-result" id="tierResult"></div>
         </div>
       </div>
 
@@ -405,7 +406,6 @@
           <div class="preview-total">
             <small>총예산</small>
             <strong id="pvTotal">-</strong>
-            <span class="tag" id="pvTag">-</span>
             <div class="pv-tier" id="pvTier"></div>
           </div>
           <div class="pie" id="pvPie"></div>
@@ -432,19 +432,19 @@
 
     <div class="report-grid">
       <div class="card">
-        <h3>카테고리별 권장 분배</h3>
+        <h3>내 예산 구성</h3>
         <div class="report-pie-wrap">
           <div class="pie lg" id="rpPie"></div>
           <ul class="legend" id="rpLegend"></ul>
         </div>
       </div>
       <div class="card">
-        <h3>항목별 권장 금액 구간</h3>
+        <h3>내 예산 분석</h3>
         <table class="range-table" id="rpTable">
-          <thead><tr><th>항목</th><th>권장 금액</th><th>수준</th><th id="rpRangeHead">표준형 기준</th></tr></thead>
+          <thead><tr><th>항목</th><th>내 금액</th><th>평균가</th><th>비교</th></tr></thead>
           <tbody></tbody>
         </table>
-        <p class="muted sm">* 웨딩웨이 기준표(가성비형 2,500만~3,500만 · 표준형 3,500만~5,500만 · 하이엔드형 6,000만 원 이상) 기준이에요. 기본 배분은 총예산에 맞춰 항목별 기준 금액의 중간값 비율로 나눠요. 가성비형 기타 준비 비용은 임시값이에요.</p>
+        <p class="muted sm">* 평균가의 1.5배 이상 높은 편 · 2배 이상 많이 높은 편</p>
       </div>
     </div>
 
@@ -973,6 +973,32 @@
 
 <!-- 프로토타입 화면 이동 버튼 -->
 <a href="#flow" class="proto-fab" title="화면 구성 · 플로우 보기">플로우 맵</a>
+
+<!-- 예식장 · 식대 추천받기 모달 (예식 종류 → 지역 → 하객 수) -->
+<div class="modal-backdrop" id="hallModalBg" data-action="hall-modal-close" hidden></div>
+<div class="modal" id="hallModal" role="dialog" aria-modal="true" aria-labelledby="hmTitle" hidden>
+  <div class="modal-head">
+    <div>
+      <span class="eyebrow">예식장 · 식대 추천받기</span>
+      <h2 id="hmTitle">어떤 예식을 생각하세요?</h2>
+    </div>
+    <button class="drawer-close" data-action="hall-modal-close" aria-label="닫기">✕</button>
+  </div>
+  <div class="hm-progress"><span data-hmdot="1">예식 종류</span><span data-hmdot="2">지역</span><span data-hmdot="3">하객 수</span></div>
+
+  <div class="hm-step" data-hm="1"><div class="hm-options" id="hmTypes"></div></div>
+  <div class="hm-step" data-hm="2" hidden><div class="hm-options" id="hmRegions"></div></div>
+  <div class="hm-step" data-hm="3" hidden>
+    <div class="chip-group" id="hmGuests"></div>
+    <label class="hm-guest-input">직접 입력 <input type="number" id="hmGuestInput" min="10" max="1000" step="10" /> 명</label>
+    <div class="hm-result" id="hmResult"></div>
+  </div>
+
+  <div class="modal-actions">
+    <button class="btn btn-ghost" data-action="hm-prev">이전</button>
+    <button class="btn btn-primary" data-action="hm-next" id="hmNext">다음</button>
+  </div>
+</div>
 
 <!-- 타임라인 항목 상세 패널 -->
 <div class="drawer-backdrop" id="drawerBackdrop" data-action="drawer-close" hidden></div>

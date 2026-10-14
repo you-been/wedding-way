@@ -64,17 +64,49 @@ const REVIEWS = [
   { who: '여름밤', when: '2026.07 본식', vendor: '라메르 빈티지 · 드레스', stars: 5, verified: false, price: '-', extra: '-', text: '빈티지 베일이 정말 예뻐요. 피팅비 없이 투어 가능했어요.', imgs: 1 },
 ];
 
-const WISHLIST = [
-  { name: '아이폰스냅', cost: 45 },
-  { name: '헤어변형', cost: 50 },
-  { name: '본식스냅', cost: 120 },
-  { name: '식전영상', cost: 30 },
-  { name: '웨딩 플라워/부케', cost: 40 },
-  { name: '웨딩 소품', cost: 20 },
-  { name: '본식 사회자', cost: 40 },
-  { name: '축의대 대행', cost: 20 },
-  { name: '웨딩 헬퍼', cost: 20 },
+/* 추가 위시리스트 — 분류별 목록 (평균가는 프로토타입 예시, 만 원) */
+const WISH_GROUPS = [
+  { id: 'shoot', name: '📷 촬영' },
+  { id: 'beauty', name: '💄 뷰티' },
+  { id: 'stage', name: '🎤 본식 연출' },
+  { id: 'deco', name: '💐 꾸밈 · 기타' },
 ];
+const WISHLIST = [
+  { g: 'shoot', name: '아이폰스냅', cost: 30, d: '감성 아이폰 촬영 · 원본 제공' },
+  { g: 'shoot', name: '본식스냅', cost: 100, d: '본식 당일 사진 작가' },
+  { g: 'shoot', name: '본식 영상', cost: 80, d: '본식 DVD · 하이라이트 영상' },
+  { g: 'shoot', name: '폐백 · 가족 촬영', cost: 20, d: '폐백 · 가족사진 추가 촬영' },
+  { g: 'beauty', name: '헤어변형', cost: 40, d: '촬영 중 헤어 스타일 변경' },
+  { g: 'beauty', name: '웨딩 네일', cost: 7, d: '본식 전 네일 케어' },
+  { g: 'beauty', name: '피부 관리', cost: 20, d: '본식 전 피부 관리 코스' },
+  { g: 'beauty', name: '혼주 메이크업', cost: 25, d: '양가 어머님 헤어 · 메이크업' },
+  { g: 'stage', name: '식전영상', cost: 15, d: '입장 전 상영 영상' },
+  { g: 'stage', name: '본식 사회자', cost: 30, d: '전문 사회자 섭외' },
+  { g: 'stage', name: '축가', cost: 30, d: '전문 축가 가수' },
+  { g: 'stage', name: '축의대 대행', cost: 20, d: '축의금 접수 대행' },
+  { g: 'stage', name: '웨딩 헬퍼', cost: 20, d: '본식 당일 신부 도우미' },
+  { g: 'stage', name: '2부 드레스', cost: 30, d: '피로연 · 2부 드레스 대여' },
+  { g: 'deco', name: '본식 부케', cost: 30, d: '본식 부케 · 부토니에' },
+  { g: 'deco', name: '촬영 부케', cost: 20, d: '스튜디오 · 야외 촬영용 부케' },
+  { g: 'deco', name: '본식 꽃장식 업그레이드', cost: 50, d: '버진로드 · 단상 꽃장식' },
+  { g: 'deco', name: '웨딩 소품', cost: 10, d: '포토테이블 · 소품' },
+  { g: 'deco', name: '모바일 청첩장', cost: 3, d: '디자인 청첩장' },
+  { g: 'deco', name: '종이 청첩장', cost: 20, d: '디자인 · 인쇄 · 봉투' },
+  { g: 'deco', name: '답례품', cost: 40, d: '하객 답례품' },
+];
+
+/* 기본 항목 (본식 · 스 · 드 · 메) — 평균가는 AVG_COST 한곳에서 관리
+   선택 상태는 ③ 예산 항목과 연결: 본식 = 예식장 · 식대, 촬영 · 드레스 · 메이크업 = 스드메 하위 */
+const BASIC_ITEMS = [
+  { id: 'hall', name: '본식 (예식장 · 식대)', d: '대관 · 식대 · 기본 연출' },
+  { id: 'shoot', name: '촬영', options: [
+    { id: 'studio', name: '스튜디오', d: '실내 스튜디오 촬영' },
+    { id: 'outdoor', name: '야외스냅', d: '야외 · 제주 등 로케이션 촬영 (드레스 제외)' },
+  ] },
+  { id: 'dress', name: '드레스', d: '촬영 · 본식 드레스', dNoShoot: '본식 드레스' },
+  { id: 'makeup', name: '메이크업', d: '촬영 · 본식 헤어 · 메이크업', dNoShoot: '본식 헤어 · 메이크업' },
+];
+const SHOOT_IDS = ['studio', 'outdoor']; // 둘 중 하나만
 
 /* 예산 항목 — 기본 5개 (웨딩웨이 기준표 항목). 모두 뺄 수 있음
    스드메는 묶음 항목: 하위(스튜디오 · 드레스 · 메이크업)를 각각 조절하고 뺄 수 있음 (share: 스드메 안 기본 비율)
@@ -83,44 +115,65 @@ const BUDGET_CATALOG = [
   { id: 'hall', name: '예식장 · 식대', color: '#b5546a' },
   { id: 'sdm', name: '스드메', color: '#6b5b95', subs: [
     { id: 'studio', name: '스튜디오', share: 0.40 },
+    { id: 'outdoor', name: '야외스냅', share: 0.40, optional: true }, // 스튜디오 대신 고를 때만
     { id: 'dress', name: '드레스', share: 0.35 },
     { id: 'makeup', name: '메이크업', share: 0.25 },
   ] },
-  { id: 'gift', name: '예물 · 예복', color: '#8fb8a5' },
+  { id: 'jewelry', name: '예물', color: '#8fb8a5' },
+  { id: 'suit', name: '예복', color: '#7fa7b8' },
   { id: 'honeymoon', name: '신혼여행', color: '#d29b2a' },
   { id: 'etc', name: '기타 준비 비용', color: '#e6a5b4' },
 ];
 
-/* 웨딩웨이 기준표 (만 원) — 항목별 [가성비형, 표준형, 하이엔드형] 의 [최소, 최대]
+/* 웨딩웨이 기준표 (만 원) — 항목별 [가성비형, 표준형, 고급형] 의 [최소, 최대]
    가성비형 '기타 준비 비용'은 기준표에 없어서 임시값(100~200만 원) */
 const REF_TABLE = {
   hall: [[1800, 2100], [1900, 2400], [2500, 4000]],
   sdm: [[350, 550], [500, 800], [800, 1500]],
-  gift: [[150, 350], [400, 900], [1000, 2500]],
+  // 기준표의 '예물 · 예복' 구간을 예물 7 : 예복 3 비율로 나눔
+  jewelry: [[105, 245], [280, 630], [700, 1750]],
+  suit: [[45, 105], [120, 270], [300, 750]],
   honeymoon: [[200, 400], [400, 800], [800, 1500]],
   etc: [[100, 200], [300, 600], [500, 1000]],
 };
-const ALLOC_ANCHORS = [3000, 4500, 8000]; // 각 수준의 대표 총예산 — 이때 항목별 기준표 중간값 비율로 나눔
-const CUSTOM_SHARE = 0.05; // 직접 추가한 항목의 기본 비중 (총예산 대비)
+/* 항목 평균가 (만 원) — 항목 금액 계산 기준. 기준표 표준형 중간값 기준 예시
+   기타 준비 비용의 평균가 = 선택한 위시리스트 합계 */
+const AVG_COST = { hall: 2000, studio: 150, outdoor: 140, dress: 130, makeup: 90, jewelry: 240, suit: 120, honeymoon: 800 };
+const CUSTOM_MAX = 10000; // 직접 추가한 항목은 평균가 없이 0 ~ 1억 원(만 원 단위)을 직접 정함
+// 촬영(스튜디오 · 야외스냅)을 안 하면 드레스 · 메이크업은 본식만 — 평균가가 낮아짐
+const AVG_NO_SHOOT = { dress: 80, makeup: 60 };
+const noShoot = () => !SHOOT_IDS.some(hasSub);
+const avgOf = (id) => (noShoot() && AVG_NO_SHOOT[id] != null ? AVG_NO_SHOOT[id] : AVG_COST[id]);
 
-// 기준점 i 에서 항목별 비중 = 기준표 중간값 / 중간값 합계
-function anchorShares(i) {
-  const mids = Object.entries(REF_TABLE).map(([k, r]) => [k, (r[i][0] + r[i][1]) / 2]);
-  const sum = mids.reduce((a, [, v]) => a + v, 0);
-  return Object.fromEntries(mids.map(([k, v]) => [k, v / sum]));
+/* 예식장 · 식대 추천 계산 (프로토타입 예시 단가, 만 원)
+   예상 비용 = (1인 식대 × 하객 수 + 대관 · 연출비) × 지역 계수 */
+const HALL_TYPES = [
+  { id: 'hall', name: '웨딩홀', d: '가장 일반적인 예식장', meal: 6.5, base: 300 },
+  { id: 'hotel', name: '호텔', d: '호텔 연회장 · 고급 코스 식사', meal: 13, base: 800 },
+  { id: 'house', name: '하우스 · 스몰웨딩', d: '소규모 단독 공간', meal: 9, base: 250 },
+  { id: 'outdoor', name: '야외', d: '가든 · 야외 정원 예식', meal: 8, base: 400 },
+  { id: 'chapel', name: '종교시설', d: '성당 · 교회 · 사찰', meal: 5, base: 100 },
+];
+const HALL_REGIONS = [
+  { id: 'gangnam', name: '서울 강남권', rate: 1.25 },
+  { id: 'seoul', name: '서울 기타', rate: 1.1 },
+  { id: 'metro', name: '경기 · 인천', rate: 1.0 },
+  { id: 'city', name: '광역시', rate: 0.9 },
+  { id: 'local', name: '그 외 지역', rate: 0.8 },
+  { id: 'jeju', name: '제주', rate: 1.0 },
+];
+const GUEST_OPTIONS = [50, 100, 150, 200, 300];
+
+function hallEstimate({ type, region, guests }) {
+  const t = HALL_TYPES.find((x) => x.id === type);
+  const r = HALL_REGIONS.find((x) => x.id === region);
+  const meal = t.meal * r.rate;
+  const base = t.base * r.rate;
+  return { meal, base, food: meal * guests, total: Math.round(meal * guests + base) };
 }
-// 총예산 E 의 기본 비중: 기준점 사이는 선형 보간, 바깥은 끝 기준점 비중
-function defaultShares(E) {
-  const A = ALLOC_ANCHORS;
-  if (E <= A[0]) return anchorShares(0);
-  if (E >= A[A.length - 1]) return anchorShares(A.length - 1);
-  const i = A.findIndex((x) => E <= x);
-  const t = (E - A[i - 1]) / (A[i] - A[i - 1]);
-  const [s0, s1] = [anchorShares(i - 1), anchorShares(i)];
-  return Object.fromEntries(Object.keys(s0).map((k) => [k, s0[k] + (s1[k] - s0[k]) * t]));
-}
+const SDM_AVG = AVG_COST.studio + AVG_COST.dress + AVG_COST.makeup; // 스드메 기준표 구간을 하위 항목에 나눌 때 기준
 const CUSTOM_COLORS = ['#9aaabf', '#c58aa1', '#cfb48a', '#7fa7b8', '#a99cc9'];
-const makeBudgetCat = (c) => ({ ...c, w: 1, open: false, subs: c.subs ? c.subs.map((s) => ({ ...s, w: 1 })) : null });
+const makeBudgetCat = (c) => ({ ...c, w: 1, open: false, subs: c.subs ? c.subs.filter((s) => !s.optional).map((s) => ({ ...s, w: 1 })) : null });
 
 /* 타임라인 단계 (기획서 표준 타임라인 기준) */
 const TL_PHASES = [
@@ -197,7 +250,7 @@ function priceHTML(price, cat) {
 // 추천 이유: 내 무드 태그 · 진단 가격대 · 인증 후기만으로 계산 (중립 기준)
 const myMoods = () => $$('#screen-onboarding .mood.active').map((m) => m.textContent.trim());
 const TIER_ORDER = ['가성비', '표준', '프리미엄'];
-const myTier = () => tierOf(budget.total).key; // 총예산으로 판정된 가격대
+const myTier = () => calcBudget().tier.key; // 총예산(직접 추가 항목 제외)으로 판정된 가격대
 
 function recoReasons(v) {
   const reasons = [];
@@ -389,25 +442,63 @@ function showGuide(step) {
 
 /* ---------- 예산 진단 ---------- */
 const budget = {
-  total: 3000,
+  locks: new Set(), // 📌 고정한 항목 key ('hall', 'sdm.dress' …) — ④ 총예산을 바꿀 때 금액을 그대로 둠
+  hallSetup: null, // 추천받기 결과 { type, region, guests, total } — 있으면 예식장 평균가 대신 사용
   wish: new Set(['아이폰스냅', '헤어변형']),
   cats: BUDGET_CATALOG.map(makeBudgetCat), // 기준표 5개 항목 모두 기본
 };
+const wishTotal = () => WISHLIST.filter((w) => budget.wish.has(w.name)).reduce((s, w) => s + w.cost, 0);
+// 기타 준비 비용은 금액을 직접 정하는 항목 — 시작값은 위시리스트 합계
+budget.cats.find((c) => c.id === 'etc').w = wishTotal();
+
+/* 실제 금액이 나가는 단위(leaf): 일반 항목, 스드메는 하위 항목. est = 평균가, w = 중요도 */
+function budgetLeaves() {
+  const U = WISHLIST.filter((w) => budget.wish.has(w.name)).reduce((s, w) => s + w.cost, 0);
+  const leaves = [];
+  budget.cats.forEach((c) => {
+    if (c.subs) c.subs.forEach((s) => leaves.push({ key: `${c.id}.${s.id}`, cat: c, sub: s, est: avgOf(s.id) ?? 0, w: c.w * s.w }));
+    else leaves.push({ key: c.id, cat: c, est: c.id === 'etc' ? 1 : c.id === 'hall' && budget.hallSetup ? budget.hallSetup.total : c.custom ? 1 : AVG_COST[c.id], w: c.w }); // 기타 준비 비용 · 직접 추가 항목: 금액 = w
+  });
+  return { leaves, U };
+}
+/* 항목 금액 = 📌 직접 입력한 금액, 없으면 평균가 × 슬라이더 배수
+   총예산 = 항목 금액의 합 → 한 항목을 바꾸면 다른 항목은 그대로, 그만큼 총예산만 늘거나 줄어듦 */
+const leafAmount = (l) => l.est * l.w; // 항목 금액 = 평균가 × 배수 (금액을 직접 입력하면 배수가 그에 맞게 바뀜)
+const currentTotal = () => Math.round(budgetLeaves().leaves.reduce((a, l) => a + leafAmount(l), 0));
+
+/* ④ 총예산을 직접 바꾸면: 고정 안 한 항목의 슬라이더 배수를 모두 같은 비율로 조정해서 합계를 맞춤
+   (이후 새로 추가하는 항목은 평균가 그대로 더해짐) */
+function setTotalBudget(target) {
+  const { leaves } = budgetLeaves();
+  const pinnedSum = leaves.filter((l) => budget.locks.has(l.key)).reduce((a, l) => a + leafAmount(l), 0);
+  const freeSum = leaves.filter((l) => !budget.locks.has(l.key)).reduce((a, l) => a + leafAmount(l), 0);
+  if (freeSum <= 0) return false; // 조정할 항목이 없음 (전부 📌 고정)
+  const f = Math.max(target - pinnedSum, 0) / freeSum;
+  budget.cats.forEach((c) => {
+    if (c.subs) c.subs.forEach((s) => { if (!budget.locks.has(`${c.id}.${s.id}`)) s.w *= f; });
+    else if (!budget.locks.has(c.id)) c.w *= f;
+  });
+  return true;
+}
+
+// 항목 변경 공통 진입점 — 각 항목 금액이 서로 독립이라 바꾼 항목만 달라지고 총예산은 합계로 따라감
+function changeKeepingOthers(_keys, apply) { apply(); }
 
 /* 가격대 레이어는 고르는 게 아니라 총예산으로 판정되는 결과 (웨딩웨이 기준표)
-   가성비형 2,500만~3,500만 · 표준형 3,500만~5,500만(빈 구간 5,500~6,000만 포함) · 하이엔드형 6,000만 원 이상 */
+   가성비형 2,500만~3,500만 · 표준형 3,500만~5,500만 · 고급형 5,500만 원 이상 */
 const TIER_MIN = 2500;  // 가성비형 기준 최저 — 이보다 낮으면 안내
 const TIER_LOW = 3500;  // 이 금액 미만 → 가성비형
-const TIER_HIGH = 6000; // 이 금액 이상 → 하이엔드형
+const TIER_HIGH = 5500; // 이 금액 이상 → 고급형
 const TIERS = [
-  { key: '가성비', name: '가성비형', desc: '실속 있는 웨딩홀 · 합리적인 스드메 · 국내 또는 근거리 여행' },
-  { key: '표준', name: '표준형', desc: '일반 웨딩홀 · 중급 스드메 · 해외 신혼여행' },
-  { key: '프리미엄', name: '하이엔드형', desc: '고급 예식장 · 프리미엄 스드메 · 고가 예물 · 럭셔리 여행' },
+  { key: '가성비', name: '가성비형' },
+  { key: '표준', name: '표준형' },
+  { key: '프리미엄', name: '고급형' },
 ];
 const tierOf = (amount) => TIERS[amount < TIER_LOW ? 0 : amount < TIER_HIGH ? 1 : 2];
 
 // 눈금: 가성비 · 표준 · 프리미엄 구간을 같은 폭으로 놓고 위치 표시
-function tierScaleHTML(total) {
+// total: 수준 판정에 쓰는 금액(직접 추가 항목 제외), excluded: 판정에서 뺀 직접 추가 항목 합계
+function tierScaleHTML(total, excluded = 0) {
   const t = tierOf(total);
   const pos = total < TIER_LOW ? (total / TIER_LOW) / 3
     : total < TIER_HIGH ? 1 / 3 + ((total - TIER_LOW) / (TIER_HIGH - TIER_LOW)) / 3
@@ -419,15 +510,174 @@ function tierScaleHTML(total) {
       <i class="tier-marker" style="left:${(pos * 100).toFixed(1)}%"></i>
     </div>
     <div class="tier-ticks"><span>${won(TIER_LOW)}</span><span>${won(TIER_HIGH)}</span></div>
-    <p class="muted sm">${t.desc}</p>
-    ${total < TIER_MIN ? `<p class="tier-low-note">가성비형 기준(${won(TIER_MIN)})보다 낮은 예산이에요. 항목을 줄이거나 우선순위를 정해 보세요.</p>` : ''}`;
+    ${total < TIER_MIN ? `<p class="tier-low-note">가성비형 기준(${won(TIER_MIN)})보다 낮은 예산이에요. 항목을 줄이거나 우선순위를 정해 보세요.</p>` : ''}
+    ${excluded > 0 ? '<p class="muted sm">직접 추가한 항목은 판정에서 제외</p>' : ''}`;
 }
 
 function renderBudgetInputs() {
-  $('#wishList').innerHTML = WISHLIST.map((w) =>
-    `<button class="wish ${budget.wish.has(w.name) ? 'active' : ''}" data-wish="${w.name}"><b>${w.name}</b><small>평균 ${won(w.cost)}</small></button>`).join('');
-
+  renderBasicItems();
+  renderWishList();
   renderBudgetItems();
+}
+
+/* ① 기본 항목 — ③ 예산 항목(예식장 · 스드메 하위)과 같은 상태를 보여주고 바꿈 */
+const sdmCat = () => budget.cats.find((c) => c.id === 'sdm');
+const hasSub = (id) => !!sdmCat()?.subs.some((s) => s.id === id);
+
+function renderBasicItems() {
+  const hall = budget.cats.some((c) => c.id === 'hall');
+  const shoot = SHOOT_IDS.find(hasSub) || 'none';
+  const row = (key, item, on) => `
+    <label class="bs-row ${on ? 'on' : ''}">
+      <input type="checkbox" data-basic="${key}" ${on ? 'checked' : ''} />
+      <span class="bs-main"><b>${item.name}</b><small>${noShoot() && item.dNoShoot ? item.dNoShoot : item.d}</small></span>
+      <span class="bs-price">평균 ${won(avgOf(key))}</span>
+    </label>`;
+  $('#basicItems').innerHTML = BASIC_ITEMS.map((item) => {
+    if (item.id === 'hall') {
+      const s = budget.hallSetup;
+      const info = s
+        ? `${HALL_TYPES.find((x) => x.id === s.type).name} · ${HALL_REGIONS.find((x) => x.id === s.region).name} · ${s.guests}명 기준`
+        : item.d;
+      return `
+        <label class="bs-row ${hall ? 'on' : ''}">
+          <input type="checkbox" data-basic="hall" ${hall ? 'checked' : ''} />
+          <span class="bs-main"><b>${item.name}</b><small>${info}</small>
+            <span class="bs-reco">
+              <button class="text-btn" data-action="hall-modal-open">${s ? '다시 계산하기' : '하객 수 · 예식 형태로 추천받기'} →</button>
+              ${s ? '<button class="text-btn muted-btn" data-action="hall-reco-clear">평균가로 되돌리기</button>' : ''}
+            </span>
+          </span>
+          <span class="bs-price">${s ? `추천 ${won(s.total)}` : `평균 ${won(AVG_COST.hall)}`}</span>
+        </label>`;
+    }
+    if (!item.options) return row(item.id, item, hasSub(item.id));
+    return `
+      <div class="bs-row shoot ${shoot !== 'none' ? 'on' : ''}">
+        <span class="bs-main"><b>${item.name}</b><small>하나만 선택</small></span>
+        <div class="bs-options" role="radiogroup" aria-label="촬영 선택">
+          ${item.options.map((o) => `<button class="bs-opt ${shoot === o.id ? 'active' : ''}" data-shoot="${o.id}" role="radio" aria-checked="${shoot === o.id}"><b>${o.name}</b><small>평균 ${won(AVG_COST[o.id])}</small></button>`).join('')}
+          <button class="bs-opt ${shoot === 'none' ? 'active' : ''}" data-shoot="none" role="radio" aria-checked="${shoot === 'none'}"><b>안 함</b></button>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+// 스드메 하위 항목 켜기/끄기 (스드메 묶음이 없으면 새로 만듦)
+function setSdmSub(id, on) {
+  if (on === hasSub(id)) return;
+  if (on) {
+    if (!sdmCat()) budget.cats.push({ ...makeBudgetCat(BUDGET_CATALOG.find((c) => c.id === 'sdm')), subs: [] });
+    addBudgetCat(`sdm.${id}`);
+  } else {
+    removeBudgetCat(`sdm.${id}`);
+  }
+}
+
+function refreshBudgetForm() {
+  renderBasicItems();
+  renderBudgetItems();
+  updatePreview();
+}
+
+/* 예식장 · 식대 추천받기 모달: 예식 종류 → 지역 → 하객 수 → 예상 비용 → 적용 */
+const hm = { step: 1, type: null, region: null, guests: 200 };
+
+function openHallModal() {
+  Object.assign(hm, { step: 1, type: null, region: null, guests: 200 }, budget.hallSetup || {});
+  renderHallModal();
+  $('#hallModal').hidden = false;
+  $('#hallModalBg').hidden = false;
+  document.body.classList.add('modal-open');
+}
+
+function closeHallModal() {
+  $('#hallModal').hidden = true;
+  $('#hallModalBg').hidden = true;
+  document.body.classList.remove('modal-open');
+}
+
+function renderHallModal() {
+  const titles = { 1: '어떤 예식을 생각하세요?', 2: '어느 지역에서 하세요?', 3: '하객은 몇 명 정도 예상하세요?' };
+  $('#hmTitle').textContent = titles[hm.step];
+  $$('[data-hm]').forEach((el) => { el.hidden = +el.dataset.hm !== hm.step; });
+  $$('[data-hmdot]').forEach((el) => {
+    el.classList.toggle('on', +el.dataset.hmdot === hm.step);
+    el.classList.toggle('done', +el.dataset.hmdot < hm.step);
+  });
+  $('#hmTypes').innerHTML = HALL_TYPES.map((t) => `
+    <button class="hm-opt ${hm.type === t.id ? 'active' : ''}" data-hmtype="${t.id}"><b>${t.name}</b><small>${t.d}</small></button>`).join('');
+  $('#hmRegions').innerHTML = HALL_REGIONS.map((r) => `
+    <button class="hm-opt ${hm.region === r.id ? 'active' : ''}" data-hmregion="${r.id}"><b>${r.name}</b></button>`).join('');
+  $('#hmGuests').innerHTML = GUEST_OPTIONS.map((g) => `
+    <button class="chip ${hm.guests === g ? 'active' : ''}" data-hmguests="${g}">${g === 300 ? '300명 이상' : `${g}명`}</button>`).join('');
+  if (document.activeElement !== $('#hmGuestInput')) $('#hmGuestInput').value = hm.guests;
+
+  if (hm.step === 3 && hm.type && hm.region) {
+    const e = hallEstimate(hm);
+    const ranges = REF_TABLE.hall;
+    const level = TIERS[e.total < ranges[1][0] ? 0 : e.total < ranges[2][0] ? 1 : 2];
+    $('#hmResult').innerHTML = `
+      <small>예상 비용</small>
+      <strong>약 ${won(e.total)}</strong>
+      <ul>
+        <li>식대 ${(Math.round(e.meal * 10) / 10).toLocaleString()}만 원 × ${hm.guests}명<span>${won(e.food)}</span></li>
+        <li>대관 · 연출비<span>${won(e.base)}</span></li>
+      </ul>
+      <p>웨딩웨이 기준표로 <b class="tier-name tier-${TIERS.indexOf(level)}">${level.name}</b> 예식장 수준이에요.</p>
+      <p class="muted sm">예시 단가로 계산한 참고 금액이에요. 실제 견적은 예식장마다 달라요.</p>`;
+  }
+  const ready = (hm.step === 1 && hm.type) || (hm.step === 2 && hm.region) || (hm.step === 3 && hm.guests > 0);
+  $('#hmNext').textContent = hm.step === 3 ? '이 금액 적용' : '다음';
+  $('#hmNext').disabled = !ready;
+  $('[data-action="hm-prev"]').style.visibility = hm.step === 1 ? 'hidden' : 'visible';
+}
+
+function applyHallEstimate() {
+  const { total } = hallEstimate(hm);
+  changeKeepingOthers(['hall'], () => {
+    budget.hallSetup = { type: hm.type, region: hm.region, guests: hm.guests, total };
+    if (!budget.cats.some((c) => c.id === 'hall')) addBudgetCat('hall'); // 빼 둔 상태면 다시 넣음
+    budget.cats.find((c) => c.id === 'hall').w = 1;
+  });
+  closeHallModal();
+  refreshBudgetForm();
+  toast(`예식장 · 식대를 ${won(total)}으로 반영했어요`);
+}
+
+/* 위시리스트 선택 — 기타 준비 비용이 그 항목 가격만큼 정확히 늘거나 줄도록 */
+function toggleWish(name, on) {
+  const cost = WISHLIST.find((w) => w.name === name).cost;
+  const etc = budget.cats.find((c) => c.id === 'etc');
+  const before = etc ? leafAmount(budgetLeaves().leaves.find((l) => l.key === 'etc')) : 0;
+  if (on) budget.wish.add(name); else budget.wish.delete(name);
+  if (!etc) return;
+  etc.w = Math.max(before + (on ? cost : -cost), 0); // 기타 준비 비용 금액 = w
+}
+
+/* ② 추가 위시리스트 — 분류별 체크 목록 */
+const wishCollapsed = new Set();
+
+function renderWishList() {
+  $('#wishList').innerHTML = WISH_GROUPS.map((g) => {
+    const items = WISHLIST.filter((w) => w.g === g.id);
+    const picked = items.filter((w) => budget.wish.has(w.name));
+    const count = picked.length ? `${picked.length}개 · ${won(picked.reduce((a, w) => a + w.cost, 0))}` : `${items.length}개 항목`;
+    return `
+      <div class="wl-group ${wishCollapsed.has(g.id) ? 'collapsed' : ''}">
+        <button class="wl-head" data-wltoggle="${g.id}" aria-expanded="${!wishCollapsed.has(g.id)}">
+          <b>${g.name}</b><span class="wl-count ${picked.length ? 'on' : ''}">${count}</span><span class="wl-caret">▾</span>
+        </button>
+        <div class="wl-items">
+          ${items.map((w) => `
+            <label class="wl-item ${budget.wish.has(w.name) ? 'on' : ''}">
+              <input type="checkbox" data-wish="${w.name}" ${budget.wish.has(w.name) ? 'checked' : ''} />
+              <span class="wl-name"><b>${w.name}</b><small>${w.d}</small></span>
+              <span class="wl-price">평균 ${won(w.cost)}</span>
+            </label>`).join('')}
+        </div>
+      </div>`;
+  }).join('');
 }
 
 /* 예산 항목 · 중요도 목록 (key: 'hall' 또는 'sdm.studio') */
@@ -437,21 +687,37 @@ function budgetTarget(key) {
   return subId ? cat?.subs.find((s) => s.id === subId) : cat;
 }
 
+// 슬라이더 최대 배수: 예식장은 편차가 커서 5배, 나머지는 3배
+const isCustomKey = (key) => !!budget.cats.find((c) => c.id === key)?.custom;
+// 금액을 직접 정하는 항목(기타 준비 비용 · 직접 추가 항목) — 슬라이더가 배수가 아닌 금액
+const isFreeKey = (key) => key === 'etc' || isCustomKey(key);
+const sliderMax = (key) => (isFreeKey(key) ? CUSTOM_MAX : key === 'hall' ? 5 : 3);
+// 슬라이더 옆 표시: 직접 추가 항목은 금액, 나머지는 평균가 대비 배수
+const fmtW = (key, w) => (isFreeKey(key) ? won(w) : `×${w.toFixed(1)}`);
+
 function renderBudgetItems() {
   const row = (key, name, w, { sub = false, color = null, group = null } = {}) => `
     <div class="bi-row ${sub ? 'sub' : ''}">
       <span class="bi-name">${color ? `<i style="background:${color}"></i>` : ''}${sub ? 'ㄴ ' : ''}${esc(name)}${sub ? '' : `<small class="bi-note" data-bnote="${key}"></small>`}
         ${group ? `<button class="bi-toggle" data-btoggle="${group.id}">${group.open ? '접기 ▴' : '세부 ▾'}</button>` : ''}</span>
-      <input type="range" min="0.5" max="1.5" step="0.1" value="${w}" data-bw="${key}" aria-label="${esc(name)} 중요도" />
-      <output data-bwout="${key}">×${w.toFixed(1)}</output>
-      <span class="bi-amount" data-bamt="${key}">-</span>
+      ${isFreeKey(key)
+    ? `<input type="range" min="0" max="${CUSTOM_MAX}" step="10" value="${w}" data-bw="${key}" aria-label="${esc(name)} 금액 (0~1억 원)" />`
+    : `<input type="range" min="0.3" max="${sliderMax(key)}" step="0.1" value="${w}" data-bw="${key}" aria-label="${esc(name)} 중요도 (평균가의 0.3~${sliderMax(key)}배)" />`}
+      <output data-bwout="${key}">${fmtW(key, w)}</output>
+      ${group
+    ? `<span class="bi-amount" data-bamt="${key}">-</span>`
+    : `<span class="bi-amount-wrap">
+          <button class="bi-pin" data-bpin="${key}" aria-pressed="false" title="고정하면 총예산을 바꿔도 이 금액은 그대로예요" aria-label="${esc(name)} 고정">📌</button>
+          <input type="number" class="bi-input" data-bamtin="${key}" min="0" ${isFreeKey(key) ? `max="${CUSTOM_MAX}"` : ''} step="10" aria-label="${esc(name)} 금액(만 원)" />
+        </span>`}
       <button class="bi-del" data-bdel="${key}" aria-label="${esc(name)} 빼기" title="빼기">✕</button>
     </div>`;
 
   const rows = budget.cats.map((c) => {
     if (!c.subs) return row(c.id, c.name, c.w, { color: c.color });
     const catalogSubs = BUDGET_CATALOG.find((x) => x.id === c.id).subs;
-    const missing = catalogSubs.filter((s) => !c.subs.some((x) => x.id === s.id));
+    const hasShoot = c.subs.some((x) => SHOOT_IDS.includes(x.id)); // 스튜디오 · 야외스냅은 둘 중 하나
+    const missing = catalogSubs.filter((s) => !c.subs.some((x) => x.id === s.id) && !(hasShoot && SHOOT_IDS.includes(s.id)));
     const subRows = c.open ? `
       <div class="bi-subs">
         ${c.subs.map((s) => row(`${c.id}.${s.id}`, s.name, s.w, { sub: true })).join('')}
@@ -483,7 +749,9 @@ function addBudgetCat(key) {
     cat.subs.push({ ...def.subs.find((s) => s.id === subId), w: 1 });
     cat.subs.sort((a, b) => def.subs.findIndex((s) => s.id === a.id) - def.subs.findIndex((s) => s.id === b.id));
   } else {
-    budget.cats.push(makeBudgetCat(def));
+    const cat = makeBudgetCat(def);
+    if (catId === 'etc') cat.w = wishTotal(); // 다시 넣으면 위시리스트 합계부터
+    budget.cats.push(cat);
   }
 }
 
@@ -492,13 +760,15 @@ function addCustomBudgetCat() {
   const name = input.value.trim();
   if (!name) { toast('항목 이름을 입력해 주세요'); input.focus(); return; }
   const used = budget.cats.filter((c) => c.custom).length;
-  budget.cats.push(makeBudgetCat({ id: `custom${Date.now()}`, name, color: CUSTOM_COLORS[used % CUSTOM_COLORS.length], custom: true }));
+  const id = `custom${Date.now()}`;
+  changeKeepingOthers([id], () => budget.cats.push({ ...makeBudgetCat({ id, name, color: CUSTOM_COLORS[used % CUSTOM_COLORS.length], custom: true }), w: 0 })); // 0원에서 시작
   renderBudgetItems();
   updatePreview();
   toast(`'${name}' 항목을 추가했어요`);
 }
 
 function removeBudgetCat(key) {
+  [...budget.locks].forEach((k) => { if (k === key || k.startsWith(`${key}.`)) budget.locks.delete(k); });
   const [catId, subId] = key.split('.');
   const cat = budget.cats.find((c) => c.id === catId);
   if (subId) {
@@ -509,25 +779,20 @@ function removeBudgetCat(key) {
   }
 }
 
-/* 계산 로직 (기획서 디벨롭 1차 기반 + 웨딩웨이 기준표)
-   1) 항목별 기본 비중 = 총예산에 맞춘 기준표 중간값 비율(defaultShares). 직접 추가 항목은 CUSTOM_SHARE
-   2) RawWeight_i = 기본 비중 × 중요도 W_i (스드메 하위는 묶음 중요도 × 하위 중요도) → 정규화해서 총예산을 나눔
+/* 계산 로직
+   1) 항목 금액 = 📌 직접 입력 금액 또는 평균가 × 슬라이더 배수 (기타 준비 비용의 평균가 = 위시리스트 합계)
+   2) 총예산 T = 항목 금액의 합
    3) 항목 수준 = 금액을 기준표의 해당 항목 구간과 비교 (가성비형 최소보다 낮으면 '최저선 미만')
-   4) 위시리스트는 '기타 준비 비용' 안에서 씀 — 넘치면 초과분만큼 예상 총비용이 늘어남 */
+   4) 위시리스트가 기타 준비 비용보다 크면 부족분 표시 */
 function calcBudget() {
-  const E = budget.total;
-  const U = WISHLIST.filter((w) => budget.wish.has(w.name)).reduce((s, w) => s + w.cost, 0);
-  const shares = defaultShares(E);
-  const subShareSum = BUDGET_CATALOG.find((c) => c.id === 'sdm').subs.reduce((a, s) => a + s.share, 0);
-
-  const leaves = [];
-  budget.cats.forEach((c) => {
-    const share = shares[c.id] ?? CUSTOM_SHARE;
-    if (c.subs) c.subs.forEach((s) => leaves.push({ cat: c, sub: s, part: s.share / subShareSum, raw: share * (s.share / subShareSum) * s.w * c.w }));
-    else leaves.push({ cat: c, raw: share * c.w });
+  const { leaves, U } = budgetLeaves();
+  leaves.forEach((l) => {
+    l.pinned = budget.locks.has(l.key);
+    l.amount = leafAmount(l);
   });
-  const sum = leaves.reduce((a, l) => a + l.raw, 0);
-  leaves.forEach((l) => { l.amount = sum ? E * (l.raw / sum) : 0; });
+  const T = leaves.reduce((a, l) => a + l.amount, 0);
+  const pinned = leaves.filter((l) => l.pinned);
+  const P = pinned.reduce((a, l) => a + l.amount, 0);
 
   const judge = (amount, ranges) => (ranges
     ? { ranges, level: TIERS[amount < ranges[1][0] ? 0 : amount < ranges[2][0] ? 1 : 2], belowFloor: amount < ranges[0][0] }
@@ -537,30 +802,39 @@ function calcBudget() {
   const base = budget.cats.map((c) => {
     const ls = leaves.filter((l) => l.cat === c);
     const amount = ls.reduce((a, l) => a + l.amount, 0);
-    const subs = c.subs ? ls.map((l) => ({ id: l.sub.id, name: l.sub.name, amount: l.amount, ...judge(l.amount, scaled(REF_TABLE.sdm, l.part)) })) : null;
-    const defaultAmt = shares[c.id] != null ? E * shares[c.id] : null;
-    return { id: c.id, name: c.name, color: c.color, amount, subs, defaultAmt, ...judge(amount, REF_TABLE[c.id] || null) };
+    const est = ls.reduce((a, l) => a + l.est, 0);
+    const subs = c.subs ? ls.map((l) => ({
+      id: l.sub.id, key: l.key, name: l.sub.name, amount: l.amount, est: l.est, pinned: l.pinned,
+      ...judge(l.amount, scaled(REF_TABLE.sdm, l.est / SDM_AVG)),
+    })) : null;
+    // 기타 준비 비용은 위시리스트 합계라 기준표 판정 대신 위시리스트 부족 여부로 봄
+    const ranges = c.id === 'etc' ? null : REF_TABLE[c.id] || null;
+    return { id: c.id, key: c.id, name: c.name, color: c.color, amount, est, subs, pinned: !c.subs && ls[0]?.pinned, ...judge(amount, ranges) };
   });
 
   // 위시리스트 = 기타 준비 비용 안에서 사용
   const etc = base.find((b) => b.id === 'etc');
   const etcAmt = etc ? etc.amount : 0;
-  const overflow = Math.max(U - etcAmt, 0);
-  if (etc) etc.legend = [{ name: `위시리스트 (${budget.wish.size}개)`, amount: Math.min(U, etcAmt) }, { name: '남은 금액', amount: Math.max(etcAmt - U, 0) }];
+  const overflow = Math.max(Math.round(U - etcAmt), 0); // 만 원 단위로 반올림해서 소수점 오차 무시
+  if (etc) {
+    etc.legend = [
+      { name: `위시리스트 (${budget.wish.size}개)`, amount: Math.min(U, etcAmt) },
+      { name: '예비 비용', amount: Math.max(etcAmt - U, 0) },
+    ].filter((x) => Math.round(x.amount) > 0); // 0원인 줄은 숨김
+  }
 
   const items = [...base];
-  if (overflow > 0) items.push({ name: '위시리스트 초과분', color: '#c2453d', amount: overflow });
-  if (!sum) items.push({ name: '미배정', color: '#e8e1da', amount: E });
+  if (overflow > 0) items.push({ name: '위시리스트 부족분', color: '#c2453d', amount: overflow });
   const C = items.reduce((s, it) => s + it.amount, 0);
   // 최저선 판정은 실제로 돈이 나가는 단위(스드메는 하위 항목)로
   const below = base.flatMap((b) => (b.subs ? b.subs : [b])).filter((it) => it.belowFloor).map((it) => it.name);
+  // 슬라이더나 직접 입력으로 평균가에서 달라진 항목이 있는지 (되돌리기 버튼 표시용)
+  const adjusted = leaves.some((l) => (l.key === 'etc' ? Math.abs(l.w - U) > 0.5 : !l.cat.custom && Math.abs(l.w - 1) > 0.001));
 
-  let status;
-  if (below.length >= 2 || overflow > E * 0.05) status = { key: 'danger', label: '예산 초과 위험', cls: 'tag-danger' };
-  else if (below.length === 1 || overflow > 0 || E < TIER_MIN) status = { key: 'warn', label: '예산 빠듯', cls: 'tag-warn' };
-  else status = { key: 'ok', label: '적정 예산', cls: 'tag-ok' };
-
-  return { E, U, C, items, base, below, status, tier: tierOf(E), etcAmt, overflow, hasEtc: !!etc };
+  // 직접 추가한 항목은 기준이 없어 수준(가성비 · 표준 · 고급) 판정에서 제외
+  const customSum = leaves.filter((l) => l.cat.custom).reduce((a, l) => a + l.amount, 0);
+  const tierTotal = T - customSum;
+  return { E: T, U, C, P, items, base, below, tier: tierOf(tierTotal), tierTotal, customSum, etcAmt, overflow, hasEtc: !!etc, adjusted, pinCount: pinned.length };
 }
 
 function pieGradient(items, total) {
@@ -582,80 +856,130 @@ function legendHTML(items, total) {
 function updatePreview() {
   const r = calcBudget();
   $('#pvTotal').textContent = won(r.E);
-  const tag = $('#pvTag');
-  tag.className = `tag ${r.status.cls}`;
-  tag.textContent = r.status.label;
-  $('#pvTier').innerHTML = `<span class="tier-name tier-${TIERS.indexOf(r.tier)}">${r.tier.name}</span> 수준`;
-  // 예산 항목 목록의 금액 (슬라이더를 다시 그리지 않고 숫자만 갱신)
-  const setAmt = (key, x) => {
-    const el = $(`[data-bamt="${key}"]`);
-    if (!el) return;
-    el.textContent = won(x.amount);
-    el.classList.toggle('low', x.belowFloor);
-    el.title = x.belowFloor ? '가성비형 최소 금액보다 낮아요' : x.level ? `${x.level.name} 수준` : '';
+  $('#pvTier').innerHTML = `<span class="tier-name tier-${TIERS.indexOf(r.tier)}">${r.tier.name}</span> 수준${
+    r.customSum > 0 ? '<small class="pv-tier-note">직접 추가한 항목 제외</small>' : ''}`;
+  // 예산 항목 목록의 금액 (슬라이더 · 입력칸을 다시 그리지 않고 값만 갱신 — 입력 중인 칸은 건드리지 않음)
+  const setAmt = (x) => {
+    const title = x.belowFloor ? '가성비형 최소 금액보다 낮아요' : x.level ? `${x.level.name} 수준` : '';
+    const span = $(`[data-bamt="${x.key}"]`);
+    if (span) { span.textContent = won(x.amount); span.classList.toggle('low', x.belowFloor); span.title = title; }
+    const input = $(`[data-bamtin="${x.key}"]`);
+    if (input) {
+      if (document.activeElement !== input) input.value = Math.round(x.amount);
+      input.classList.toggle('low', x.belowFloor);
+      input.classList.toggle('pinned', !!x.pinned);
+      input.title = title;
+    }
+    const pin = $(`[data-bpin="${x.key}"]`);
+    if (pin) { pin.classList.toggle('on', !!x.pinned); pin.setAttribute('aria-pressed', String(!!x.pinned)); }
   };
+  // 슬라이더 위치도 배수에 맞춰 갱신 (직접 입력 · ④ 총예산 변경 시) — 조작 중인 슬라이더는 그대로
+  const setSlider = (key, w) => {
+    const sl = $(`[data-bw="${key}"]`);
+    if (sl && document.activeElement !== sl) sl.value = w;
+    const out = $(`[data-bwout="${key}"]`);
+    if (out) out.textContent = fmtW(key, w);
+  };
+  budget.cats.forEach((c) => { setSlider(c.id, c.w); (c.subs || []).forEach((x) => setSlider(`${c.id}.${x.id}`, x.w)); });
   r.base.forEach((b) => {
-    setAmt(b.id, b);
-    (b.subs || []).forEach((s) => setAmt(`${b.id}.${s.id}`, s));
+    setAmt(b);
+    (b.subs || []).forEach(setAmt);
     const note = $(`[data-bnote="${b.id}"]`);
     if (!note) return;
     note.classList.toggle('over', b.id === 'etc' && r.overflow > 0);
-    note.textContent = b.id === 'etc' ? `위시리스트 ${won(r.U)} 사용${r.overflow > 0 ? ` · ${won(r.overflow)} 초과` : ''}`
-      : b.defaultAmt != null ? `기본 ${won(b.defaultAmt)}` : '';
+    note.textContent = b.id === 'etc' ? `위시리스트 ${won(r.U)}${r.overflow > 0 ? ` · ${won(r.overflow)} 부족` : ''}`
+      : isCustomKey(b.id) ? '직접 입력' : `${b.id === 'hall' && budget.hallSetup ? '추천' : '평균'} ${won(b.est)}`;
   });
-  $('#tierResult').innerHTML = tierScaleHTML(r.E);
-  // 입력 금액에 맞는 프리셋 칩 표시 (가성비형 · 표준형 · 하이엔드형 구간)
-  const presetIdx = r.E < TIER_LOW ? 0 : r.E < TIER_HIGH ? 1 : 2;
-  $$('[data-preset] > .chip').forEach((b, i) => b.classList.toggle('active', i === presetIdx));
+  $('#wishSummary').innerHTML = budget.wish.size
+    ? `선택 <b>${budget.wish.size}개</b> · 합계 <b>${won(r.U)}</b>${r.hasEtc ? ` <span class="${r.overflow > 0 ? 'over' : 'muted'}">/ 기타 준비 비용 ${won(r.etcAmt)}${r.overflow > 0 ? ` (${won(r.overflow)} 부족)` : ''}</span>` : ''}`
+    : '<span class="muted">필요한 항목만 골라 주세요.</span>';
+
+  // ④ 총예산: 안내 · 고정 개수 · 되돌리기
+  const totalInput = $('#bTotal');
+  if (document.activeElement !== totalInput) totalInput.value = Math.round(r.E);
+  $('#estLine').innerHTML = '<span class="muted">총예산을 바꾸면 📌 고정 외 항목이 같은 비율로 조정돼요.</span>';
+  $('#totalDiff').innerHTML = [
+    r.pinCount ? `📌 고정 ${r.pinCount}개 <button class="text-btn" data-action="b-unpin-all">고정 모두 풀기</button>` : '',
+    r.adjusted ? '<button class="text-btn" data-action="b-total-reset">평균가로 되돌리기</button>' : '',
+  ].filter(Boolean).join(' · ');
+  $('#tierResult').innerHTML = tierScaleHTML(r.tierTotal, r.customSum);
   $('#pvPie').style.background = pieGradient(r.items, r.C);
   $('#pvLegend').innerHTML = legendHTML(r.items, r.C);
+}
+
+// 기본 항목 중 사용자가 뺀 것 (안 하는 항목) — 리포트에서 평균가만큼 아낀 것으로 봄
+function removedBasics() {
+  const has = (id) => budget.cats.some((c) => c.id === id);
+  const out = [];
+  if (!has('hall')) out.push({ name: '예식장 · 식대', avg: budget.hallSetup ? budget.hallSetup.total : AVG_COST.hall });
+  if (!SHOOT_IDS.some(hasSub)) out.push({ name: '촬영', avg: AVG_COST.studio });
+  ['dress', 'makeup'].forEach((id) => {
+    if (!hasSub(id)) out.push({ name: BUDGET_CATALOG.find((c) => c.id === 'sdm').subs.find((x) => x.id === id).name, avg: avgOf(id) });
+  });
+  ['jewelry', 'suit', 'honeymoon'].forEach((id) => {
+    if (!has(id)) out.push({ name: BUDGET_CATALOG.find((c) => c.id === id).name, avg: AVG_COST[id] });
+  });
+  if (!has('etc') && wishTotal() > 0) out.push({ name: '기타 준비 비용', avg: wishTotal() });
+  return out;
+}
+
+function compareToAvg(amount, avg) {
+  if (!avg) return null;
+  const ratio = amount / avg;
+  const pct = Math.round((ratio - 1) * 100);
+  const pctText = pct === 0 ? '' : ` ${pct > 0 ? '+' : ''}${pct}%`;
+  if (ratio >= 2) return { ratio, pctText, label: '많이 높은 편', cls: 'cmp-up2' };
+  if (ratio >= 1.5) return { ratio, pctText, label: '높은 편', cls: 'cmp-up' };
+  if (ratio <= 0.5) return { ratio, pctText, label: '많이 낮은 편', cls: 'cmp-down2' };
+  if (ratio <= 2 / 3) return { ratio, pctText, label: '낮은 편', cls: 'cmp-down' };
+  return { ratio, pctText: '', label: '평균 수준', cls: 'cmp-avg' };
 }
 
 function renderReport() {
   const r = calcBudget();
   const wishNames = [...budget.wish];
-  const wishText = wishNames.length ? `선택하신 위시리스트(${wishNames.join(', ')})` : '기본 항목';
-  const headline = {
-    ok: '적정 예산이에요 👍',
-    warn: '예산이 다소 빠듯해요',
-    danger: '예산 초과 위험이 있어요',
-  }[r.status.key];
-  const belowText = r.below.join(', ');
-  const overflowText = r.hasEtc
-    ? `위시리스트(${won(r.U)})가 기타 준비 비용(${won(r.etcAmt)})보다 ${won(r.overflow)} 많아요.`
-    : `기타 준비 비용 항목이 없어서 위시리스트 ${won(r.U)}가 예산 밖으로 나가요.`;
-  const desc = {
-    ok: `총예산 ${won(r.E)}은 ${r.tier.name} 수준이에요. ${wishText}도 기타 준비 비용 ${won(r.etcAmt)} 안에서 준비할 수 있어요.`,
-    warn: r.below.length
-      ? `${belowText}에 배정된 금액이 가성비형 최소 금액보다 낮아요. 중요도를 조정하거나 안 하는 항목을 빼 보세요.`
-      : r.overflow > 0
-        ? `${overflowText} 위시리스트를 줄이거나 기타 준비 비용의 중요도를 높여 보세요.`
-        : `총예산이 가성비형 기준(${won(TIER_MIN)})보다 낮아요. 꼭 필요한 항목부터 우선순위를 정해 보세요.`,
-    danger: r.below.length >= 2
-      ? `${belowText}에 배정된 금액이 가성비형 최소 금액보다 낮아요. 총예산을 늘리거나 안 하는 항목을 빼 보세요.`
-      : `${overflowText} 예상 총비용이 ${won(r.C)}로 늘어나요.`,
-  }[r.status.key];
+  // 내가 정한 금액을 평균가와 비교해서 분석 (직접 추가 항목은 평균가가 없어 제외)
+  const headline = `총예산 ${won(r.E)} · ${r.tier.name}`;
+  const avgOf = (it) => (it.id === 'etc' ? r.U : isCustomKey(it.id) ? 0 : it.est);
+  const rows = [];
+  const compared = []; // 요약에 쓸 비교 결과 (실제 금액 단위: 일반 항목 · 스드메 하위)
+  const tr = (it, avg, sub = false) => {
+    const c = compareToAvg(it.amount, avg);
+    if (c && (sub || !it.subs)) compared.push({ name: it.name, ...c });
+    const tags = (c ? `<span class="tag ${c.cls}">${c.label}${c.pctText}</span>` : `<span class="tag">${isCustomKey(it.id) ? '직접 입력' : '-'}</span>`)
+      + (it.belowFloor ? ' <span class="tag tag-danger">최저선 미만</span>' : '');
+    return `<tr class="${sub ? 'sub-row' : ''}"><td>${sub ? 'ㄴ ' : ''}${esc(it.name)}</td><td><b>${won(it.amount)}</b></td><td class="muted">${avg ? won(avg) : '-'}</td><td>${tags}</td></tr>`;
+  };
+  const wishRows = (sub) => WISHLIST.filter((w) => budget.wish.has(w.name)).map((w) =>
+    `<tr class="sub-row"><td>${sub ? 'ㄴ ' : ''}${w.name}</td><td>${won(w.cost)}</td><td class="muted">${won(w.cost)}</td><td><span class="tag">위시리스트</span></td></tr>`).join('');
+  r.base.forEach((it) => {
+    rows.push(tr(it, avgOf(it)) + (it.subs || []).map((x) => tr(x, x.est, true)).join('') + (it.id === 'etc' ? wishRows(true) : ''));
+  });
+  if (!r.hasEtc) rows.push(wishRows(false));
+  const removed = removedBasics();
+  if (removed.length) {
+    rows.push('<tr class="off-head"><td colspan="4">안 하는 항목</td></tr>');
+    removed.forEach((x) => rows.push(`<tr class="off-row"><td>${esc(x.name)}</td><td>0원</td><td class="muted">${won(x.avg)}</td><td><span class="tag cmp-off">안 함</span></td></tr>`));
+  }
+
+  const up = compared.filter((c) => c.ratio >= 1.5).sort((a, b) => b.ratio - a.ratio);
+  const down = compared.filter((c) => c.ratio <= 2 / 3).sort((a, b) => a.ratio - b.ratio);
+  const fmt = (list) => list.map((c) => `${c.name} ${c.pctText.trim()}`).join(', ');
+  const downText = [fmt(down), ...removed.map((x) => `${x.name}(안 함)`)].filter(Boolean).join(', ');
+  const notes = [];
+  if (up.length) notes.push(`평균보다 많이 쓴 항목: ${fmt(up)}`);
+  if (downText) notes.push(`아낀 항목: ${downText}`);
+  if (!up.length && !downText && compared.length) notes.push('모든 항목이 평균 수준이에요.');
+  if (r.below.length) notes.push(`최저선 미만: ${r.below.join(', ')}`);
+  if (r.overflow > 0) notes.push(r.hasEtc ? `위시리스트가 기타 준비 비용보다 ${won(r.overflow)} 많아요.` : '위시리스트는 예산에 포함되지 않았어요.');
 
   $('#rpHeadline').textContent = headline;
-  $('#rpDesc').textContent = desc;
-  $('#rpTier').innerHTML = tierScaleHTML(r.E);
+  $('#rpDesc').innerHTML = notes.map((n) => `<span class="rp-note">${esc(n)}</span>`).join('');
+  $('#rpTier').innerHTML = tierScaleHTML(r.tierTotal, r.customSum);
 
   $('#rpPie').style.background = pieGradient(r.items, r.C);
   $('#rpLegend').innerHTML = legendHTML(r.items, r.C);
 
-  const tierIdx = TIERS.indexOf(r.tier);
-  $('#rpRangeHead').textContent = `${r.tier.name} 기준`;
-  const levelTag = (it) => (!it.level ? '<span class="tag">-</span>'
-    : it.belowFloor ? '<span class="tag tag-danger">최저선 미만</span>'
-      : `<span class="tag tier-tag tier-${TIERS.indexOf(it.level)}">${it.level.name.replace("형", "")}</span>`);
-  const rangeText = (it) => (it.ranges ? `${won(it.ranges[tierIdx][0])} ~ ${won(it.ranges[tierIdx][1])}` : '-');
-  const tr = (it, sub = false) =>
-    `<tr class="${sub ? 'sub-row' : ''}"><td>${sub ? 'ㄴ ' : ''}${esc(it.name)}</td><td>${won(it.amount)}</td><td>${levelTag(it)}</td><td class="muted">${rangeText(it)}</td></tr>`;
-  const wishRows = (sub) => WISHLIST.filter((w) => budget.wish.has(w.name)).map((w) =>
-    `<tr class="${sub ? 'sub-row' : ''}"><td>${sub ? 'ㄴ ' : ''}${w.name}</td><td>${won(w.cost)}</td><td><span class="tag">평균가</span></td><td class="muted">위시리스트</td></tr>`).join('');
-  // 위시리스트는 기타 준비 비용 아래에 표시
-  const rows = r.base.map((it) => tr(it) + (it.subs || []).map((s) => tr(s, true)).join('') + (it.id === 'etc' ? wishRows(true) : ''));
-  if (!r.hasEtc) rows.push(wishRows(false));
   $('#rpTable tbody').innerHTML = rows.join('');
 
   const moods = myMoods();
@@ -996,6 +1320,7 @@ function closeDrawer() {
 
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape' && drawerItem) closeDrawer();
+  if (e.key === 'Escape' && !$('#hallModal').hidden) closeHallModal();
   if (e.target.id === 'biCustomInput' && e.key === 'Enter') { e.preventDefault(); addCustomBudgetCat(); }
   if (e.target.matches?.('.tl-add-input')) {
     if (e.key === 'Enter') { e.preventDefault(); addCustomItem(e.target.closest('.tl-add')); }
@@ -1139,30 +1464,30 @@ document.addEventListener('click', (e) => {
   if (multi?.closest('#pjMoods')) $('#pjMoodError').classList.remove('show');
   if (multi?.classList.contains('pick-card')) showPj(pjIdx); // 고른 항목 수에 맞춰 단계 수 갱신
 
-  // 예산 프리셋
-  const preset = t.closest('[data-preset] > .chip');
-  if (preset) {
-    $$('[data-preset] > .chip').forEach((b) => b.classList.toggle('active', b === preset));
-    budget.total = +preset.dataset.v;
-    $('#bTotal').value = budget.total;
-    updatePreview();
-  }
+  // 📌 고정 풀기
+  const pinBtn = t.closest('[data-bpin]');
+  if (pinBtn) { const k = pinBtn.dataset.bpin; if (budget.locks.has(k)) budget.locks.delete(k); else budget.locks.add(k); updatePreview(); }
 
   // 예산 항목: 빼기 · 추가 · 스드메 세부 펼치기 · 직접 입력
   const bDel = t.closest('[data-bdel]');
-  if (bDel) { removeBudgetCat(bDel.dataset.bdel); renderBudgetItems(); updatePreview(); }
+  if (bDel) { const k = bDel.dataset.bdel; changeKeepingOthers([k], () => removeBudgetCat(k)); refreshBudgetForm(); }
   const bAdd = t.closest('[data-badd]');
-  if (bAdd) { addBudgetCat(bAdd.dataset.badd); renderBudgetItems(); updatePreview(); }
+  if (bAdd) { const k = bAdd.dataset.badd; changeKeepingOthers([k], () => addBudgetCat(k)); refreshBudgetForm(); }
   const bToggle = t.closest('[data-btoggle]');
   if (bToggle) { const c = budget.cats.find((x) => x.id === bToggle.dataset.btoggle); c.open = !c.open; renderBudgetItems(); updatePreview(); }
 
-  // 위시리스트
-  const wish = t.closest('[data-wish]');
-  if (wish) {
-    const n = wish.dataset.wish;
-    budget.wish.has(n) ? budget.wish.delete(n) : budget.wish.add(n);
-    wish.classList.toggle('active');
-    updatePreview();
+  // ① 기본 항목: 촬영 선택 (스튜디오 · 야외스냅 · 안 함)
+  const shootBtn = t.closest('[data-shoot]');
+  if (shootBtn) {
+    changeKeepingOthers(SHOOT_IDS.map((id) => `sdm.${id}`), () => SHOOT_IDS.forEach((id) => setSdmSub(id, id === shootBtn.dataset.shoot)));
+    refreshBudgetForm();
+  }
+  // ② 위시리스트 분류 접기/펼치기
+  const wlToggle = t.closest('[data-wltoggle]');
+  if (wlToggle) {
+    const id = wlToggle.dataset.wltoggle;
+    wishCollapsed.has(id) ? wishCollapsed.delete(id) : wishCollapsed.add(id);
+    renderWishList();
   }
 
   // 디렉토리 카테고리 탭
@@ -1184,6 +1509,29 @@ document.addEventListener('click', (e) => {
     if (action === 'b-custom-open') $('#biCustomInput').focus();
   }
   if (action === 'b-custom-save') addCustomBudgetCat();
+  if (action === 'b-total-reset') {
+    budget.cats.forEach((c) => {
+      if (c.id === 'etc') c.w = wishTotal(); // 기타 준비 비용은 위시리스트 합계로
+      else if (!c.custom) c.w = 1; // 직접 추가 항목은 평균가가 없어 그대로
+      (c.subs || []).forEach((x) => { x.w = 1; });
+    });
+    refreshBudgetForm();
+    toast('모든 항목을 평균가로 되돌렸어요');
+  }
+  if (action === 'b-unpin-all') { budget.locks.clear(); updatePreview(); toast('고정을 모두 풀었어요'); }
+  // 예식장 · 식대 추천받기 모달
+  if (action === 'hall-modal-open') { e.preventDefault(); openHallModal(); }
+  if (action === 'hall-modal-close') closeHallModal();
+  if (action === 'hall-reco-clear') { e.preventDefault(); changeKeepingOthers(['hall'], () => { budget.hallSetup = null; const h = budget.cats.find((c) => c.id === 'hall'); if (h) h.w = 1; }); refreshBudgetForm(); toast('예식장 · 식대를 평균가로 되돌렸어요'); }
+  if (action === 'hm-prev' && hm.step > 1) { hm.step--; renderHallModal(); }
+  if (action === 'hm-next') { if (hm.step < 3) { hm.step++; renderHallModal(); } else applyHallEstimate(); }
+  const hmPick = t.closest('[data-hmtype], [data-hmregion], [data-hmguests]');
+  if (hmPick) {
+    if (hmPick.dataset.hmtype) hm.type = hmPick.dataset.hmtype;
+    if (hmPick.dataset.hmregion) hm.region = hmPick.dataset.hmregion;
+    if (hmPick.dataset.hmguests) hm.guests = +hmPick.dataset.hmguests;
+    renderHallModal();
+  }
   if (action === 'toggle-menu') $('.gnb-menu').classList.toggle('open');
   if (action === 'cal-prev' || action === 'cal-next') {
     const d = new Date(calView.y, calView.m + (action === 'cal-next' ? 1 : -1), 1);
@@ -1258,18 +1606,44 @@ document.addEventListener('input', (e) => {
     renderTimeline();
   }
   if (t.matches('[data-bw]')) {
-    budgetTarget(t.dataset.bw).w = +t.value;
-    $(`[data-bwout="${t.dataset.bw}"]`).textContent = `×${(+t.value).toFixed(1)}`;
+    changeKeepingOthers([t.dataset.bw], () => { budgetTarget(t.dataset.bw).w = +t.value; });
+    $(`[data-bwout="${t.dataset.bw}"]`).textContent = fmtW(t.dataset.bw, +t.value);
     updatePreview();
   }
-  if (t.id === 'bTotal') {
-    budget.total = Math.max(+t.value || 0, 100);
-    $$('[data-preset] > .chip').forEach((b) => b.classList.remove('active'));
+  if (t.matches('[data-bamtin]')) {
+    const k = t.dataset.bamtin;
+    // 금액 직접 입력 → 그 금액이 되도록 이 항목의 배수만 바꿈 (다른 항목은 그대로, 총예산은 합계로 따라감)
+    const leaf = budgetLeaves().leaves.find((l) => l.key === k);
+    const v = Math.min(Math.max(Math.round(+t.value || 0), 0), isFreeKey(k) ? CUSTOM_MAX : Infinity);
+    const groupW = leaf.sub ? leaf.cat.w : 1;
+    if (leaf.est > 0 && groupW > 0) budgetTarget(k).w = v / (leaf.est * groupW);
     updatePreview();
   }
+  if (t.id === 'hmGuestInput') { hm.guests = Math.max(Math.round(+t.value || 0), 0); renderHallModal(); }
 });
 
 document.addEventListener('change', (e) => {
+  if (e.target.id === 'bTotal') {
+    const target = Math.max(Math.round(+e.target.value || 0), 0);
+    if (!setTotalBudget(target)) toast('모든 항목이 📌 직접 입력 금액이라 조정할 항목이 없어요');
+    refreshBudgetForm();
+  }
+  // ① 기본 항목 체크 (본식 · 드레스 · 메이크업)
+  if (e.target.matches('[data-basic]')) {
+    const key = e.target.dataset.basic;
+    const on = e.target.checked;
+    if (key === 'hall') changeKeepingOthers(['hall'], () => { if (on) addBudgetCat('hall'); else removeBudgetCat('hall'); });
+    else changeKeepingOthers([`sdm.${key}`], () => setSdmSub(key, on));
+    refreshBudgetForm();
+  }
+  // ② 위시리스트 체크
+  if (e.target.matches('[data-wish]')) {
+    const n = e.target.dataset.wish;
+    const on = e.target.checked;
+    changeKeepingOthers(['etc'], () => toggleWish(n, on));
+    renderWishList();
+    updatePreview();
+  }
   if (e.target.id === 'weddingDate') renderTimeline();
   if (e.target.id === 'dwPhaseSel' && drawerItem) {
     const to = +e.target.value;

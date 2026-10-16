@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>웨딩웨이 · Wedding Way</title>
+  <title>결심</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
   <link rel="stylesheet" href="css/style.css" />
 </head>
@@ -12,16 +12,21 @@
 <!-- ============ 상단 GNB ============ -->
 <header class="gnb">
   <div class="gnb-inner">
-    <a href="#home" class="logo">Wedding<span>Way</span></a>
+    <a href="#home" class="logo">결심</a>
     <nav class="gnb-menu">
       <a href="#budget" data-nav="budget">예산 진단</a>
       <a href="#directory" data-nav="directory">업체 디렉토리</a>
       <a href="#reviews" data-nav="reviews">실후기</a>
-      <a href="#mypage" data-nav="mypage">내 웨딩</a>
+      <a href="#mypage" data-nav="mypage" data-role="consumer">내 웨딩</a>
+      <a href="#partner-dash" data-nav="partner" data-role="biz">업체 대시보드</a>
     </nav>
     <div class="gnb-right">
       <a href="#partner" class="link-sub" data-nav="partner">우리 업체 알리기</a>
-      <a href="#onboarding" class="btn btn-sm btn-primary">시작하기</a>
+      <a href="#login" class="ds-btn ds-btn-sm ds-btn-ink" data-guest>로그인</a>
+      <div class="gnb-user" data-member hidden>
+        <span class="gnb-name" id="gnbName"></span>
+        <button class="gnb-logout" data-action="logout">로그아웃</button>
+      </div>
       <button class="hamburger" aria-label="메뉴" data-action="toggle-menu">☰</button>
     </div>
   </div>
@@ -33,22 +38,22 @@
 <section class="screen" id="screen-splash">
   <div class="splash">
     <div class="splash-inner">
-      <div class="logo splash-logo">Wedding<span>Way</span></div>
-      <h1>결혼 준비,<br/>어디서부터 시작해야 할지 막막하다면</h1>
-      <p class="muted">어떤 분이신지 알려주시면 딱 맞는 길로 안내해 드릴게요.</p>
+      <div class="logo splash-logo">결심</div>
+      <h1>결혼을 결심한 순간,<br/>준비도 여기서 시작해요.</h1>
+      <p class="splash-sub">어떤 분이신지 알려주시면 딱 맞는 길로 안내해 드릴게요.</p>
 
       <div class="splash-choices">
         <a href="#guide" class="splash-card" data-splash-done>
-          <span class="splash-ico">💍</span>
+          <span class="splash-ico"><i data-lucide="heart"></i></span>
           <b>결혼을 준비하고 있어요</b>
-          <small>막 결혼을 결정했다면, 큰 그림부터 함께 볼게요</small>
-          <span class="splash-go">새내기 가이드 보기 →</span>
+          <small>막 결혼을 결심했다면, 큰 그림부터 함께 볼게요</small>
+          <span class="splash-go">새내기 가이드 보기 <i data-lucide="arrow-right"></i></span>
         </a>
-        <a href="#partner" class="splash-card dark" data-splash-done>
-          <span class="splash-ico">📷</span>
+        <a href="#partner" class="splash-card biz" data-splash-done>
+          <span class="splash-ico"><i data-lucide="store"></i></span>
           <b>웨딩 관련 일을 하고 있어요</b>
           <small>스튜디오 · 드레스 · 스냅 · 플래너 등, 우리 업체를 예비부부에게 알려보세요</small>
-          <span class="splash-go">우리 업체 알리기 →</span>
+          <span class="splash-go">우리 업체 알리기 <i data-lucide="arrow-right"></i></span>
         </a>
       </div>
 
@@ -126,6 +131,26 @@
       <a href="#partner-dash" class="flow-node supply"><b>업체 대시보드</b><small>문의 · 일정 · 방문 통계</small></a>
     </div>
 
+    <h3 class="flow-title">④ 회원가입 · 로그인</h3>
+    <div class="flow">
+      <span class="flow-node ghost"><b>비회원</b><small>예산 진단 · 디렉토리 · 실후기</small></span>
+      <span class="flow-arrow">→</span>
+      <a href="#login" class="flow-node hl"><b>로그인</b><small>내 웨딩 · 찜 · 문의 · 후기 쓰기 시</small></a>
+      <span class="flow-arrow">→</span>
+      <a href="#signup-user" class="flow-node"><b>SNS 가입 · 추가 정보</b><small>카카오 · 네이버 · 구글</small></a>
+      <span class="flow-arrow">→</span>
+      <a href="#mypage" class="flow-node"><b>내 웨딩</b></a>
+    </div>
+    <div class="flow">
+      <a href="#partner" class="flow-node supply"><b>업체 소개</b><small>누구나 볼 수 있음</small></a>
+      <span class="flow-arrow">→</span>
+      <a href="#login?type=biz" class="flow-node supply"><b>업체 로그인</b><small>등록 · 대시보드 시</small></a>
+      <span class="flow-arrow">→</span>
+      <a href="#signup-biz" class="flow-node supply"><b>업체 회원가입</b><small>이메일 · 증빙 서류(선택)</small></a>
+      <span class="flow-arrow">→</span>
+      <a href="#partner-join" class="flow-node supply"><b>업체 프로필 만들기</b></a>
+    </div>
+
     <h3 class="flow-title">전체 화면 목록</h3>
     <div class="screen-list">
       <a href="#splash">00 스플래시</a>
@@ -143,84 +168,111 @@
       <a href="#partner">12 업체 소개 (우리 업체 알리기)</a>
       <a href="#partner-join">13 업체 프로필 만들기</a>
       <a href="#partner-dash">14 업체 대시보드</a>
+      <a href="#login">15 로그인</a>
+      <a href="#signup-user">16 일반 회원가입 (추가 정보)</a>
+      <a href="#signup-biz">17 업체 회원가입</a>
     </div>
   </div>
 </section>
 
 <!-- ============ 1. 랜딩 ============ -->
 <section class="screen" id="screen-home">
-  <div class="hero">
-    <div class="container hero-inner">
-      <div class="hero-copy">
-        <span class="eyebrow">중립적 웨딩 큐레이션 Hub</span>
-        <h1>패키지 말고,<br/><em>우리다운</em> 결혼식.</h1>
-        <p>플래너부터 아이폰스냅·헤어변형 같은 인디 업체까지.<br/>내 예산과 취향으로 비교하고 계획하세요.</p>
-        <div class="hero-cta">
-          <a href="#budget" class="btn btn-primary btn-lg">무료 예산 진단하기</a>
-          <a href="#onboarding" class="btn btn-ghost btn-lg">취향 진단 시작</a>
+  <!-- 히어로: 핑크 단색 면 + 가치 3열이 첫 화면에 함께 보이게 -->
+  <div class="hm-hero">
+    <div class="hm-wrap hm-hero-inner">
+      <div class="hm-hero-copy">
+        <h1>패키지 말고,<br/>우리다운 결혼식.</h1>
+        <p class="hm-lead">플래너부터 아이폰스냅 · 헤어변형 같은 인디 업체까지,<br/>내 예산과 취향으로 비교하고 계획하세요.</p>
+        <div class="hm-cta">
+          <a href="#budget" class="ds-btn ds-btn-ink">무료 예산 진단하기 <i data-lucide="arrow-right"></i></a>
+          <a href="#onboarding" class="ds-btn ds-btn-line">취향 진단 시작</a>
         </div>
-        <p class="hero-note">회원가입 없이 바로 이용 가능 · 결과 공유 가능</p>
+        <p class="hm-note">회원가입 없이 바로 이용할 수 있고 결과는 링크로 공유할 수 있어요</p>
       </div>
-      <div class="hero-visual">
-        <div class="hv-card hv-1"><span class="ph ph-1"></span><b>#제주야외스냅</b></div>
-        <div class="hv-card hv-2"><span class="ph ph-2"></span><b>#빈티지드레스</b></div>
-        <div class="hv-card hv-3">
-          <small>예상 총비용</small>
-          <strong>2,940만 원</strong>
-          <div class="mini-bar"><i style="width:82%"></i></div>
-        </div>
+
+      <div class="hm-hero-card" aria-label="예산 진단 결과 예시">
+        <div class="hc-top"><span>예산 진단 결과 예시</span><span class="hc-cond" id="hcCond">서울 웨딩홀 · 하객 150명</span></div>
+        <div class="hc-total"><small>예상 총비용</small><strong id="hcTotal">2,940만 원</strong><span class="hc-badge" id="hcBadge">평균 범위 안</span></div>
+        <ul class="hc-rows" id="hcRows">
+          <li><span>예식장 · 식대</span><i style="--w:100%"></i><b>1,350만</b></li>
+          <li><span>스드메</span><i style="--w:46%"></i><b>620만</b></li>
+          <li><span>본식스냅</span><i style="--w:9%"></i><b>120만</b></li>
+          <li><span>예복 · 한복</span><i style="--w:8%"></i><b>110만</b></li>
+          <li><span>기타 준비 비용</span><i style="--w:55%"></i><b>740만</b></li>
+        </ul>
+        <a href="#budget" class="hc-link">내 조건으로 진단하기 <i data-lucide="arrow-right"></i></a>
       </div>
     </div>
   </div>
 
-  <div class="container">
-    <div class="value-grid">
-      <div class="value-card">
-        <span class="value-ico">₩</span>
-        <h3>예산 가이드</h3>
-        <p>항목별 저가 · 평균가 · 고가 시세로 우리 예산을 미리 가늠해요.</p>
-      </div>
-      <div class="value-card">
-        <span class="value-ico">⇄</span>
-        <h3>높은 자유도</h3>
-        <p>동행 · 비동행 · 일부동행 · 완전 워크인, 내 방식에 맞춘 로드맵을 드려요.</p>
-      </div>
-      <div class="value-card">
-        <span class="value-ico">∞</span>
-        <h3>카테고리 무제한</h3>
-        <p>스드메부터 식전영상, 축의대, 본식 사회자까지 한곳에서 비교해요.</p>
-      </div>
+  <div class="hm-wrap hm-section">
+    <div class="hm-head">
+      <h2>무엇을 준비하세요?</h2>
+      <a href="#directory" class="hm-more">전체 보기 <i data-lucide="arrow-right"></i></a>
     </div>
+    <div class="hm-cats" id="homeCats"></div>
+  </div>
 
-    <div class="reco-band">
-      <b>웨딩웨이의 추천 기준</b>
-      <span>♡ 우리 취향</span><span>₩ 우리 예산</span><span>✔ 실제 후기</span>
-      <em>모든 업체를 광고 없이 같은 기준으로 비교해요</em>
+  <div class="hm-wrap hm-section">
+    <div class="hm-head">
+      <h2>결심을 더 잘 활용하는 방법</h2>
     </div>
-
-    <div class="section-head">
-      <h2>카테고리 둘러보기</h2>
-      <a href="#directory" class="link-more">전체 보기 →</a>
+    <div class="hm-guide">
+      <!-- 일러스트 영역(.hg-art)은 예시 — 실제 아이콘 · 일러스트로 교체 -->
+      <article class="hg-card">
+        <div class="hg-art art-budget" aria-hidden="true">
+          <div class="ga-receipt">
+            <span class="ga-label">예산 진단 결과</span>
+            <span class="ga-line"><i style="--w:78%"></i><b>예식장</b></span>
+            <span class="ga-line"><i style="--w:52%"></i><b>스드메</b></span>
+            <span class="ga-line"><i style="--w:30%"></i><b>본식스냅</b></span>
+          </div>
+          <div class="ga-save"><i data-lucide="badge-check"></i> 평균보다 120만 원 아꼈어요</div>
+          <span class="ga-coin"><i data-lucide="piggy-bank"></i></span>
+        </div>
+        <h3>똑똑한 예산 진단</h3>
+        <p>항목별 평균가와 비교해서 꼭 쓸 곳엔 쓰고, 아낄 곳은 아껴요. <br/>우리 예산을 현명하게 세워보세요.</p>
+        <a href="#budget" class="ds-btn-outline">예산 진단 바로가기</a>
+      </article>
+      <article class="hg-card">
+        <div class="hg-art art-route" aria-hidden="true">
+          <ul class="ga-plan">
+            <li class="done"><i data-lucide="check"></i><b>웨딩홀 계약</b><em>D-300</em></li>
+            <li class="done"><i data-lucide="check"></i><b>스드메 예약</b><em>D-240</em></li>
+            <li class="now"><i></i><b>청첩장 주문</b><em>6/12</em></li>
+          </ul>
+          <span class="ga-coin"><i data-lucide="calendar-check"></i></span>
+        </div>
+        <h3>나만의 웨딩 로드맵</h3>
+        <p>준비 순서를 우리 방식대로 짜고, <br/>일정은 캘린더로 한눈에 관리해요.</p>
+        <a href="#mypage?tab=timeline" class="ds-btn-outline">내 타임라인 보러가기</a>
+      </article>
+      <article class="hg-card">
+        <div class="hg-art art-cats" aria-hidden="true">
+          <div class="ga-tiles">
+            <span><i data-lucide="church"></i></span><span><i data-lucide="camera"></i></span><span><i data-lucide="sparkles"></i></span>
+            <span><i data-lucide="flower-2"></i></span><span><i data-lucide="mic"></i></span><span><i data-lucide="mail"></i></span>
+          </div>
+        </div>
+        <h3>카테고리 무제한 비교</h3>
+        <p>스드메부터 식전영상, 축의대, 본식 사회자까지 <br/>한곳에서 같은 기준으로 비교해요.</p>
+        <a href="#directory" class="ds-btn-outline">업체 디렉토리 보러가기</a>
+      </article>
     </div>
-    <div class="cat-grid" id="homeCats"></div>
+  </div>
 
-    <div class="section-head">
-      <h2>이번 주 인기 인디 업체</h2>
-      <a href="#directory" class="link-more">더 보기 →</a>
-    </div>
-    <div class="vendor-grid" id="homeVendors"></div>
-
-    <div class="banner-split">
-      <div class="banner">
-        <h3>결혼 준비, 처음이신가요?</h3>
-        <p>큰 그림부터 가장 먼저 할 일, 준비 방식까지 — 카드 4장으로 쉽게 알려드려요.</p>
-        <a href="#guide" class="btn btn-primary">새내기 가이드 보기</a>
+  <div class="hm-wrap hm-section">
+    <div class="hm-head">
+      <div>
+        <h2>이런 업체 찾고 있나요?</h2>
+        <p>취향에 맞는 업체를 모아봤어요.</p>
       </div>
-      <div class="banner banner-dark">
-        <h3>웨딩 관련 업체이신가요?</h3>
-        <p>웨딩홀부터 1인 작가 · 헬퍼까지, 3분이면 우리 업체를 예비부부에게 소개할 수 있어요.</p>
-        <a href="#partner" class="btn btn-light">우리 업체 알리기</a>
-      </div>
+      <a href="#directory" class="hm-more">디렉토리 <i data-lucide="arrow-right"></i></a>
+    </div>
+    <div class="hm-slider">
+      <button class="hs-nav prev" data-action="feed-prev" aria-label="이전 사진" disabled><i data-lucide="chevron-left"></i></button>
+      <div class="hm-feed" id="homeFeed" tabindex="0" aria-label="업체 사진 목록, 좌우로 넘겨보세요"></div>
+      <button class="hs-nav next" data-action="feed-next" aria-label="다음 사진"><i data-lucide="chevron-right"></i></button>
     </div>
   </div>
 </section>
@@ -363,10 +415,9 @@
 <!-- ============ 3. 예산 진단 (입력) ============ -->
 <section class="screen" id="screen-budget">
   <div class="container">
-    <div class="page-head">
-      <span class="eyebrow">Smart Budget Diagnosis</span>
-      <h1>스마트 예산 진단</h1>
-      <p class="muted">항목을 고르면 평균가로 총예산을 계산해 드려요. 중요도에 따라 나만의 예산을 계획해 보세요!</p>
+    <div class="ds-page-head">
+      <h1>예산 진단</h1>
+      <p>항목을 고르면 평균가로 총예산을 계산해 드려요. 중요도에 따라 우리만의 예산을 계획해 보세요.</p>
     </div>
 
     <div class="budget-layout">
@@ -384,7 +435,7 @@
 
         <div class="card">
           <h3><span class="num">3</span> 예산 항목 · 중요도</h3>
-          <p class="muted sm">📌 고정한 항목은 총예산을 바꿔도 그대로예요.</p>
+          <p class="muted sm bi-hint"><i data-lucide="pin"></i> 고정한 항목은 총예산을 바꿔도 그대로예요.</p>
           <div id="budgetItems"></div>
         </div>
 
@@ -402,7 +453,7 @@
 
       <aside class="budget-side">
         <div class="card sticky">
-          <span class="eyebrow">실시간 미리보기</span>
+          <span class="pv-label">실시간 미리보기</span>
           <div class="preview-total">
             <small>총예산</small>
             <strong id="pvTotal">-</strong>
@@ -410,7 +461,7 @@
           </div>
           <div class="pie" id="pvPie"></div>
           <ul class="legend" id="pvLegend"></ul>
-          <a href="#budget-result" class="btn btn-primary btn-block">진단 리포트 보기</a>
+          <a href="#budget-result" class="ds-btn ds-btn-ink pv-cta">진단 리포트 보기 <i data-lucide="arrow-right"></i></a>
         </div>
       </aside>
     </div>
@@ -463,7 +514,7 @@
         <button class="btn btn-ghost" data-toast="링크가 복사되었어요">링크 복사</button>
         <button class="btn btn-ghost" data-toast="카카오톡 공유 (프로토타입)">카카오톡</button>
         <button class="btn btn-ghost" data-toast="이미지 저장 (프로토타입)">이미지 저장</button>
-        <button class="btn btn-primary" data-toast="로그인 후 내 웨딩에 저장돼요">내 웨딩에 저장</button>
+        <button class="btn btn-primary" data-auth="user" data-toast="내 웨딩에 저장했어요">내 웨딩에 저장</button>
       </div>
     </div>
   </div>
@@ -546,7 +597,7 @@
             <b>상담 후 가격을 안내하는 업체예요</b>
             <p class="muted">원하는 날짜와 구성을 알려주시면 맞춤 견적을 받을 수 있어요.</p>
             <div class="hint-box">📊 <span id="vdAvgCat">스튜디오</span> 시장 평균가 <b id="vdAvgRange">150~250만 원</b> · 참고용</div>
-            <button class="btn btn-primary" data-toast="견적 문의를 보냈어요 (프로토타입)">견적 문의하기</button>
+            <button class="btn btn-primary" data-auth="user" data-toast="견적 문의를 보냈어요 (프로토타입)">견적 문의하기</button>
           </div>
           <div id="vdPriceOpen">
           <table class="price-table">
@@ -571,7 +622,7 @@
           <div class="vd-closed" id="vdSchedClosed" hidden>
             <b>일정은 문의로 확인해 주세요</b>
             <p class="muted">이 업체는 예약 가능 일정을 따로 공개하지 않아요. 원하는 날짜를 보내면 가능 여부를 알려드려요.</p>
-            <button class="btn btn-primary" data-toast="일정 문의를 보냈어요 (프로토타입)">일정 문의하기</button>
+            <button class="btn btn-primary" data-auth="user" data-toast="일정 문의를 보냈어요 (프로토타입)">일정 문의하기</button>
           </div>
           <div id="vdSchedOpen">
             <div class="cal" id="vdCal"></div>
@@ -592,9 +643,9 @@
             <small class="avg-note" id="vdPriceAvg" hidden></small>
             <span class="tier-badge">표준</span>
           </div>
-          <button class="btn btn-primary btn-block" data-toast="문의 요청을 보냈어요 (프로토타입)">상담 · 예약 문의</button>
+          <button class="btn btn-primary btn-block" data-auth="user" data-toast="문의 요청을 보냈어요 (프로토타입)">상담 · 예약 문의</button>
           <div class="side-btns">
-            <button class="btn btn-ghost" data-action="like">♡ 찜하기</button>
+            <button class="btn btn-ghost" data-action="like" data-auth="user">♡ 찜하기</button>
             <button class="btn btn-ghost" data-toast="예산 진단에 추가했어요">＋ 예산에 담기</button>
           </div>
           <a class="insta-link" href="#vendor" data-toast="인스타그램으로 이동 (프로토타입)">◎ @filmharu.snap</a>
@@ -602,7 +653,7 @@
             <small>이 업체를 추천한 이유</small>
             <div class="why" id="vdWhyChips"></div>
           </div>
-          <p class="muted sm">웨딩웨이는 업체와 별도 제휴 수수료 없이 정보를 동일 기준으로 노출합니다.</p>
+          <p class="muted sm">결심은 업체와 별도 제휴 수수료 없이 정보를 동일 기준으로 노출합니다.</p>
         </div>
       </aside>
     </div>
@@ -661,7 +712,7 @@
     <div class="my-head card">
       <div>
         <span class="eyebrow">My Wedding</span>
-        <h1>민지 ♥ 준호 님의 웨딩</h1>
+        <h1 id="myTitle">민지 ♥ 준호 님의 웨딩</h1>
         <p class="muted">본식 <b id="ddayDate">2027.06.12</b> · 더채플 강남</p>
       </div>
       <div class="my-head-right">
@@ -744,74 +795,145 @@
 
 <!-- ============ 11. 업체 소개 (우리 업체 알리기) ============ -->
 <section class="screen" id="screen-partner">
-  <div class="partner-hero">
-    <div class="container">
-      <span class="eyebrow light">For Wedding Businesses</span>
-      <h1>우리 업체를,<br/>딱 맞는 예비부부에게.</h1>
-      <p>웨딩홀부터 1인 작가 · 헬퍼까지, 규모와 상관없이 소개할 수 있어요. 지금은 등록비 없이 시작할 수 있어요.</p>
-      <a href="#partner-join" class="btn btn-light btn-lg">우리 업체 알리기</a>
+  <!-- 업체용 히어로: 예비부부 홈(핑크)과 구분되는 잉크 단색 면 -->
+  <div class="pt-hero">
+    <div class="hm-wrap pt-hero-inner">
+      <div class="pt-hero-copy">
+        <span class="pt-kicker">업체 회원</span>
+        <h1>우리 업체를,<br/>딱 맞는 예비부부에게.</h1>
+        <p class="pt-lead">웨딩홀부터 1인 작가 · 헬퍼까지, 규모와 상관없이 소개할 수 있어요. <br/>지금은 등록비 없이 시작할 수 있어요.</p>
+        <div class="hm-cta">
+          <a href="#partner-join" class="ds-btn ds-btn-brand">우리 업체 알리기 <i data-lucide="arrow-right"></i></a>
+          <a href="#pt-price" class="ds-btn pt-btn-line" data-scroll>요금 안내</a>
+        </div>
+      </div>
+
+      <div class="pt-preview" aria-label="업체 소개 미리보기 예시">
+        <span class="pt-preview-label">예비부부에게 이렇게 보여요</span>
+        <div class="pt-card">
+          <img src="https://images.unsplash.com/photo-1532712938310-34cb3982ef74?w=720&q=75&auto=format&fit=crop" alt="" />
+          <div class="pt-card-body">
+            <span class="pt-tag">아이폰스냅</span>
+            <b>필름하루 스냅</b>
+            <small>서울 · 제주 | 1인 작가 · 35~75만 원</small>
+            <div class="pt-moods"><span>#야외스냅</span><span>#필름감성</span><span>#내추럴</span></div>
+          </div>
+          <div class="pt-card-foot"><i data-lucide="badge-check"></i> 취향이 맞는 예비부부에게 추천돼요</div>
+        </div>
+      </div>
     </div>
   </div>
-  <div class="container">
-    <div class="biz-section">
-      <h2>이런 업체와 함께해요</h2>
-      <div class="biz-cats" id="bizCats"></div>
-    </div>
 
-    <div class="value-grid">
-      <div class="value-card"><span class="value-ico">◎</span><h3>인스타 연동</h3><p>계정만 연결하면 게시물이 우리 업체 소개 페이지로 자동 정리돼요.</p></div>
-      <div class="value-card"><span class="value-ico">▦</span><h3>일정 공개</h3><p>예약 가능한 날짜를 보여줘서 반복되는 일정 문의를 줄여요.</p></div>
-      <div class="value-card"><span class="value-ico">◇</span><h3>취향 매칭</h3><p>광고 없이, 무드와 예산이 맞는 예비부부에게 추천돼요.</p></div>
-    </div>
+  <div class="hm-wrap hm-section">
+    <div class="hm-head"><h2>이런 업체와 함께해요</h2></div>
+    <div class="pt-cats" id="bizCats"></div>
+  </div>
 
-    <div class="free-section">
-      <div class="free-head">
-        <h2>필수는 딱 4가지, 나머지는 자유롭게</h2>
-        <p class="muted">원하는 만큼만 보여주세요. 나중에 언제든 추가하거나 숨길 수 있어요.</p>
-      </div>
-      <div class="free-grid">
-        <div class="free-col">
-          <span class="tag">필수</span>
-          <ul class="free-must"><li>대표 사진</li><li>업종</li><li>업체명</li><li>무드 태그 <small class="muted">1개 이상</small></li></ul>
+  <div class="hm-wrap hm-section">
+    <div class="hm-head"><h2>결심에서 업체를 알리면</h2></div>
+    <div class="hm-guide">
+      <article class="hg-card">
+        <div class="hg-art art-budget" aria-hidden="true">
+          <div class="pt-art-grid"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+          <span class="ga-coin"><i data-lucide="instagram"></i></span>
         </div>
-        <div class="free-col">
-          <span class="tag tag-new">선택 · 원하는 것만</span>
-          <div class="free-chips">
-            <span>◎ 인스타 연동</span><span>▦ 예약 일정 공개</span><span>₩ 가격 공개</span><span>✎ 상세 소개</span>
+        <h3>인스타 연동</h3>
+        <p>계정만 연결하면 게시물이 <br/>우리 업체 소개 페이지로 자동 정리돼요.</p>
+      </article>
+      <article class="hg-card">
+        <div class="hg-art art-route" aria-hidden="true">
+          <div class="pt-art-cal">
+            <b>6월</b>
+            <div><span class="ok">7</span><span class="no">8</span><span class="ok">14</span><span class="ok">15</span><span class="no">21</span><span class="ok">22</span></div>
           </div>
+          <span class="ga-coin"><i data-lucide="calendar-days"></i></span>
+        </div>
+        <h3>일정 공개</h3>
+        <p>예약 가능한 날짜를 보여줘서 <br/>반복되는 일정 문의를 줄여요.</p>
+      </article>
+      <article class="hg-card">
+        <div class="hg-art art-cats" aria-hidden="true">
+          <div class="pt-art-match"><span>#필름감성</span><i data-lucide="heart-handshake"></i><span>#야외스냅</span></div>
+        </div>
+        <h3>취향 매칭</h3>
+        <p>광고 없이, 무드와 예산이 맞는 <br/>예비부부에게 추천돼요.</p>
+      </article>
+    </div>
+  </div>
+
+  <div class="hm-wrap hm-section">
+    <div class="hm-head">
+      <div>
+        <h2>필수는 딱 4가지, 나머지는 자유롭게</h2>
+        <p>원하는 만큼만 보여주세요. 나중에 언제든 추가하거나 숨길 수 있어요.</p>
+      </div>
+    </div>
+    <div class="pt-free">
+      <div class="pt-free-col">
+        <span class="pt-free-label">필수</span>
+        <ul class="pt-must">
+          <li><i data-lucide="check"></i>대표 사진</li>
+          <li><i data-lucide="check"></i>업종</li>
+          <li><i data-lucide="check"></i>업체명</li>
+          <li><i data-lucide="check"></i>무드 태그 <small>1개 이상</small></li>
+        </ul>
+      </div>
+      <div class="pt-free-col">
+        <span class="pt-free-label soft">선택 · 원하는 것만</span>
+        <div class="pt-opts">
+          <span><i data-lucide="instagram"></i> 인스타 연동</span>
+          <span><i data-lucide="calendar-days"></i> 예약 일정 공개</span>
+          <span><i data-lucide="wallet"></i> 가격 공개</span>
+          <span><i data-lucide="pencil-line"></i> 상세 소개</span>
         </div>
       </div>
     </div>
+  </div>
 
-    <div class="card">
-      <h3>이렇게 진행돼요</h3>
-      <div class="how-steps">
-        <div class="how-step"><span>1</span><b>필수 정보 입력</b><p>대표 사진 · 업종 · 업체명 · 무드 태그</p></div>
-        <div class="how-step"><span>2</span><b>원하는 항목만 골라 추가</b><p>인스타 · 일정 · 가격 · 상세 소개 (선택)</p></div>
-        <div class="how-step"><span>3</span><b>예비부부에게 소개</b><p>검토 후 디렉토리에 소개</p></div>
+  <div class="hm-wrap hm-section">
+    <div class="hm-head"><h2>이렇게 진행돼요</h2></div>
+    <ol class="pt-steps">
+      <li><span>1</span><b>필수 정보 입력</b><p>대표 사진 · 업종 · 업체명 · 무드 태그</p></li>
+      <li><span>2</span><b>원하는 항목만 골라 추가</b><p>인스타 · 일정 · 가격 · 상세 소개 (선택)</p></li>
+      <li><span>3</span><b>예비부부에게 소개</b><p>검토 후 디렉토리에 소개</p></li>
+    </ol>
+  </div>
+
+  <div class="hm-wrap hm-section" id="pt-price">
+    <div class="hm-head"><h2>요금 안내</h2></div>
+    <div class="pt-plans">
+      <div class="pt-plan on">
+        <span class="pt-plan-tag">현재</span>
+        <h3>업체 등록</h3>
+        <strong>지금은 무료</strong>
+        <p>업체 소개 · 사진 · 무드 · 일정 공개</p>
+        <small>원래 등록비가 있는 서비스예요. 무료 기간이 끝나기 전에 미리 안내해 드려요.</small>
+      </div>
+      <div class="pt-plan">
+        <span class="pt-plan-tag soft">예정</span>
+        <h3>관리 구독</h3>
+        <strong>필요할 때만</strong>
+        <p>문의 · 예약 · 일정 관리 도구, 방문 통계</p>
+        <small>등록과 별도로, 원하는 업체만 선택해서 구독해요.</small>
       </div>
     </div>
+    <p class="pt-neutral"><i data-lucide="scale"></i> 구독 여부와 상관없이 모든 업체는 같은 기준으로 소개돼요.</p>
+  </div>
 
-    <div class="card">
-      <h3>요금 안내</h3>
-      <div class="plan-grid two">
-        <div class="plan active"><span class="tag tag-ok">현재</span><h4>업체 등록</h4><strong>지금은 무료</strong><p>업체 소개 · 사진 · 무드 · 일정 공개</p><p class="plan-note">원래 등록비가 있는 서비스예요. 무료 기간이 끝나기 전에 미리 안내해 드려요.</p></div>
-        <div class="plan"><span class="tag">예정</span><h4>관리 구독</h4><strong>필요할 때만</strong><p>문의 · 예약 · 일정 관리 도구, 방문 통계</p><p class="plan-note">등록과 별도로, 원하는 업체만 선택해서 구독해요.</p></div>
-      </div>
-      <p class="neutral-note">⚖ 구독 여부와 상관없이 모든 업체는 같은 기준으로 소개돼요.</p>
+  <div class="hm-wrap hm-section">
+    <div class="hm-head"><h2>자주 묻는 질문</h2></div>
+    <div class="pt-faq">
+      <details><summary>가격을 꼭 공개해야 하나요?<i data-lucide="chevron-down"></i></summary><p>아니요, 선택이에요. 공개하지 않으면 '상담 후 안내'로 표시되고, 나중에 범위만 공개하거나 상세 공개로 바꿀 수 있어요.</p></details>
+      <details><summary>사업자가 아니어도 소개할 수 있나요?<i data-lucide="chevron-down"></i></summary><p>네. 프리랜서 작가 · 헬퍼 · 플래너는 사업자 등록증 대신 신분증과 활동 포트폴리오(인스타그램 등)로 확인한 뒤 소개해요. 가입은 증빙 없이 할 수 있고, 디렉토리에 공개하기 전에만 필요해요. (프로토타입 예시 정책)</p></details>
+      <details><summary>수수료가 있나요?<i data-lucide="chevron-down"></i></summary><p>원래 등록비가 있지만 지금은 무료로 등록할 수 있어요. 무료 기간이 끝나기 전에는 미리 안내해 드리고, 예약 연결 수수료는 받지 않아요. (프로토타입 예시 정책)</p></details>
+      <details><summary>돈을 내면 더 잘 보이나요?<i data-lucide="chevron-down"></i></summary><p>아니요. 결심에는 광고나 유료 우선 노출이 없어요. 대신 정보를 충실히 채우고 후기가 쌓일수록 더 위에 소개돼요.</p></details>
     </div>
+  </div>
 
-    <div class="card faq">
-      <h3>자주 묻는 질문</h3>
-      <details><summary>가격을 꼭 공개해야 하나요?</summary><p>아니요, 선택이에요. 공개하지 않으면 '상담 후 안내'로 표시되고, 나중에 범위만 공개하거나 상세 공개로 바꿀 수 있어요.</p></details>
-      <details><summary>사업자가 아니어도 소개할 수 있나요?</summary><p>프리랜서 작가 · 헬퍼 · 플래너도 소개할 수 있어요. (프로토타입 예시 정책)</p></details>
-      <details><summary>수수료가 있나요?</summary><p>원래 등록비가 있지만 지금은 무료로 등록할 수 있어요. 무료 기간이 끝나기 전에는 미리 안내해 드리고, 예약 연결 수수료는 받지 않아요. (프로토타입 예시 정책)</p></details>
-      <details><summary>돈을 내면 더 잘 보이나요?</summary><p>아니요. 웨딩웨이에는 광고나 유료 우선 노출이 없어요. 대신 정보를 충실히 채우고 후기가 쌓일수록 더 위에 소개돼요.</p></details>
-    </div>
-
-    <div class="cta-band">
+  <div class="hm-wrap hm-section">
+    <div class="pt-cta">
       <div><h3>3분이면 우리 업체 소개가 완성돼요</h3><p>필수 정보 4가지만 있으면 바로 시작할 수 있어요.</p></div>
-      <a href="#partner-join" class="btn btn-light btn-lg">우리 업체 알리기</a>
+      <a href="#partner-join" class="ds-btn ds-btn-ink">우리 업체 알리기 <i data-lucide="arrow-right"></i></a>
     </div>
   </div>
 </section>
@@ -913,7 +1035,7 @@
       <div class="done-box">
         <div class="done-ico">✓</div>
         <h2>업체 소개가 준비됐어요!</h2>
-        <p class="muted">검토 후 24시간 이내에 예비부부에게 소개돼요.</p>
+        <p class="muted" id="pjDoneMsg">검토 후 24시간 이내에 예비부부에게 소개돼요.</p>
         <div class="pj-preview">
           <small class="muted">예비부부에게는 이렇게 보여요</small>
           <div id="pjPreview"></div>
@@ -935,7 +1057,11 @@
   <div class="container">
     <div class="page-head">
       <span class="eyebrow">Business Dashboard</span>
-      <h1>필름하루 스냅</h1>
+      <h1 id="dashTitle">필름하루 스냅</h1>
+    </div>
+    <div class="card proof-banner" id="dashProof" hidden>
+      <div><b>증빙 서류를 올리면 디렉토리에 소개돼요</b><p class="muted sm">지금은 프로필이 비공개 상태예요. 사업자 등록증, 또는 프리랜서라면 신분증 + 포트폴리오를 올려주세요.</p></div>
+      <button class="btn btn-primary" data-action="dash-proof">증빙 서류 올리기</button>
     </div>
     <div class="stat-grid">
       <div class="card stat"><small>이번 주 프로필 조회</small><strong>1,284</strong><span class="up">▲ 18%</span></div>
@@ -960,7 +1086,143 @@
   </div>
 </section>
 
+<!-- ============ 14. 로그인 (일반 · 업체) ============ -->
+<section class="screen" id="screen-login">
+  <div class="container narrow auth-wrap">
+    <div class="auth-head">
+      <div class="logo">결심</div>
+      <h1 id="loginTitle">결심에 오신 걸 환영해요</h1>
+      <p class="muted" id="loginDesc">로그인하고 우리만의 웨딩 계획을 이어가세요.</p>
+    </div>
+    <div class="hint-box auth-current" id="loginCurrent" hidden></div>
+
+    <div class="auth-tabs" data-single>
+      <button class="auth-tab active" data-authtab="user"><i data-lucide="heart"></i> 예비부부</button>
+      <button class="auth-tab" data-authtab="biz"><i data-lucide="store"></i> 웨딩 업체</button>
+    </div>
+
+    <div class="card auth-panel active" data-authpanel="user">
+      <p class="auth-lead">SNS 계정으로 3초 만에 시작하세요</p>
+      <div class="sns-btns">
+        <button class="btn btn-block btn-lg sns-kakao" data-sns="kakao"><b>K</b> 카카오로 시작하기</button>
+        <button class="btn btn-block btn-lg sns-naver" data-sns="naver"><b>N</b> 네이버로 시작하기</button>
+        <button class="btn btn-block btn-lg sns-google" data-sns="google"><b>G</b> Google로 시작하기</button>
+      </div>
+      <p class="muted sm auth-note">처음이면 간단한 추가 정보 입력 후 가입이 완료돼요.</p>
+      <button class="text-btn auth-demo" data-action="demo-login-user">프로토타입: 가입된 회원(민지)으로 바로 로그인 →</button>
+    </div>
+
+    <div class="card auth-panel" data-authpanel="biz">
+      <p class="auth-lead">업체회원은 이메일로 로그인해요</p>
+      <label class="field"><span>이메일 (아이디)</span><input type="email" id="bizLoginEmail" placeholder="hello@filmharu.kr" autocomplete="username" /></label>
+      <label class="field"><span>비밀번호</span><input type="password" id="bizLoginPw" placeholder="비밀번호" autocomplete="current-password" /></label>
+      <p class="pj-error" id="bizLoginError">이메일과 비밀번호를 입력해 주세요.</p>
+      <button class="ds-btn ds-btn-ink auth-submit" data-action="biz-login">로그인</button>
+      <div class="auth-links">
+        <button data-toast="비밀번호 재설정 메일을 보냈어요 (프로토타입)">비밀번호 찾기</button>
+        <a href="#signup-biz">업체 회원가입</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 15. 일반 회원가입 · 추가 정보 입력 ============ -->
+<section class="screen" id="screen-signup-user">
+  <div class="container narrow auth-wrap">
+    <a href="#login" class="auth-back"><i data-lucide="chevron-left"></i> 로그인</a>
+    <div class="auth-head left">
+      <span class="auth-kicker" id="suProvider">카카오로 가입 중</span>
+      <h1>조금만 더 알려주세요</h1>
+      <p class="muted">맞춤 타임라인과 업체 추천에 쓰여요.</p>
+    </div>
+    <div class="card">
+      <p class="hint-box sns-fetched" id="suFetched" hidden></p>
+      <label class="field"><span>이름</span><input type="text" id="suName" maxlength="20" placeholder="실명" /></label>
+      <label class="field"><span>닉네임 <small class="muted">후기 · 커뮤니티에 표시돼요</small></span><input type="text" id="suNick" maxlength="12" placeholder="2~12자" /></label>
+      <div class="field"><span>성별 <small class="muted">선택</small></span>
+        <div class="chip-group" data-single id="suGender">
+          <button class="chip" data-gender="F">여성</button><button class="chip" data-gender="M">남성</button>
+        </div>
+      </div>
+      <label class="field"><span>생일 <small class="muted">선택</small></span><input type="date" id="suBirth" /></label>
+      <label class="field"><span>연락처</span><input type="tel" id="suPhone" placeholder="010-0000-0000" /></label>
+    </div>
+    <div class="card terms" id="suTerms">
+      <label class="term-all"><input type="checkbox" data-term-all /> <b>전체 동의</b></label>
+      <label><input type="checkbox" data-term="req" /> [필수] 만 14세 이상이에요</label>
+      <label><input type="checkbox" data-term="req" /> [필수] 이용약관 동의</label>
+      <label><input type="checkbox" data-term="req" /> [필수] 개인정보 수집 · 이용 동의</label>
+      <label><input type="checkbox" data-term /> [선택] 혜택 · 이벤트 알림 받기</label>
+    </div>
+    <p class="pj-error" id="suError"></p>
+    <button class="ds-btn ds-btn-ink auth-submit" data-action="signup-user">가입 완료</button>
+  </div>
+</section>
+
+<!-- ============ 16. 업체 회원가입 ============ -->
+<section class="screen" id="screen-signup-biz">
+  <div class="container narrow auth-wrap">
+    <a href="#login?type=biz" class="auth-back"><i data-lucide="chevron-left"></i> 로그인</a>
+    <div class="auth-head left">
+      <span class="auth-kicker">업체 회원</span>
+      <h1>업체 회원가입</h1>
+      <p class="muted">가입 후 바로 업체 소개를 만들 수 있어요.</p>
+    </div>
+    <div class="card">
+      <h3>계정 정보</h3>
+      <label class="field"><span>이메일 (아이디)</span><input type="email" id="sbEmail" placeholder="hello@filmharu.kr" autocomplete="username" /></label>
+      <label class="field"><span>비밀번호 <small class="muted">8자 이상</small></span><input type="password" id="sbPw" autocomplete="new-password" /></label>
+      <label class="field"><span>비밀번호 확인</span><input type="password" id="sbPw2" autocomplete="new-password" /></label>
+    </div>
+    <div class="card">
+      <h3>업체 정보</h3>
+      <label class="field"><span>업체명 / 활동명</span><input type="text" id="sbName" maxlength="30" placeholder="예: 필름하루 스냅" /></label>
+      <label class="field"><span>연락처</span><input type="tel" id="sbPhone" placeholder="010-0000-0000 또는 02-000-0000" /></label>
+      <div class="field"><span>주소</span>
+        <div class="addr-row">
+          <input type="text" id="sbAddr" placeholder="주소 검색을 눌러주세요" readonly />
+          <button class="ds-btn-outline addr-btn" data-action="addr-search"><i data-lucide="search"></i> 주소 검색</button>
+        </div>
+        <input type="text" id="sbAddr2" class="addr-detail" placeholder="상세 주소 (선택)" />
+      </div>
+    </div>
+    <div class="card">
+      <h3>증빙 서류 <small class="muted">선택</small></h3>
+      <div class="hint-box notice"><i data-lucide="info"></i><span>가입은 증빙 없이도 할 수 있어요. 하지만 <b>디렉토리에 우리 업체를 소개하려면 증빙 서류가 필요해요.</b> 지금 올리지 않아도 가입 후 대시보드에서 올릴 수 있어요.</span></div>
+      <div class="verify-opts proof-opts" data-single>
+        <button class="option-card active" data-proof="biz"><b>사업자 등록증</b><small>사업자등록을 한 업체</small></button>
+        <button class="option-card" data-proof="free"><b>프리랜서 증빙</b><small>신분증 + 활동 포트폴리오</small></button>
+      </div>
+      <label class="field" id="sbPortfolio" hidden><span>포트폴리오 링크</span><input type="url" placeholder="인스타그램 · 블로그 · 웹사이트 주소" /></label>
+      <button class="upload" data-action="proof-upload" id="sbUpload">＋ 사업자 등록증 업로드 (JPG, PNG, PDF)</button>
+      <p class="muted sm">제출한 서류는 확인 용도로만 쓰이고 다른 사용자에게 공개되지 않아요.</p>
+    </div>
+    <div class="card terms" id="sbTerms">
+      <label class="term-all"><input type="checkbox" data-term-all /> <b>전체 동의</b></label>
+      <label><input type="checkbox" data-term="req" /> [필수] 업체회원 이용약관 동의</label>
+      <label><input type="checkbox" data-term="req" /> [필수] 개인정보 수집 · 이용 동의</label>
+      <label><input type="checkbox" data-term /> [선택] 업체 운영 소식 받기</label>
+    </div>
+    <p class="pj-error" id="sbError"></p>
+    <button class="ds-btn ds-btn-ink auth-submit" data-action="signup-biz">가입하고 업체 소개 만들기</button>
+  </div>
+</section>
+
 </main>
+
+<!-- 회사 푸터 (회사 정보는 실제 푸터로 교체) -->
+<footer class="site-footer">
+  <div class="hm-wrap sf-inner">
+    <div class="sf-brand">
+      <div class="logo">결심</div>
+      <p>예산과 취향으로 비교하는 중립적 웨딩 큐레이션</p>
+    </div>
+    <div class="sf-col"><b>탐색</b><a href="#budget">예산 진단</a><a href="#directory">업체 디렉토리</a><a href="#reviews">실후기</a><a href="#guide">새내기 가이드</a></div>
+    <div class="sf-col"><b>업체</b><a href="#partner">우리 업체 알리기</a><a href="#signup-biz">업체 회원가입</a><a href="#partner-dash">업체 대시보드</a></div>
+    <div class="sf-col"><b>고객센터</b><a href="#home" data-toast="이용약관 (프로토타입)">이용약관</a><a href="#home" data-toast="개인정보처리방침 (프로토타입)">개인정보처리방침</a><a href="#home" data-toast="문의하기 (프로토타입)">문의하기</a></div>
+  </div>
+  <div class="hm-wrap sf-bottom">상호 · 대표자 · 사업자등록번호 · 주소 등 회사 정보 영역 (실제 회사 푸터로 교체)</div>
+</footer>
 
 <!-- 모바일 하단 탭바 -->
 <nav class="tabbar">
@@ -968,7 +1230,8 @@
   <a href="#budget" data-nav="budget">₩<span>예산</span></a>
   <a href="#directory" data-nav="directory">▦<span>디렉토리</span></a>
   <a href="#reviews" data-nav="reviews">★<span>실후기</span></a>
-  <a href="#mypage" data-nav="mypage">♡<span>내 웨딩</span></a>
+  <a href="#mypage" data-nav="mypage" data-role="consumer">♡<span>내 웨딩</span></a>
+  <a href="#partner-dash" data-nav="partner" data-role="biz">▤<span>대시보드</span></a>
 </nav>
 
 <!-- 프로토타입 화면 이동 버튼 -->
@@ -1037,6 +1300,7 @@
 
 <div class="toast" id="toast"></div>
 
+<script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
 <script src="js/app.js"></script>
 </body>
 </html>

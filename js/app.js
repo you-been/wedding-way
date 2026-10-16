@@ -1,5 +1,5 @@
 /* =========================================================
-   웨딩웨이 프로토타입 — 화면 전환 & UI 인터랙션
+   결심 프로토타입 — 화면 전환 & UI 인터랙션
    (서버/저장 기능 없음, 모든 데이터는 더미)
    ========================================================= */
 
@@ -7,25 +7,43 @@ const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
 
 /* ---------- 더미 데이터 ---------- */
+// icon: Lucide 아이콘 이름 (홈 카테고리 타일)
 const CATEGORIES = [
-  { name: '전체', ico: '✦' },
-  { name: '플래너', ico: '☰' },
-  { name: '웨딩홀', ico: '⌂' },
-  { name: '스튜디오', ico: '◫' },
-  { name: '드레스', ico: '♢' },
-  { name: '메이크업', ico: '✿' },
-  { name: '헬퍼', ico: '♡' },
-  { name: '헤어변형', ico: '∿' },
-  { name: '아이폰스냅', ico: '▢' },
-  { name: '본식스냅', ico: '◎' },
-  { name: '식전영상', ico: '▶' },
-  { name: '웨딩플라워', ico: '❀' },
-  { name: '웨딩소품', ico: '✧' },
-  { name: '모바일청첩장', ico: '✉' },
-  { name: '본식사회자', ico: '♪' },
-  { name: '축의대', ico: '₩' },
-  { name: '예복·한복', ico: '◇' },
+  { name: '전체', ico: '✦', icon: 'layout-grid' },
+  { name: '플래너', ico: '☰', icon: 'clipboard-list' },
+  { name: '웨딩홀', ico: '⌂', icon: 'church' },
+  { name: '스튜디오', ico: '◫', icon: 'aperture' },
+  { name: '드레스', ico: '♢', icon: 'sparkles' },
+  { name: '메이크업', ico: '✿', icon: 'brush' },
+  { name: '헬퍼', ico: '♡', icon: 'hand-heart' },
+  { name: '헤어변형', ico: '∿', icon: 'scissors' },
+  { name: '아이폰스냅', ico: '▢', icon: 'smartphone' },
+  { name: '본식스냅', ico: '◎', icon: 'camera' },
+  { name: '식전영상', ico: '▶', icon: 'clapperboard' },
+  { name: '웨딩플라워', ico: '❀', icon: 'flower-2' },
+  { name: '웨딩소품', ico: '✧', icon: 'gift' },
+  { name: '모바일청첩장', ico: '✉', icon: 'mail' },
+  { name: '본식사회자', ico: '♪', icon: 'mic' },
+  { name: '축의대', ico: '₩', icon: 'wallet' },
+  { name: '예복·한복', ico: '◇', icon: 'shirt' },
 ];
+
+// 홈 사진 피드 (Unsplash License 무료 사진 · 프로토타입용)
+const FEED = [
+  { vendor: 1, img: '1532712938310-34cb3982ef74' },
+  { vendor: 4, img: '1622277430358-f4d134452e2e' },
+  { vendor: 8, img: '1525258946800-98cfd641d0de' },
+  { vendor: 5, img: '1670529776180-60e4132ab90c' },
+  { vendor: 9, img: '1591604466107-ec97de577aff' },
+  { vendor: 14, img: '1519225421980-715cb0215aed' },
+  { vendor: 6, img: '1606216794074-735e91aa2c92' },
+  { vendor: 2, img: '1549416878-b9ca95e26903' },
+  { vendor: 16, img: '1546032996-6dfacbacbf3f' },
+  { vendor: 3, img: '1607861884586-c7cfaed16290' },
+  { vendor: 11, img: '1583939003579-730e3918a45a' },
+  { vendor: 10, img: '1519741497674-611481863552' },
+];
+const unsplash = (id, w = 600) => `https://images.unsplash.com/photo-${id}?w=${w}&q=75&auto=format&fit=crop`;
 
 // 카테고리별 시장 평균가 (프로토타입용 예시) — 가격 비공개 업체에 참고용으로 표시
 const CATEGORY_AVG = {
@@ -66,10 +84,10 @@ const REVIEWS = [
 
 /* 추가 위시리스트 — 분류별 목록 (평균가는 프로토타입 예시, 만 원) */
 const WISH_GROUPS = [
-  { id: 'shoot', name: '📷 촬영' },
-  { id: 'beauty', name: '💄 뷰티' },
-  { id: 'stage', name: '🎤 본식 연출' },
-  { id: 'deco', name: '💐 꾸밈 · 기타' },
+  { id: 'shoot', name: '촬영', icon: 'camera' },
+  { id: 'beauty', name: '뷰티', icon: 'sparkles' },
+  { id: 'stage', name: '본식 연출', icon: 'mic' },
+  { id: 'deco', name: '꾸밈 · 기타', icon: 'flower-2' },
 ];
 const WISHLIST = [
   { g: 'shoot', name: '아이폰스냅', cost: 30, d: '감성 아이폰 촬영 · 원본 제공' },
@@ -108,24 +126,24 @@ const BASIC_ITEMS = [
 ];
 const SHOOT_IDS = ['studio', 'outdoor']; // 둘 중 하나만
 
-/* 예산 항목 — 기본 5개 (웨딩웨이 기준표 항목). 모두 뺄 수 있음
+/* 예산 항목 — 기본 5개 (결심 기준표 항목). 모두 뺄 수 있음
    스드메는 묶음 항목: 하위(스튜디오 · 드레스 · 메이크업)를 각각 조절하고 뺄 수 있음 (share: 스드메 안 기본 비율)
    기타 준비 비용 = 위시리스트 예산 */
 const BUDGET_CATALOG = [
-  { id: 'hall', name: '예식장 · 식대', color: '#b5546a' },
-  { id: 'sdm', name: '스드메', color: '#6b5b95', subs: [
+  { id: 'hall', name: '예식장 · 식대', color: '#ff7aa2' },
+  { id: 'sdm', name: '스드메', color: '#212224', subs: [
     { id: 'studio', name: '스튜디오', share: 0.40 },
     { id: 'outdoor', name: '야외스냅', share: 0.40, optional: true }, // 스튜디오 대신 고를 때만
     { id: 'dress', name: '드레스', share: 0.35 },
     { id: 'makeup', name: '메이크업', share: 0.25 },
   ] },
-  { id: 'jewelry', name: '예물', color: '#8fb8a5' },
-  { id: 'suit', name: '예복', color: '#7fa7b8' },
-  { id: 'honeymoon', name: '신혼여행', color: '#d29b2a' },
-  { id: 'etc', name: '기타 준비 비용', color: '#e6a5b4' },
+  { id: 'jewelry', name: '예물', color: '#6c8cff' },
+  { id: 'suit', name: '예복', color: '#5fc4a0' },
+  { id: 'honeymoon', name: '신혼여행', color: '#f5b83d' },
+  { id: 'etc', name: '기타 준비 비용', color: '#c8cad2' },
 ];
 
-/* 웨딩웨이 기준표 (만 원) — 항목별 [가성비형, 표준형, 고급형] 의 [최소, 최대]
+/* 결심 기준표 (만 원) — 항목별 [가성비형, 표준형, 고급형] 의 [최소, 최대]
    가성비형 '기타 준비 비용'은 기준표에 없어서 임시값(100~200만 원) */
 const REF_TABLE = {
   hall: [[1800, 2100], [1900, 2400], [2500, 4000]],
@@ -172,7 +190,7 @@ function hallEstimate({ type, region, guests }) {
   return { meal, base, food: meal * guests, total: Math.round(meal * guests + base) };
 }
 const SDM_AVG = AVG_COST.studio + AVG_COST.dress + AVG_COST.makeup; // 스드메 기준표 구간을 하위 항목에 나눌 때 기준
-const CUSTOM_COLORS = ['#9aaabf', '#c58aa1', '#cfb48a', '#7fa7b8', '#a99cc9'];
+const CUSTOM_COLORS = ['#9c8cf0', '#ffb38a', '#7fb8e6', '#d9a0e0', '#8fd18f'];
 const makeBudgetCat = (c) => ({ ...c, w: 1, open: false, subs: c.subs ? c.subs.filter((s) => !s.optional).map((s) => ({ ...s, w: 1 })) : null });
 
 /* 타임라인 단계 (기획서 표준 타임라인 기준) */
@@ -228,6 +246,20 @@ const TL_DEFAULT = [
 ];
 
 /* ---------- 공통 ---------- */
+// Lucide 아이콘 그리기 (CDN을 못 불러와도 화면은 동작)
+const drawIcons = () => { try { window.lucide?.createIcons(); } catch { /* 아이콘 없이 진행 */ } };
+// 다시 그려지는 목록 안에 바로 넣는 인라인 SVG ('pin' → Lucide Pin)
+const icon = (name, size = 16) => {
+  try {
+    const node = window.lucide.icons[name.replace(/(^|-)(\w)/g, (_, _d, c) => c.toUpperCase())];
+    const el = window.lucide.createElement(node);
+    el.setAttribute('width', size);
+    el.setAttribute('height', size);
+    el.setAttribute('aria-hidden', 'true');
+    return el.outerHTML;
+  } catch { return ''; }
+};
+
 const won = (man) => {
   man = Math.round(man);
   return man >= 10000 ? `${(man / 10000).toFixed(1)}억 원` : `${man.toLocaleString()}만 원`;
@@ -269,7 +301,7 @@ function vendorCard(v, { masonry = false, reasons = null } = {}) {
     <a class="v-card" href="#vendor" data-vendor="${v.id}">
       <div style="position:relative">
         <span class="ph ph-${v.ph}" style="height:${masonry ? v.h : 180}px"></span>
-        <span class="like">♡</span>
+        <span class="like" data-auth="user">♡</span>
       </div>
       <div class="v-body">
         <span class="tag">${v.cat}</span>
@@ -318,12 +350,192 @@ const SPLASH_KEY = 'ww-splash-done';
 const splashDone = () => { try { return localStorage.getItem(SPLASH_KEY) === '1'; } catch { return false; } };
 const markSplashDone = () => { try { localStorage.setItem(SPLASH_KEY, '1'); } catch { /* 저장 불가 환경 무시 */ } };
 
+/* ---------- 로그인 · 회원가입 (프로토타입: 이 브라우저에만 저장) ---------- */
+// 계정 유형: user(예비부부, SNS 가입) · biz(업체, 이메일 가입)
+const AUTH_KEY = 'ww-auth';
+let authUser = null;
+try { authUser = JSON.parse(localStorage.getItem(AUTH_KEY)); } catch { authUser = null; }
+
+// 화면별 필요한 계정 유형 (없으면 비회원도 이용 가능)
+const SCREEN_AUTH = { mypage: 'user', 'review-write': 'user', 'partner-join': 'biz', 'partner-dash': 'biz' };
+const AUTH_COPY = {
+  user: { title: '로그인하고 나만의 웨딩 계획을 짜보세요!', desc: '타임라인 · 예산 · 찜한 업체를 내 웨딩에 모아둘 수 있어요.' },
+  biz: { title: '업체회원으로 로그인하고 우리 업체를 알려보세요!', desc: '업체 소개를 만들고 문의 · 일정을 한곳에서 관리해요.' },
+};
+const SNS_NAMES = { kakao: '카카오', naver: '네이버', google: 'Google' };
+// SNS가 동의 후 넘겨주는 정보 (실서비스 기준: 카카오는 이름 · 연락처에 비즈앱 검수, 구글은 이름 · 이메일만 기본 제공)
+const SNS_PROFILE = {
+  kakao: { nick: '민지' },
+  naver: { name: '김민지', nick: '민지', gender: 'F', birth: '1996-03-14', phone: '010-1234-5678' },
+  google: { name: '김민지' },
+};
+const SNS_FIELD_LABELS = { name: '이름', nick: '닉네임', gender: '성별', birth: '생일', phone: '연락처' };
+const DEMO_USER = { type: 'user', provider: 'kakao', name: '김민지', nick: '민지', phone: '010-1234-5678' };
+let authNext = null; // 로그인 후 돌아갈 화면
+let snsProvider = 'kakao';
+let sbProof = null; // 업체 가입 시 올린 증빙: null · 'biz'(사업자 등록증) · 'free'(프리랜서)
+
+const authLabel = (u) => (u.type === 'biz' ? u.bizName : u.nick);
+const proofLabel = (kind) => (kind === 'free' ? '신분증 + 포트폴리오' : '사업자 등록증');
+
+function saveAuth(u) {
+  authUser = u;
+  try { if (u) localStorage.setItem(AUTH_KEY, JSON.stringify(u)); else localStorage.removeItem(AUTH_KEY); } catch { /* 저장 불가 환경 무시 */ }
+  applyAuthUI();
+}
+
+function applyAuthUI() {
+  const type = authUser?.type;
+  document.body.classList.toggle('is-biz', type === 'biz');
+  $$('[data-guest]').forEach((el) => { el.hidden = !!authUser; });
+  $$('[data-member]').forEach((el) => { el.hidden = !authUser; });
+  $('#gnbName').textContent = authUser ? `${authLabel(authUser)} 님` : '';
+  if (type === 'user') $('#myTitle').textContent = `${authUser.nick} 님의 웨딩`;
+  if (type === 'biz') {
+    $('#dashTitle').textContent = authUser.bizName;
+    $('#pjName').value = authUser.bizName;
+    $('#dashProof').hidden = !!authUser.proof;
+    $('#pjDoneMsg').textContent = authUser.proof
+      ? '검토 후 24시간 이내에 예비부부에게 소개돼요.'
+      : '프로필이 저장됐어요. 증빙 서류를 올리면 검토 후 예비부부에게 소개돼요.';
+  }
+}
+
+// 로그인이 필요한 곳 → 로그인 화면으로 (로그인 후 next로 복귀)
+function requireLogin(type, next) {
+  location.hash = `#login?type=${type}&next=${encodeURIComponent(next)}`;
+}
+
+function renderLogin(params) {
+  const type = params.get('type') === 'biz' ? 'biz' : 'user';
+  authNext = params.get('next');
+  const copy = authNext ? AUTH_COPY[type] : { title: '결심에 오신 걸 환영해요', desc: '로그인하고 우리만의 웨딩 계획을 이어가세요.' };
+  $('#loginTitle').textContent = copy.title;
+  $('#loginDesc').textContent = copy.desc;
+  // 다른 유형 계정으로 로그인한 채 들어온 경우 안내
+  const cur = $('#loginCurrent');
+  cur.hidden = !authUser;
+  if (authUser) {
+    const kind = authUser.type === 'biz' ? '업체 계정' : '예비부부 계정';
+    const need = type === 'biz' ? '업체회원' : '예비부부 회원';
+    cur.innerHTML = authNext && authUser.type !== type
+      ? `지금은 ${kind}(<b>${esc(authLabel(authUser))}</b>)으로 로그인되어 있어요. 이 기능은 ${need}만 이용할 수 있어요.`
+      : `지금 ${kind}(<b>${esc(authLabel(authUser))}</b>)으로 로그인되어 있어요. 다른 계정으로 로그인하면 전환돼요.`;
+  }
+  showAuthTab(type);
+  $('#bizLoginError').classList.remove('show');
+}
+
+function showAuthTab(type) {
+  $$('.auth-tab').forEach((b) => b.classList.toggle('active', b.dataset.authtab === type));
+  $$('.auth-panel').forEach((p) => p.classList.toggle('active', p.dataset.authpanel === type));
+}
+
+function finishLogin(u, msg, fallback) {
+  saveAuth(u);
+  toast(msg);
+  const next = authNext && SCREEN_AUTH[authNext.split('?')[0]] !== (u.type === 'biz' ? 'user' : 'biz') ? authNext : fallback;
+  authNext = null;
+  location.replace(`#${next}`);
+}
+
+// ① 일반: SNS 버튼 → (신규) 추가 정보 입력. 받아온 정보는 미리 채워두고 수정 가능
+function renderSignupUser(params) {
+  snsProvider = SNS_PROFILE[params.get('provider')] ? params.get('provider') : snsProvider;
+  const got = SNS_PROFILE[snsProvider];
+  $('#suProvider').textContent = `${SNS_NAMES[snsProvider]}로 가입 중`;
+  $('#suName').value = got.name || '';
+  $('#suNick').value = got.nick || '';
+  $('#suBirth').value = got.birth || '';
+  $('#suPhone').value = got.phone || '';
+  $$('#suGender .chip').forEach((c) => c.classList.toggle('active', c.dataset.gender === got.gender));
+  const fetched = Object.keys(got).map((k) => SNS_FIELD_LABELS[k]);
+  $('#suFetched').hidden = false;
+  $('#suFetched').innerHTML = `${SNS_NAMES[snsProvider]}에서 <b>${fetched.join(' · ')}</b>을(를) 받아왔어요. 확인 후 수정할 수 있어요.`
+    + (snsProvider === 'kakao' ? '<br/><small class="muted">카카오는 이름 · 연락처를 받으려면 비즈앱 검수가 필요해 직접 입력받아요.</small>' : '');
+  $('#suError').classList.remove('show');
+}
+
+const PHONE_RE = /^0\d{1,2}-?\d{3,4}-?\d{4}$/;
+function termsOk(box) { return $$('[data-term="req"]', box).every((c) => c.checked); }
+function formError(el, msg) { el.textContent = msg; el.classList.add('show'); }
+
+function signupUser() {
+  const name = $('#suName').value.trim();
+  const nick = $('#suNick').value.trim();
+  const phone = $('#suPhone').value.trim();
+  const err = $('#suError');
+  if (!name) return formError(err, '이름을 입력해 주세요.');
+  if (nick.length < 2) return formError(err, '닉네임을 2자 이상 입력해 주세요.');
+  if (!PHONE_RE.test(phone)) return formError(err, '연락처를 010-0000-0000 형식으로 입력해 주세요.');
+  if (!termsOk($('#suTerms'))) return formError(err, '필수 약관에 동의해 주세요.');
+  err.classList.remove('show');
+  finishLogin({
+    type: 'user', provider: snsProvider, name, nick, phone,
+    gender: $('#suGender .chip.active')?.dataset.gender || null,
+    birth: $('#suBirth').value || null,
+  }, `가입을 환영해요, ${nick} 님!`, 'mypage');
+}
+
+// ② 업체: 이메일 가입. 증빙 서류는 선택(디렉토리 공개 전에만 필요)
+function renderSignupBiz() {
+  $('#sbError').classList.remove('show');
+  updateProofUI();
+}
+
+function updateProofUI() {
+  const kind = $('.proof-opts .option-card.active').dataset.proof;
+  $('#sbPortfolio').hidden = kind !== 'free';
+  const up = $('#sbUpload');
+  up.classList.toggle('done', sbProof === kind);
+  up.innerHTML = sbProof === kind
+    ? `${icon('check')} ${proofLabel(kind)} 업로드됨 · 다시 올리기`
+    : `${icon('upload')} ${kind === 'free' ? '신분증' : '사업자 등록증'} 업로드 (JPG, PNG, PDF)`;
+}
+
+function signupBiz() {
+  const email = $('#sbEmail').value.trim();
+  const pw = $('#sbPw').value;
+  const bizName = $('#sbName').value.trim();
+  const phone = $('#sbPhone').value.trim();
+  const err = $('#sbError');
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return formError(err, '이메일을 정확히 입력해 주세요.');
+  if (pw.length < 8) return formError(err, '비밀번호를 8자 이상 입력해 주세요.');
+  if (pw !== $('#sbPw2').value) return formError(err, '비밀번호가 서로 달라요.');
+  if (!bizName) return formError(err, '업체명을 입력해 주세요.');
+  if (!PHONE_RE.test(phone)) return formError(err, '연락처를 정확히 입력해 주세요.');
+  if (!$('#sbAddr').value) return formError(err, '주소를 검색해 주세요.');
+  if (!termsOk($('#sbTerms'))) return formError(err, '필수 약관에 동의해 주세요.');
+  err.classList.remove('show');
+  finishLogin({
+    type: 'biz', email, bizName, phone,
+    address: `${$('#sbAddr').value} ${$('#sbAddr2').value.trim()}`.trim(),
+    proof: sbProof,
+  }, sbProof ? '가입 완료! 업체 소개를 만들어 볼까요?' : '가입 완료! 증빙 서류는 대시보드에서 올릴 수 있어요', 'partner-join');
+}
+
+function bizLogin() {
+  const email = $('#bizLoginEmail').value.trim();
+  if (!email || !$('#bizLoginPw').value) { $('#bizLoginError').classList.add('show'); return; }
+  // 프로토타입: 아무 계정이나 데모 업체로 로그인
+  finishLogin({ type: 'biz', email, bizName: '필름하루 스냅', phone: '010-2345-6789', address: '서울 마포구', proof: 'biz' },
+    '필름하루 스냅으로 로그인했어요', 'partner-dash');
+}
+
 function route() {
   const defaultScreen = splashDone() ? 'home' : 'splash';
   let [hashName, query] = (location.hash.slice(1) || defaultScreen).split('?');
   if (hashName === 'timeline') { hashName = 'mypage'; query = 'tab=timeline'; } // 타임라인은 내 웨딩 안으로 이동
   const name = $(`#screen-${hashName}`) ? hashName : 'home';
   const params = new URLSearchParams(query || '');
+
+  // 회원 전용 화면: 계정 유형이 맞지 않으면 로그인으로 (뒤로 가기 시 반복되지 않게 replace)
+  const need = SCREEN_AUTH[name];
+  if (need && authUser?.type !== need) {
+    location.replace(`#login?type=${need}&next=${encodeURIComponent(name + (query ? `?${query}` : ''))}`);
+    return;
+  }
+  if (!['login', 'signup-user', 'signup-biz'].includes(name)) authNext = null; // 로그인 흐름을 벗어나면 복귀 화면 잊기
 
   document.body.classList.toggle('is-splash', name === 'splash');
   $$('.screen').forEach((s) => s.classList.toggle('active', s.id === `screen-${name}`));
@@ -334,11 +546,15 @@ function route() {
     if (params.get('cat')) dirCat = params.get('cat');
     renderDirectory();
   }
+  if (name === 'home') requestAnimationFrame(updateFeedNav); // 화면이 보인 뒤에 너비를 재야 함
   if (name === 'guide') showGuide(1);
   if (name === 'partner-join') showPj(0);
   if (name === 'budget-result') renderReport();
   if (name === 'vendor') renderVendor();
   if (name === 'mypage') showMyTab(params.get('tab') || 'timeline');
+  if (name === 'login') renderLogin(params);
+  if (name === 'signup-user') renderSignupUser(params);
+  if (name === 'signup-biz') renderSignupBiz();
   if (drawerItem) closeDrawer();
   window.scrollTo({ top: 0 });
 }
@@ -347,9 +563,83 @@ window.addEventListener('hashchange', route);
 /* ---------- 홈 ---------- */
 function renderHome() {
   $('#homeCats').innerHTML = CATEGORIES.slice(1).map((c) =>
-    `<a class="cat-item" href="#directory?cat=${c.name}"><span>${c.ico}</span>${c.name}</a>`).join('');
-  $('#homeVendors').innerHTML = [1, 2, 7, 16].map((id) => vendorCard(VENDORS.find((v) => v.id === id))).join('');
+    `<a class="hm-cat" href="#directory?cat=${c.name}"><span class="hm-cat-ico"><i data-lucide="${c.icon}"></i></span>${c.name}</a>`).join('');
+  $('#homeFeed').innerHTML = FEED.map((f) => {
+    const v = VENDORS.find((x) => x.id === f.vendor);
+    return `
+      <div class="hm-photo" data-vendor="${v.id}">
+        <a href="#vendor" class="hp-link">
+          <img src="${unsplash(f.img)}" alt="${v.name} · ${v.cat}" loading="lazy" />
+          <span class="hp-meta"><span class="hp-avatar">${v.name[0]}</span><b>${v.name}</b><small>${v.cat}</small></span>
+        </a>
+        <button class="hp-save" data-auth="user" aria-label="${v.name} 찜하기"><i data-lucide="bookmark"></i></button>
+      </div>`;
+  }).join('');
+  drawIcons();
+  updateFeedNav();
   $('#myVendors').innerHTML = [1, 2, 4, 3].map((id) => vendorCard(VENDORS.find((v) => v.id === id))).join('');
+}
+
+
+// 사진 피드 슬라이드: 양끝에서는 이전 · 다음 버튼을 끔
+function updateFeedNav() {
+  const feed = $('#homeFeed');
+  const max = feed.scrollWidth - feed.clientWidth;
+  $('.hs-nav.prev').disabled = feed.scrollLeft <= 2;
+  $('.hs-nav.next').disabled = feed.scrollLeft >= max - 2;
+}
+function slideFeed(dir) {
+  const feed = $('#homeFeed');
+  const gap = parseFloat(getComputedStyle(feed).columnGap) || 0;
+  feed.scrollBy({ left: dir * (feed.clientWidth + gap), behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+}
+
+/* ---------- 홈 히어로: 진단 결과 예시 카드 (조건별로 금액 · 막대가 바뀜) ---------- */
+// 금액 단위: 만 원. rows 순서는 카드의 항목 순서와 같음 (예식장 · 스드메 · 본식스냅 · 예복 · 기타)
+const HERO_SCENARIOS = [
+  { cond: '서울 웨딩홀 · 하객 150명', badge: '평균 범위 안', rows: [1350, 620, 120, 110, 740] },
+  { cond: '경기 하우스웨딩 · 하객 80명', badge: '평균보다 낮은 편', rows: [900, 540, 150, 90, 520] },
+  { cond: '서울 호텔 · 하객 250명', badge: '평균보다 높은 편', rows: [3100, 880, 180, 160, 980] },
+  { cond: '제주 스몰웨딩 · 하객 40명', badge: '평균보다 낮은 편', rows: [380, 450, 90, 70, 410] },
+];
+const HERO_BAR_MAX = 3100; // 막대 길이 기준 (시나리오끼리 비교되게 고정)
+let heroIdx = 0;
+let heroShown = HERO_SCENARIOS[0].rows.slice(); // 지금 화면에 보이는 금액 (카운트 시작점)
+
+function showHeroScenario(idx) {
+  const sc = HERO_SCENARIOS[idx];
+  const from = heroShown.slice();
+  const fromTotal = from.reduce((a, b) => a + b, 0);
+  const toTotal = sc.rows.reduce((a, b) => a + b, 0);
+  const cells = $$('#hcRows li');
+  $('#hcCond').textContent = sc.cond;
+  $('#hcBadge').textContent = sc.badge;
+  cells.forEach((li, i) => li.querySelector('i').style.setProperty('--w', `${(sc.rows[i] / HERO_BAR_MAX) * 100}%`));
+  const start = performance.now();
+  const DURATION = 700;
+  const step = (now) => {
+    const p = Math.min((now - start) / DURATION, 1);
+    const e = 1 - (1 - p) ** 3; // ease-out
+    cells.forEach((li, i) => { li.querySelector('b').textContent = `${Math.round(from[i] + (sc.rows[i] - from[i]) * e).toLocaleString()}만`; });
+    $('#hcTotal').textContent = `${Math.round(fromTotal + (toTotal - fromTotal) * e).toLocaleString()}만 원`;
+    if (p < 1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+  heroShown = sc.rows.slice();
+}
+
+function startHeroDemo() {
+  showHeroScenario(0);
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return; // 움직임 줄이기 설정이면 첫 예시만
+  const card = $('.hm-hero-card');
+  let paused = false;
+  card.addEventListener('mouseenter', () => { paused = true; });
+  card.addEventListener('mouseleave', () => { paused = false; });
+  setInterval(() => {
+    if (paused || document.hidden || !$('#screen-home').classList.contains('active')) return;
+    heroIdx = (heroIdx + 1) % HERO_SCENARIOS.length;
+    showHeroScenario(heroIdx);
+  }, 3200);
 }
 
 /* ---------- 온보딩 스텝 ---------- */
@@ -484,7 +774,7 @@ function setTotalBudget(target) {
 // 항목 변경 공통 진입점 — 각 항목 금액이 서로 독립이라 바꾼 항목만 달라지고 총예산은 합계로 따라감
 function changeKeepingOthers(_keys, apply) { apply(); }
 
-/* 가격대 레이어는 고르는 게 아니라 총예산으로 판정되는 결과 (웨딩웨이 기준표)
+/* 가격대 레이어는 고르는 게 아니라 총예산으로 판정되는 결과 (결심 기준표)
    가성비형 2,500만~3,500만 · 표준형 3,500만~5,500만 · 고급형 5,500만 원 이상 */
 const TIER_MIN = 2500;  // 가성비형 기준 최저 — 이보다 낮으면 안내
 const TIER_LOW = 3500;  // 이 금액 미만 → 가성비형
@@ -663,7 +953,7 @@ function renderWishList() {
     return `
       <div class="wl-group ${wishCollapsed.has(g.id) ? 'collapsed' : ''}">
         <button class="wl-head" data-wltoggle="${g.id}" aria-expanded="${!wishCollapsed.has(g.id)}">
-          <b>${g.name}</b><span class="wl-count ${picked.length ? 'on' : ''}">${count}</span><span class="wl-caret">▾</span>
+          <b>${icon(g.icon)} ${g.name}</b><span class="wl-count ${picked.length ? 'on' : ''}">${count}</span><span class="wl-caret">${icon('chevron-down')}</span>
         </button>
         <div class="wl-items">
           ${items.map((w) => `
@@ -696,7 +986,7 @@ function renderBudgetItems() {
   const row = (key, name, w, { sub = false, color = null, group = null } = {}) => `
     <div class="bi-row ${sub ? 'sub' : ''}">
       <span class="bi-name">${color ? `<i style="background:${color}"></i>` : ''}${sub ? 'ㄴ ' : ''}${esc(name)}${sub ? '' : `<small class="bi-note" data-bnote="${key}"></small>`}
-        ${group ? `<button class="bi-toggle" data-btoggle="${group.id}">${group.open ? '접기 ▴' : '세부 ▾'}</button>` : ''}</span>
+        ${group ? `<button class="bi-toggle" data-btoggle="${group.id}">${group.open ? `접기 ${icon('chevron-up', 12)}` : `세부 ${icon('chevron-down', 12)}`}</button>` : ''}</span>
       ${isFreeKey(key)
     ? `<input type="range" min="0" max="${CUSTOM_MAX}" step="10" value="${w}" data-bw="${key}" aria-label="${esc(name)} 금액 (0~1억 원)" />`
     : `<input type="range" min="0.3" max="${sliderMax(key)}" step="0.1" value="${w}" data-bw="${key}" aria-label="${esc(name)} 중요도 (평균가의 0.3~${sliderMax(key)}배)" />`}
@@ -704,10 +994,10 @@ function renderBudgetItems() {
       ${group
     ? `<span class="bi-amount" data-bamt="${key}">-</span>`
     : `<span class="bi-amount-wrap">
-          <button class="bi-pin" data-bpin="${key}" aria-pressed="false" title="고정하면 총예산을 바꿔도 이 금액은 그대로예요" aria-label="${esc(name)} 고정">📌</button>
+          <button class="bi-pin" data-bpin="${key}" aria-pressed="false" title="고정하면 총예산을 바꿔도 이 금액은 그대로예요" aria-label="${esc(name)} 고정">${icon('pin', 14)}</button>
           <input type="number" class="bi-input" data-bamtin="${key}" min="0" ${isFreeKey(key) ? `max="${CUSTOM_MAX}"` : ''} step="10" aria-label="${esc(name)} 금액(만 원)" />
         </span>`}
-      <button class="bi-del" data-bdel="${key}" aria-label="${esc(name)} 빼기" title="빼기">✕</button>
+      <button class="bi-del" data-bdel="${key}" aria-label="${esc(name)} 빼기" title="빼기">${icon('x', 14)}</button>
     </div>`;
 
   const rows = budget.cats.map((c) => {
@@ -894,9 +1184,9 @@ function updatePreview() {
   // ④ 총예산: 안내 · 고정 개수 · 되돌리기
   const totalInput = $('#bTotal');
   if (document.activeElement !== totalInput) totalInput.value = Math.round(r.E);
-  $('#estLine').innerHTML = '<span class="muted">총예산을 바꾸면 📌 고정 외 항목이 같은 비율로 조정돼요.</span>';
+  $('#estLine').innerHTML = `<span class="muted">총예산을 바꾸면 고정(${icon('pin', 13)}) 외 항목이 같은 비율로 조정돼요.</span>`;
   $('#totalDiff').innerHTML = [
-    r.pinCount ? `📌 고정 ${r.pinCount}개 <button class="text-btn" data-action="b-unpin-all">고정 모두 풀기</button>` : '',
+    r.pinCount ? `${icon('pin', 13)} 고정 ${r.pinCount}개 <button class="text-btn" data-action="b-unpin-all">고정 모두 풀기</button>` : '',
     r.adjusted ? '<button class="text-btn" data-action="b-total-reset">평균가로 되돌리기</button>' : '',
   ].filter(Boolean).join(' · ');
   $('#tierResult').innerHTML = tierScaleHTML(r.tierTotal, r.customSum);
@@ -1412,6 +1702,21 @@ document.addEventListener('click', (e) => {
 
   if (t.closest('[data-splash-done]')) markSplashDone();
 
+  // 같은 화면 안 이동 (#pt-price 등) — 라우터가 화면 이름으로 읽지 않게
+  const jump = t.closest('[data-scroll]');
+  if (jump) { e.preventDefault(); $(jump.getAttribute('href'))?.scrollIntoView({ behavior: 'smooth', block: 'start' }); return; }
+
+  // 회원 전용 동작(찜 · 문의 · 저장): 계정 유형이 맞지 않으면 로그인으로
+  const gated = t.closest('[data-auth]');
+  if (gated && authUser?.type !== gated.dataset.auth) {
+    e.preventDefault();
+    if (authUser?.type === 'biz') { toast('예비부부 회원만 이용할 수 있어요'); return; }
+    requireLogin(gated.dataset.auth, location.hash.slice(1) || 'home');
+    return;
+  }
+  const sns = t.closest('[data-sns]');
+  if (sns) { location.hash = `#signup-user?provider=${sns.dataset.sns}`; return; }
+
   // 타임라인 순서 ↑↓ · 되살리기
   const mover = t.closest('[data-move]');
   if (mover) { nudgeItem(mover.closest('[data-item]').dataset.item, mover.dataset.move); return; }
@@ -1433,6 +1738,13 @@ document.addEventListener('click', (e) => {
   const card = t.closest('[data-vendor]');
   if (card) {
     currentVendor = VENDORS.find((v) => v.id === +card.dataset.vendor);
+    const save = t.closest('.hp-save');
+    if (save) {
+      e.preventDefault();
+      save.classList.toggle('on');
+      toast(save.classList.contains('on') ? '찜 목록에 담았어요' : '찜을 해제했어요');
+      return;
+    }
     if (t.closest('.like')) {
       e.preventDefault();
       const like = t.closest('.like');
@@ -1452,6 +1764,8 @@ document.addEventListener('click', (e) => {
       $$('.vd-panel').forEach((p) => p.classList.toggle('active', p.dataset.panel === single.dataset.tab));
     }
     if (single.dataset.mytab) showMyTab(single.dataset.mytab);
+    if (single.dataset.authtab) showAuthTab(single.dataset.authtab);
+    if (single.dataset.proof) updateProofUI();
     if (single.dataset.price) {
       $$('[data-price-panel]').forEach((p) => { p.hidden = !p.dataset.pricePanel.split(' ').includes(single.dataset.price); });
     }
@@ -1530,6 +1844,21 @@ document.addEventListener('click', (e) => {
     renderHallModal();
   }
   if (action === 'toggle-menu') $('.gnb-menu').classList.toggle('open');
+  if (action === 'feed-prev') slideFeed(-1);
+  if (action === 'feed-next') slideFeed(1);
+  // 로그인 · 회원가입
+  if (action === 'demo-login-user') finishLogin(DEMO_USER, '민지 님, 다시 만나 반가워요', 'mypage');
+  if (action === 'biz-login') bizLogin();
+  if (action === 'signup-user') signupUser();
+  if (action === 'signup-biz') signupBiz();
+  if (action === 'logout') { saveAuth(null); toast('로그아웃했어요'); location.hash = '#home'; }
+  if (action === 'addr-search') { $('#sbAddr').value = '서울 마포구 양화로 45'; toast('주소 검색 창이 열려요 (프로토타입) · 예시 주소를 넣었어요'); }
+  if (action === 'proof-upload') {
+    sbProof = $('.proof-opts .option-card.active').dataset.proof;
+    updateProofUI();
+    toast(`${proofLabel(sbProof)}을(를) 올렸어요 (프로토타입)`);
+  }
+  if (action === 'dash-proof') { saveAuth({ ...authUser, proof: 'biz' }); toast('증빙 서류를 올렸어요 · 검토 후 디렉토리에 소개돼요'); }
   if (action === 'cal-prev' || action === 'cal-next') {
     const d = new Date(calView.y, calView.m + (action === 'cal-next' ? 1 : -1), 1);
     calView.y = d.getFullYear(); calView.m = d.getMonth();
@@ -1619,10 +1948,14 @@ document.addEventListener('input', (e) => {
   if (t.id === 'hmGuestInput') { hm.guests = Math.max(Math.round(+t.value || 0), 0); renderHallModal(); }
 });
 
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' && (e.target.id === 'bizLoginEmail' || e.target.id === 'bizLoginPw')) bizLogin();
+});
+
 document.addEventListener('change', (e) => {
   if (e.target.id === 'bTotal') {
     const target = Math.max(Math.round(+e.target.value || 0), 0);
-    if (!setTotalBudget(target)) toast('모든 항목이 📌 직접 입력 금액이라 조정할 항목이 없어요');
+    if (!setTotalBudget(target)) toast('모든 항목이 고정된 금액이라 조정할 항목이 없어요');
     refreshBudgetForm();
   }
   // ① 기본 항목 체크 (본식 · 드레스 · 메이크업)
@@ -1642,6 +1975,12 @@ document.addEventListener('change', (e) => {
     updatePreview();
   }
   if (e.target.id === 'weddingDate') renderTimeline();
+  // 약관: 전체 동의 ↔ 개별 항목
+  if (e.target.matches('[data-term-all]')) $$('[data-term]', e.target.closest('.terms')).forEach((c) => { c.checked = e.target.checked; });
+  if (e.target.matches('[data-term]')) {
+    const box = e.target.closest('.terms');
+    $('[data-term-all]', box).checked = $$('[data-term]', box).every((c) => c.checked);
+  }
   if (e.target.id === 'dwPhaseSel' && drawerItem) {
     const to = +e.target.value;
     moveItem(drawerItem.id, to);
@@ -1671,9 +2010,14 @@ loadTimeline();
 renderTimeline();
 renderDirectory();
 $('#reviewFeed').innerHTML = REVIEWS.map(reviewCard).join('');
-$('#bizCats').innerHTML = CATEGORIES.slice(1).map((c) => `<span>${c.ico} ${c.name}</span>`).join('');
+$('#bizCats').innerHTML = CATEGORIES.slice(1).map((c) => `<span><i data-lucide="${c.icon}"></i>${c.name}</span>`).join('');
 $('#pjCats').innerHTML =CATEGORIES.slice(1).map((c) =>
   `<button class="chip ${c.name === '아이폰스냅' ? 'active' : ''}">${c.name}</button>`).join('');
 renderCalendar($('#pjCal'), { year: 2027, month: 4, status: (d, dow) => (dow === 0 || dow === 6 ? 'ok' : 'no') });
 renderCalendar($('#dashCal'), { year: 2026, month: 9, status: (d) => ([3, 10, 17, 18, 25].includes(d) ? 'booked' : d < 12 ? 'no' : 'ok') });
+applyAuthUI();
+drawIcons();
+startHeroDemo();
+$('#homeFeed').addEventListener('scroll', updateFeedNav, { passive: true });
+window.addEventListener('resize', updateFeedNav);
 route();

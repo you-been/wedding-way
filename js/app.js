@@ -146,13 +146,13 @@ const noShoot = () => !SHOOT_IDS.some(hasSub);
 const avgOf = (id) => (noShoot() && AVG_NO_SHOOT[id] != null ? AVG_NO_SHOOT[id] : AVG_COST[id]);
 
 /* 예식장 · 식대 추천 계산 (프로토타입 예시 단가, 만 원)
-   예상 비용 = (1인 식대 × 하객 수 + 대관 · 연출비) × 지역 계수 */
+   예상 비용 = 1인 식대 × 지역 계수 × 하객 수 + 대관료(유형 · 지역별 대표값) */
 const HALL_TYPES = [
-  { id: 'hall', name: '웨딩홀', d: '가장 일반적인 예식장', meal: 6.5, base: 300 },
-  { id: 'hotel', name: '호텔', d: '호텔 연회장 · 고급 코스 식사', meal: 13, base: 800 },
-  { id: 'house', name: '하우스 · 스몰웨딩', d: '소규모 단독 공간', meal: 9, base: 250 },
-  { id: 'outdoor', name: '야외', d: '가든 · 야외 정원 예식', meal: 8, base: 400 },
-  { id: 'chapel', name: '종교시설', d: '성당 · 교회 · 사찰', meal: 5, base: 100 },
+  { id: 'hall', name: '웨딩홀', d: '가장 일반적인 예식장', meal: 6.5, base: { gangnam: 800, seoul: 700, metro: 400, city: 250, jeju: 200, local: 200 } },
+  { id: 'hotel', name: '호텔', d: '호텔 연회장 · 고급 코스 식사', meal: 13, base: { gangnam: 1400, seoul: 1100, metro: 700, city: 500, jeju: 600, local: 400 } },
+  { id: 'house', name: '하우스 · 스몰웨딩', d: '소규모 단독 공간', meal: 9, base: { gangnam: 1100, seoul: 800, metro: 600, city: 400, jeju: 500, local: 350 } },
+  { id: 'outdoor', name: '야외', d: '가든 · 야외 정원 예식', meal: 8, base: { gangnam: 1400, seoul: 1100, metro: 800, city: 500, jeju: 800, local: 500 } },
+  { id: 'chapel', name: '종교시설', d: '성당 · 교회 · 사찰', meal: 5, base: { gangnam: 250, seoul: 200, metro: 150, city: 100, jeju: 100, local: 100 } },
 ];
 const HALL_REGIONS = [
   { id: 'gangnam', name: '서울 강남권', rate: 1.25 },
@@ -168,7 +168,7 @@ function hallEstimate({ type, region, guests }) {
   const t = HALL_TYPES.find((x) => x.id === type);
   const r = HALL_REGIONS.find((x) => x.id === region);
   const meal = t.meal * r.rate;
-  const base = t.base * r.rate;
+  const base = t.base[r.id];
   return { meal, base, food: meal * guests, total: Math.round(meal * guests + base) };
 }
 const SDM_AVG = AVG_COST.studio + AVG_COST.dress + AVG_COST.makeup; // 스드메 기준표 구간을 하위 항목에 나눌 때 기준
@@ -615,16 +615,13 @@ function renderHallModal() {
 
   if (hm.step === 3 && hm.type && hm.region) {
     const e = hallEstimate(hm);
-    const ranges = REF_TABLE.hall;
-    const level = TIERS[e.total < ranges[1][0] ? 0 : e.total < ranges[2][0] ? 1 : 2];
     $('#hmResult').innerHTML = `
       <small>예상 비용</small>
       <strong>약 ${won(e.total)}</strong>
       <ul>
         <li>식대 ${(Math.round(e.meal * 10) / 10).toLocaleString()}만 원 × ${hm.guests}명<span>${won(e.food)}</span></li>
-        <li>대관 · 연출비<span>${won(e.base)}</span></li>
+        <li>대관료<span>${won(e.base)}</span></li>
       </ul>
-      <p>웨딩웨이 기준표로 <b class="tier-name tier-${TIERS.indexOf(level)}">${level.name}</b> 예식장 수준이에요.</p>
       <p class="muted sm">예시 단가로 계산한 참고 금액이에요. 실제 견적은 예식장마다 달라요.</p>`;
   }
   const ready = (hm.step === 1 && hm.type) || (hm.step === 2 && hm.region) || (hm.step === 3 && hm.guests > 0);

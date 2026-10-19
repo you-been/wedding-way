@@ -522,21 +522,22 @@
 
 <!-- ============ 6. 디렉토리 ============ -->
 <section class="screen" id="screen-directory">
-  <div class="container">
-    <div class="page-head">
-      <span class="eyebrow">Open Curation Directory</span>
-      <h1>업체 디렉토리</h1>
-      <p class="muted">제휴 수수료와 무관하게, 같은 기준으로 비교해요.</p>
+  <div class="hm-wrap">
+    <div class="ds-page-head dr-head">
+      <div>
+        <h1>업체 디렉토리</h1>
+        <p>제휴 수수료와 무관하게, 같은 기준으로 비교해요.</p>
+      </div>
+      <form class="dr-search" role="search" onsubmit="return false">
+        <i data-lucide="search" aria-hidden="true"></i>
+        <input type="search" placeholder="업체명, 지역, #태그로 검색 (예: #제주스냅)" aria-label="업체 검색" />
+        <button class="ds-btn ds-btn-ink">검색</button>
+      </form>
     </div>
 
-    <div class="search-bar">
-      <input type="search" placeholder="업체명, 지역, #태그로 검색 (예: #제주스냅)" />
-      <button class="btn btn-primary">검색</button>
-    </div>
+    <div class="dr-cats" id="catTabs" role="tablist" aria-label="카테고리"></div>
 
-    <div class="cat-tabs" id="catTabs"></div>
-
-    <div class="filter-row">
+    <div class="dr-filters">
       <div class="chip-group" data-multi>
         <span class="filter-label">가격대</span>
         <button class="chip active">가성비</button><button class="chip active">표준</button><button class="chip">프리미엄</button>
@@ -549,16 +550,19 @@
         <span class="filter-label">옵션</span>
         <button class="chip">인증후기 있음</button><button class="chip">이번 달 예약 가능</button><button class="chip">1인 업체</button>
       </div>
+    </div>
+
+    <div class="dr-toolbar">
+      <p class="result-count"><b id="dirCount">0</b>개 업체</p>
       <div class="sort-wrap">
-        <select class="sort">
+        <button class="sort-info" aria-label="정렬 기준 안내" aria-describedby="sortTip"><i data-lucide="info"></i></button>
+        <span class="sort-tip" id="sortTip" role="tooltip">정보 충실도 · 인증 후기 · 취향 일치 기준이에요. 광고나 유료 우선 노출은 없어요.</span>
+        <select class="sort" aria-label="정렬">
           <option>취향 맞춤순</option><option>후기 많은 순</option><option>낮은 가격순</option><option>최신 등록순</option>
         </select>
-        <button class="sort-info" aria-label="정렬 기준">i</button>
-        <span class="sort-tip">정보 충실도 · 인증 후기 · 취향 일치 기준이에요. 광고나 유료 우선 노출은 없어요.</span>
       </div>
     </div>
 
-    <p class="result-count"><b id="dirCount">0</b>개 업체</p>
     <div class="masonry" id="dirGrid"></div>
   </div>
 </section>

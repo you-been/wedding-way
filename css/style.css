@@ -114,6 +114,7 @@ h4 { font-size: 15px; margin: 20px 0 8px; display: flex; align-items: center; ga
 .ph-4 { background: linear-gradient(135deg, #dcebe4, #8fb8a5); }
 .ph-5 { background: linear-gradient(135deg, #f1e3ea, #c58aa1); }
 .ph-6 { background: linear-gradient(135deg, #e3e8ef, #9aaabf); }
+.ph-img { width: 100%; object-fit: cover; }
 
 /* ===== Flow map ===== */
 .flow-title { margin: 32px 0 12px; font-size: 16px; }
@@ -1556,4 +1557,99 @@ body.is-splash .site-footer { display: none; }
   .pt-steps li:not(:last-child)::after { top: 36px; left: 15px; right: auto; bottom: calc(-1 * var(--ds-s-lg) + 4px); width: 1.5px; height: auto; }
   .pt-cta { padding: var(--ds-s-xl) var(--ds-s-lg); }
   .pt-cta .ds-btn { width: 100%; }
+}
+
+/* ===== 업체 디렉토리 (디자인 시스템 적용) ===== */
+#screen-directory { background: var(--ds-canvas); color: var(--ds-ink); }
+.dr-head { display: flex; justify-content: space-between; align-items: flex-end; gap: var(--ds-s-xl); flex-wrap: wrap; }
+
+/* 검색: 크몽 category-search (500×50 · 둥글기 24px · 옅은 그림자) + 안쪽 36px 잉크 버튼 */
+.dr-search { display: flex; align-items: center; gap: var(--ds-s-sm); flex: 0 1 500px; height: 50px; padding: 0 7px 0 var(--ds-s-base); border: 1px solid var(--ds-control-border); border-radius: 24px; background: var(--ds-canvas); box-shadow: rgba(0, 0, 0, .06) 0 0 8px 0; }
+.dr-search:focus-within { border-color: var(--ds-ink); outline: 1px solid var(--ds-ink); }
+.dr-search > svg { flex: none; width: 20px; height: 20px; color: var(--ds-subtle); }
+.dr-search input { flex: 1; min-width: 0; height: 100%; border: 0; background: none; font-size: 16px; color: var(--ds-ink); }
+.dr-search input::placeholder { color: #9a9ba7; }
+.dr-search input:focus { outline: none; }
+.dr-search .ds-btn { height: 36px; padding: 0 var(--ds-s-base); border-radius: 18px; font-size: 14px; }
+
+/* 카테고리: 크몽 category-filter-control (36px · 둥글기 8px · 테두리 #e4e5ed · 14px/400) + 아이콘, 선택 = 잉크 */
+.dr-cats { display: flex; flex-wrap: wrap; gap: var(--ds-s-sm); padding-bottom: var(--ds-s-xl); border-bottom: 1px solid var(--ds-panel-border); }
+.dr-cat { display: inline-flex; align-items: center; gap: 6px; height: 36px; padding: 0 var(--ds-s-md); border: 1px solid var(--ds-panel-border); border-radius: var(--ds-r-control); background: var(--ds-canvas); color: var(--ds-ink); font-size: 14px; font-weight: 400; white-space: nowrap; transition: border-color .15s, background-color .15s; }
+.dr-cat svg { width: 16px; height: 16px; stroke-width: 1.75; }
+.dr-cat:hover { border-color: var(--ds-ink); }
+.dr-cat.active { background: var(--ds-ink); border-color: var(--ds-ink); color: var(--ds-on-ink); font-weight: 700; }
+.dr-cat:focus-visible { outline: 2px solid var(--ds-ink); outline-offset: 2px; }
+
+/* 필터: 라벨 + 크몽 keyword-chip (36px · 알약 · #f2f3f7 · 14px/400) */
+.dr-filters { display: flex; flex-wrap: wrap; gap: 0 var(--ds-s-xxl); padding: var(--ds-s-base) 0; border-bottom: 1px solid var(--ds-hairline); }
+.dr-filters .chip-group { gap: 6px; margin: 6px 0; }
+.dr-filters .filter-label { min-width: 40px; font-size: 14px; font-weight: 700; color: var(--ds-ink); }
+.dr-filters .chip { height: 36px; padding: 0 var(--ds-s-base); border: 0; border-radius: var(--ds-r-chip); background: var(--ds-hairline); color: var(--ds-ink); font-size: 14px; }
+.dr-filters .chip:hover { background: var(--ds-panel-border); }
+.dr-filters .chip.active { background: var(--ds-ink); color: var(--ds-on-ink); }
+.dr-filters .chip:focus-visible { outline: 2px solid var(--ds-ink); outline-offset: 2px; }
+
+/* 결과 수 · 정렬 */
+.dr-toolbar { display: flex; justify-content: space-between; align-items: center; gap: var(--ds-s-base); margin: var(--ds-s-xl) 0 var(--ds-s-base); }
+#screen-directory .result-count { margin: 0; font-size: 14px; color: var(--ds-muted); }
+#screen-directory .result-count b { color: var(--ds-ink); font-variant-numeric: tabular-nums; }
+#screen-directory .sort { height: 36px; padding: 0 32px 0 12px; border: 1px solid var(--ds-control-border); border-radius: var(--ds-r-control); background: var(--ds-canvas) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%23212224' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m4 6 4 4 4-4'/%3E%3C/svg%3E") no-repeat right 10px center; appearance: none; font-size: 14px; font-weight: 500; color: var(--ds-ink); cursor: pointer; }
+#screen-directory .sort:hover { border-color: var(--ds-ink); }
+#screen-directory .sort:focus-visible { outline: 2px solid var(--ds-ink); outline-offset: 2px; }
+#screen-directory .sort-info { width: 32px; height: 32px; border: 0; background: none; color: var(--ds-subtle); }
+#screen-directory .sort-info svg { width: 18px; height: 18px; }
+#screen-directory .sort-info:hover { color: var(--ds-ink); }
+#screen-directory .sort-tip { border-radius: var(--ds-r-control); background: var(--ds-ink); box-shadow: none; font-size: 13px; }
+
+#screen-directory .masonry { margin-bottom: 0; }
+.dr-empty { padding: 64px 0; text-align: center; font-size: 14px; color: var(--ds-muted); }
+
+/* 업체 카드 (디렉토리 · 찜한 업체 · 진단 리포트 공통): 사진 + 아래 정보, 테두리 없이 */
+.v-card { border: 0; border-radius: 0; background: transparent; color: var(--ds-ink); margin-bottom: var(--ds-s-xl); overflow: visible; }
+.v-card:hover { box-shadow: none; transform: none; }
+.v-card:focus-visible { outline: 2px solid var(--ds-ink); outline-offset: 4px; border-radius: var(--ds-r-control); }
+.v-thumb { position: relative; border-radius: var(--ds-r-control); overflow: hidden; background: var(--ds-panel); }
+.v-thumb img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform .3s; }
+.v-card:hover .v-thumb img { transform: scale(1.03); }
+.v-empty { display: grid; place-items: center; height: 100%; border: 1px solid var(--ds-panel-border); border-radius: var(--ds-r-control); color: var(--ds-control-border); }
+.v-empty svg { width: 36px; height: 36px; stroke-width: 1.5; }
+.v-card .like { top: 8px; right: 8px; width: 36px; height: 36px; background: rgba(255, 255, 255, .92); color: var(--ds-ink); transition: background-color .15s; }
+.v-card .like svg { width: 18px; height: 18px; }
+.v-card .like:hover { background: #fff; }
+.v-card .like.on svg { fill: var(--ds-ink); }
+.v-body { padding: var(--ds-s-md) 2px 0; }
+.v-tag { display: inline-flex; align-items: center; height: 22px; margin-bottom: 6px; padding: 0 8px; border-radius: var(--ds-r-cta); background: var(--ds-hairline); font-size: 12px; font-weight: 500; }
+.v-body h4 { margin: 0 0 2px; font-size: 16px; font-weight: 700; line-height: 1.4; }
+.v-card:hover h4 { text-decoration: underline; text-underline-offset: 3px; }
+.v-card .v-meta { font-size: 13px; color: var(--ds-muted); }
+.v-card .v-price { margin-top: 6px; font-size: 15px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.v-card .v-price.muted-price { color: var(--ds-muted); font-weight: 500; }
+.v-card .v-avg { font-size: 12px; color: var(--ds-subtle); }
+.v-card .why span { background: var(--ds-brand-soft); color: var(--ds-ink); border-radius: var(--ds-r-cta); font-weight: 500; }
+.v-foot { justify-content: flex-start; gap: var(--ds-s-sm); margin-top: var(--ds-s-sm); font-size: 12px; color: var(--ds-muted); }
+.v-foot span { display: inline-flex; align-items: center; gap: 3px; }
+.v-foot svg { width: 14px; height: 14px; }
+.v-rating { font-weight: 700; color: var(--ds-ink); }
+.v-rating svg { fill: var(--ds-ink); }
+.v-foot .verified { color: var(--ds-ink); font-weight: 500; }
+.vendor-grid .v-card { margin-bottom: 0; }
+
+@media (max-width: 760px) {
+  .dr-head { flex-direction: column; align-items: stretch; gap: var(--ds-s-base); }
+  .dr-search { flex-basis: auto; }
+  .dr-cats { flex-wrap: nowrap; overflow-x: auto; margin: 0 -16px; padding: 0 16px var(--ds-s-base); scrollbar-width: none; }
+  .dr-cats::-webkit-scrollbar { display: none; }
+  .dr-filters { flex-direction: column; padding: var(--ds-s-md) 0; }
+  .dr-filters .chip-group { flex-wrap: nowrap; overflow-x: auto; margin: 4px -16px; padding: 0 16px; scrollbar-width: none; }
+  .dr-filters .chip-group::-webkit-scrollbar { display: none; }
+  .dr-filters .chip { flex: none; }
+  .dr-toolbar { margin-top: var(--ds-s-base); }
+  #screen-directory .masonry { gap: var(--ds-s-md); }
+  .v-card { margin-bottom: var(--ds-s-lg); }
+  .v-body h4 { font-size: 15px; }
+  .v-foot { flex-wrap: wrap; gap: 2px var(--ds-s-sm); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .v-thumb img, .dr-cat { transition: none; }
+  .v-card:hover .v-thumb img { transform: none; }
 }

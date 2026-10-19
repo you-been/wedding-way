@@ -1,0 +1,159 @@
+{
+  "decisions": [
+    {
+      "evidence": [
+        "index.html"
+      ],
+      "path": "identity.name",
+      "source_class": "repository-fact",
+      "value": "결심"
+    },
+    {
+      "evidence": [
+        "css/style.css"
+      ],
+      "path": "foundations.tokens.color.ink",
+      "source_class": "repository-fact"
+    },
+    {
+      "evidence": [
+        "css/style.css",
+        ".claude/data/references/kmong/DESIGN.md"
+      ],
+      "path": "foundations.tokens.color.brand",
+      "source_class": "repository-fact"
+    },
+    {
+      "evidence": [
+        "css/style.css"
+      ],
+      "path": "foundations.tokens.color.brand-hover",
+      "source_class": "repository-fact"
+    },
+    {
+      "evidence": [
+        "css/style.css"
+      ],
+      "path": "foundations.tokens.radius.cta",
+      "source_class": "repository-fact"
+    },
+    {
+      "evidence": [
+        "css/style.css"
+      ],
+      "path": "foundations.tokens.radius.control",
+      "source_class": "repository-fact"
+    },
+    {
+      "evidence": [
+        "css/style.css"
+      ],
+      "path": "foundations.tokens.radius.panel",
+      "source_class": "repository-fact"
+    },
+    {
+      "evidence": [
+        "css/style.css"
+      ],
+      "path": "foundations.tokens.space.section",
+      "source_class": "repository-fact"
+    },
+    {
+      "evidence": [
+        "css/style.css",
+        ".claude/data/references/kmong/DESIGN.md"
+      ],
+      "path": "foundations.tokens.size.button-primary",
+      "source_class": "repository-fact"
+    },
+    {
+      "evidence": [
+        "css/style.css"
+      ],
+      "path": "typography_assets.roles",
+      "source_class": "repository-fact"
+    },
+    {
+      "evidence": [
+        "index.html"
+      ],
+      "path": "/typography_assets/assets/0",
+      "source_class": "repository-fact"
+    },
+    {
+      "evidence": [
+        "index.html"
+      ],
+      "path": "/typography_assets/assets/1",
+      "source_class": "repository-fact"
+    },
+    {
+      "evidence": [
+        "index.html"
+      ],
+      "path": "experience.summary",
+      "source_class": "repository-fact"
+    },
+    {
+      "evidence": [
+        "index.html",
+        "js/app.js"
+      ],
+      "path": "experience.principles",
+      "source_class": "repository-fact"
+    },
+    {
+      "evidence": [
+        "index.html"
+      ],
+      "path": "content_locales.voice",
+      "source_class": "repository-fact"
+    },
+    {
+      "evidence": [
+        "css/style.css",
+        "js/app.js"
+      ],
+      "path": "layout_platforms.rules",
+      "source_class": "repository-fact"
+    },
+    {
+      "evidence": [
+        "css/style.css"
+      ],
+      "path": "components_states.components",
+      "source_class": "repository-fact"
+    },
+    {
+      "evidence": [
+        "css/style.css"
+      ],
+      "path": "foundations.tokens.radius.search",
+      "source_class": "repository-fact"
+    },
+    {
+      "evidence": [
+        "css/style.css"
+      ],
+      "path": "foundations.tokens.shadow.search",
+      "source_class": "repository-fact"
+    },
+    {
+      "evidence": [
+        "css/style.css"
+      ],
+      "path": "foundations.tokens.size.chip",
+      "source_class": "repository-fact"
+    },
+    {
+      "evidence": [
+        "css/style.css"
+      ],
+      "path": "foundations.tokens.shadow.accent",
+      "source_class": "repository-fact"
+    }
+  ],
+  "design_md_sha256": "912b6be3bd47aa4b3da6fc9394738abd3dfb6c182beda7f2bbcb3fab6dfce6aa",
+  "graph_sha256": "0808c790d8e58fb18918ff8fce35804e1825462701588fd4737b3afa96109fd2",
+  "schema_version": "2.0.0"
+}

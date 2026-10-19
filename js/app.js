@@ -28,22 +28,26 @@ const CATEGORIES = [
   { name: '예복·한복', ico: '◇', icon: 'shirt' },
 ];
 
-// 홈 사진 피드 (Unsplash License 무료 사진 · 프로토타입용)
-const FEED = [
-  { vendor: 1, img: '1532712938310-34cb3982ef74' },
-  { vendor: 4, img: '1622277430358-f4d134452e2e' },
-  { vendor: 8, img: '1525258946800-98cfd641d0de' },
-  { vendor: 5, img: '1670529776180-60e4132ab90c' },
-  { vendor: 9, img: '1591604466107-ec97de577aff' },
-  { vendor: 14, img: '1519225421980-715cb0215aed' },
-  { vendor: 6, img: '1606216794074-735e91aa2c92' },
-  { vendor: 2, img: '1549416878-b9ca95e26903' },
-  { vendor: 16, img: '1546032996-6dfacbacbf3f' },
-  { vendor: 3, img: '1607861884586-c7cfaed16290' },
-  { vendor: 11, img: '1583939003579-730e3918a45a' },
-  { vendor: 10, img: '1519741497674-611481863552' },
-];
-const unsplash = (id, w = 600) => `https://images.unsplash.com/photo-${id}?w=${w}&q=75&auto=format&fit=crop`;
+// 업체 목업 사진 (images/biz_XX.jpg · 프로토타입용) — 사진 없는 업체는 그라데이션 플레이스홀더
+const VENDOR_IMG = {
+  2: 'biz_01', // 오월의 헤어 · 헤어변형
+  4: 'biz_02', // 라메르 빈티지 · 드레스
+  6: 'biz_03', // 모먼트 본식스냅 · 야외스냅
+  8: 'biz_04', // 들꽃 아틀리에 · 웨딩플라워
+  14: 'biz_05', // 소소한 소품 · 웨딩소품
+  9: 'biz_06', // 스튜디오 무드 · 스튜디오
+  1: 'biz_07', // 필름하루 스냅 · 아이폰스냅
+  16: 'biz_08', // 제주 바람스냅 · 야외스냅
+  5: 'biz_09', // 하우스 오브 린넨 · 웨딩홀
+  15: 'biz_10', // 테일러 정 · 예복·한복
+  10: 'biz_11', // 결 메이크업 · 메이크업
+  7: 'biz_12', // 오늘의 청첩 · 모바일청첩장
+  19: 'biz_13', // 블룸 플라워랩 · 웨딩플라워
+};
+const vendorImg = (id) => (VENDOR_IMG[id] ? `images/${VENDOR_IMG[id]}.jpg` : null);
+
+// 홈 사진 피드: 사진이 있는 업체만
+const FEED = [1, 4, 8, 5, 9, 14, 10, 6, 2, 19, 15, 16, 7];
 
 // 카테고리별 시장 평균가 (프로토타입용 예시) — 가격 비공개 업체에 참고용으로 표시
 const CATEGORY_AVG = {
@@ -73,6 +77,7 @@ const VENDORS = [
   { id: 16, name: '제주 바람스냅', cat: '아이폰스냅', region: '제주', type: '1인 작가', price: '45~90만 원', tier: '표준', insta: true, intro: true, moods: ['#야외스냅', '#내추럴'], verified: 45, rating: 4.9, reviews: 57, ph: 4, h: 270 },
   { id: 17, name: '손길 웨딩헬퍼', cat: '헬퍼', region: '서울 · 경기', type: '1인 헬퍼', price: '본식 15~25만 원', tier: '가성비', insta: false, intro: true, moods: ['#클래식'], verified: 25, rating: 4.9, reviews: 34, ph: 5, h: 200 },
   { id: 18, name: '하루 헬퍼팀', cat: '헬퍼', region: '전국', type: '2인 팀', price: '본식+2부 20~35만 원', tier: '표준', insta: false, intro: false, moods: ['#내추럴'], verified: 8, rating: 4.7, reviews: 15, ph: 3, h: 230 },
+  { id: 19, name: '블룸 플라워랩', cat: '웨딩플라워', region: '서울 한남', type: '플라워 스튜디오', price: '부케 20~45만 원', tier: '표준', insta: true, intro: true, moods: ['#클래식', '#하우스웨딩'], verified: 24, rating: 4.8, reviews: 31, ph: 5, h: 240 },
 ];
 
 const REVIEWS = [
@@ -295,21 +300,30 @@ function recoReasons(v) {
 
 const whyHTML = (reasons) => (reasons.length ? `<div class="why">${reasons.map((r) => `<span>${r}</span>`).join('')}</div>` : '');
 
+const catIcon = (cat) => CATEGORIES.find((c) => c.name === cat)?.icon || 'image';
+
+// 사진 없는 업체: 카테고리 아이콘을 얹은 회색 면
 function vendorCard(v, { masonry = false, reasons = null } = {}) {
-  const verified = `<span>후기 ${v.reviews} · <span class="verified">✔ 인증 ${v.verified}</span></span>`;
+  const h = masonry ? v.h : 180;
   return `
     <a class="v-card" href="#vendor" data-vendor="${v.id}">
-      <div style="position:relative">
-        <span class="ph ph-${v.ph}" style="height:${masonry ? v.h : 180}px"></span>
-        <span class="like" data-auth="user">♡</span>
+      <div class="v-thumb" style="height:${h}px">
+        ${vendorImg(v.id)
+          ? `<img src="${vendorImg(v.id)}" alt="${v.name} · ${v.cat}" loading="lazy" />`
+          : `<span class="v-empty" aria-hidden="true"><i data-lucide="${catIcon(v.cat)}"></i></span>`}
+        <span class="like" data-auth="user" role="button" aria-label="${v.name} 찜하기" aria-pressed="false"><i data-lucide="bookmark"></i></span>
       </div>
       <div class="v-body">
-        <span class="tag">${v.cat}</span>
+        <span class="v-tag">${v.cat}</span>
         <h4>${v.name}</h4>
         <div class="v-meta">${v.region} · ${v.type}</div>
         ${priceHTML(v.price, v.cat)}
         ${reasons ? whyHTML(reasons) : ''}
-        <div class="v-foot"><span>★ ${v.rating}</span>${verified}</div>
+        <div class="v-foot">
+          <span class="v-rating"><i data-lucide="star"></i>${v.rating}</span>
+          <span>후기 ${v.reviews}</span>
+          <span class="verified"><i data-lucide="badge-check"></i>인증 ${v.verified}</span>
+        </div>
       </div>
     </a>`;
 }
@@ -564,20 +578,20 @@ window.addEventListener('hashchange', route);
 function renderHome() {
   $('#homeCats').innerHTML = CATEGORIES.slice(1).map((c) =>
     `<a class="hm-cat" href="#directory?cat=${c.name}"><span class="hm-cat-ico"><i data-lucide="${c.icon}"></i></span>${c.name}</a>`).join('');
-  $('#homeFeed').innerHTML = FEED.map((f) => {
-    const v = VENDORS.find((x) => x.id === f.vendor);
+  $('#homeFeed').innerHTML = FEED.map((id) => {
+    const v = VENDORS.find((x) => x.id === id);
     return `
       <div class="hm-photo" data-vendor="${v.id}">
         <a href="#vendor" class="hp-link">
-          <img src="${unsplash(f.img)}" alt="${v.name} · ${v.cat}" loading="lazy" />
+          <img src="${vendorImg(v.id)}" alt="${v.name} · ${v.cat}" loading="lazy" />
           <span class="hp-meta"><span class="hp-avatar">${v.name[0]}</span><b>${v.name}</b><small>${v.cat}</small></span>
         </a>
         <button class="hp-save" data-auth="user" aria-label="${v.name} 찜하기"><i data-lucide="bookmark"></i></button>
       </div>`;
   }).join('');
+  $('#myVendors').innerHTML = [1, 2, 4, 3].map((id) => vendorCard(VENDORS.find((v) => v.id === id))).join('');
   drawIcons();
   updateFeedNav();
-  $('#myVendors').innerHTML = [1, 2, 4, 3].map((id) => vendorCard(VENDORS.find((v) => v.id === id))).join('');
 }
 
 
@@ -1275,6 +1289,7 @@ function renderReport() {
     .sort((a, b) => vendorScore(b, moods) - vendorScore(a, moods))
     .slice(0, 4);
   $('#rpVendors').innerHTML = matched.map((v) => vendorCard(v, { reasons: recoReasons(v) })).join('');
+  drawIcons();
 }
 
 /* ---------- 내 타임라인 ---------- */
@@ -1645,13 +1660,14 @@ function masonryColumns() {
 
 function renderDirectory() {
   $('#catTabs').innerHTML = CATEGORIES.map((c) =>
-    `<button class="cat-tab ${c.name === dirCat ? 'active' : ''}" data-cat="${c.name}">${c.name}</button>`).join('');
+    `<button class="dr-cat ${c.name === dirCat ? 'active' : ''}" data-cat="${c.name}" role="tab" aria-selected="${c.name === dirCat}"><i data-lucide="${c.icon}"></i>${c.name}</button>`).join('');
   const moods = myMoods();
   const list = (dirCat === '전체' ? VENDORS : VENDORS.filter((v) => v.cat === dirCat))
     .slice().sort((a, b) => vendorScore(b, moods) - vendorScore(a, moods));
   $('#dirCount').textContent = list.length;
   if (!list.length) {
-    $('#dirGrid').innerHTML = '<p class="muted">아직 소개된 업체가 없어요. 곧 만나요!</p>';
+    $('#dirGrid').innerHTML = '<p class="dr-empty">아직 소개된 업체가 없어요. 곧 만나요!</p>';
+    drawIcons();
     return;
   }
   const cols = Array.from({ length: masonryColumns() }, () => ({ h: 0, html: '' }));
@@ -1662,6 +1678,7 @@ function renderDirectory() {
   });
   $('#dirGrid').innerHTML = cols.map((c) => `<div class="masonry-col">${c.html}</div>`).join('');
   renderDirectory.cols = cols.length;
+  drawIcons();
 }
 
 window.addEventListener('resize', () => {
@@ -1745,11 +1762,13 @@ document.addEventListener('click', (e) => {
       toast(save.classList.contains('on') ? '찜 목록에 담았어요' : '찜을 해제했어요');
       return;
     }
-    if (t.closest('.like')) {
+    const like = t.closest('.like');
+    if (like) {
       e.preventDefault();
-      const like = t.closest('.like');
-      like.textContent = like.textContent === '♡' ? '♥' : '♡';
-      toast(like.textContent === '♥' ? '찜 목록에 담았어요' : '찜을 해제했어요');
+      const on = like.classList.toggle('on');
+      like.setAttribute('aria-pressed', on);
+      toast(on ? '찜 목록에 담았어요' : '찜을 해제했어요');
+      return;
     }
     if (location.hash === '#vendor') renderVendor();
     return;

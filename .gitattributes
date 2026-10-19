@@ -1,0 +1,3 @@
+# OMD 디자인 시스템 파일은 해시로 검증하므로 줄바꿈을 LF로 고정
+DESIGN.md text eol=lf
+.omd/** text eol=lf

@@ -1,0 +1,95 @@
+{
+  "checks": {
+    "assets_fonts_licenses": {
+      "method": "controller-computed-system-graph-v2",
+      "pass": true
+    },
+    "bound_system_authority": {
+      "method": "controller-computed-system-graph-v2",
+      "pass": true
+    },
+    "component_state_coverage": {
+      "method": "controller-computed-system-graph-v2",
+      "pass": true
+    },
+    "contrast": {
+      "method": "controller-computed-system-graph-v2",
+      "pass": true
+    },
+    "implementation_contract_complete": {
+      "method": "controller-computed-system-graph-v2",
+      "pass": true
+    },
+    "opaque_extension_preservation": {
+      "method": "controller-computed-system-graph-v2",
+      "pass": true
+    },
+    "portable_core_structure": {
+      "method": "controller-computed-system-graph-v2",
+      "pass": true
+    },
+    "reduced_motion": {
+      "method": "controller-computed-system-graph-v2",
+      "pass": true
+    },
+    "responsive_320_200": {
+      "method": "controller-computed-system-graph-v2",
+      "pass": true
+    },
+    "token_reference_closure": {
+      "method": "controller-computed-system-graph-v2",
+      "pass": true
+    },
+    "unknown_absence": {
+      "method": "controller-computed-system-graph-v2",
+      "pass": true
+    }
+  },
+  "design_md_sha256": "912b6be3bd47aa4b3da6fc9394738abd3dfb6c182beda7f2bbcb3fab6dfce6aa",
+  "graph_sha256": "0808c790d8e58fb18918ff8fce35804e1825462701588fd4737b3afa96109fd2",
+  "groups": {
+    "components-states": {
+      "evidence": [
+        "css/style.css"
+      ],
+      "status": "covered"
+    },
+    "content-locales": {
+      "evidence": [
+        "index.html"
+      ],
+      "status": "covered"
+    },
+    "experience": {
+      "evidence": [
+        "index.html"
+      ],
+      "status": "covered"
+    },
+    "foundations": {
+      "evidence": [
+        "css/style.css"
+      ],
+      "status": "covered"
+    },
+    "governance": {
+      "evidence": [
+        "css/style.css"
+      ],
+      "status": "covered"
+    },
+    "layout-platforms": {
+      "evidence": [
+        "css/style.css"
+      ],
+      "status": "covered"
+    },
+    "typography-assets": {
+      "evidence": [
+        "index.html"
+      ],
+      "status": "covered"
+    }
+  },
+  "schema_version": "2.0.0"
+}

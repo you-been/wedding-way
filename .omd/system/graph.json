@@ -450,6 +450,11 @@
         "background": "color.hairline",
         "foreground": "color.ink",
         "minimum_ratio": 4.5
+      },
+      {
+        "background": "color.biz-brand",
+        "foreground": "color.on-biz-brand",
+        "minimum_ratio": 4.5
       }
     ],
     "reduced_motion": true,
@@ -459,9 +464,47 @@
       "주요 행동 버튼은 잉크 배경(color.ink)에 흰 글자, 핑크 배경 버튼은 히어로 같은 핑크 면이 아닌 곳에서 한 화면에 하나까지만 쓴다",
       "선택 상태(칩 · 탭 · 카테고리)는 잉크로 채우고, 미선택 칩은 color.hairline 면 또는 color.panel-border 테두리로 표시한다",
       "카드에는 그림자를 쓰지 않는다. 예외는 검색창(shadow.search)과 강조 카드의 핑크 오프셋 그림자(shadow.accent) 두 가지다",
-      "숫자(금액 · 개수 · 평점)는 font-variant-numeric: tabular-nums로 정렬한다"
+      "숫자(금액 · 개수 · 평점)는 font-variant-numeric: tabular-nums로 정렬한다",
+      "업체 화면(우리 업체 알리기 · 업체 가입 · 내 업체 · 업체 회원가입)은 color.brand 대신 color.biz-brand 계열을 쓰고, 포인트 면 위 글씨는 흰색(color.on-biz-brand)이다",
+      "그림 카드 배경은 예비부부 화면은 illust-pink · lilac · mint, 업체 화면은 biz-illust-rose · apricot · sage · sand를 쓴다",
+      "SNS 로그인 · 공유 버튼(카카오 · 네이버 · 구글)은 각 플랫폼 브랜드 색을 그대로 쓴다"
     ],
     "tokens": {
+      "color.biz-brand": {
+        "$description": "결심 디테일 — 업체 화면 포인트 색 (웜톤 로즈 브라운). 우리 업체 알리기 · 업체 가입 · 내 업체 · 업체 회원가입에서 color.brand 대신 사용",
+        "$type": "color",
+        "$value": "#b45a5e"
+      },
+      "color.biz-brand-hover": {
+        "$description": "결심 디테일 — 업체 포인트 버튼 hover",
+        "$type": "color",
+        "$value": "#a04e52"
+      },
+      "color.biz-brand-soft": {
+        "$description": "결심 디테일 — 업체 화면 옅은 면",
+        "$type": "color",
+        "$value": "#f8e9e7"
+      },
+      "color.biz-illust-apricot": {
+        "$description": "결심 디테일 — 업체 화면 그림 카드 배경",
+        "$type": "color",
+        "$value": "#f8e6d6"
+      },
+      "color.biz-illust-rose": {
+        "$description": "결심 디테일 — 업체 화면 그림 카드 배경",
+        "$type": "color",
+        "$value": "#f6e3e1"
+      },
+      "color.biz-illust-sage": {
+        "$description": "결심 디테일 — 업체 화면 그림 카드 배경",
+        "$type": "color",
+        "$value": "#e7e9da"
+      },
+      "color.biz-illust-sand": {
+        "$description": "결심 디테일 — 업체 화면 그림 카드 배경",
+        "$type": "color",
+        "$value": "#efe6dc"
+      },
       "color.brand": {
         "$description": "결심 디테일 (크몽 초록 #92fa72 대체) — 포인트 핑크: 히어로 면 · 번호 배지 · 강조 태그",
         "$type": "color",
@@ -492,6 +535,21 @@
         "$type": "color",
         "$value": "#f2f3f7"
       },
+      "color.illust-lilac": {
+        "$description": "결심 디테일 — 그림 카드 배경 (예비부부 화면)",
+        "$type": "color",
+        "$value": "#e9e2ff"
+      },
+      "color.illust-mint": {
+        "$description": "결심 디테일 — 그림 카드 배경 (예비부부 화면)",
+        "$type": "color",
+        "$value": "#d9f3e6"
+      },
+      "color.illust-pink": {
+        "$description": "결심 디테일 — 그림 카드 배경 (예비부부 화면)",
+        "$type": "color",
+        "$value": "#ffe1ea"
+      },
       "color.ink": {
         "$description": "크몽 값 — 제목 · 본문 · 주요 버튼 배경 · 선택 상태",
         "$type": "color",
@@ -502,10 +560,20 @@
         "$type": "color",
         "$value": "#000000"
       },
+      "color.kakao": {
+        "$description": "외부 브랜드 색 — 카카오 로그인 · 카카오톡 공유 버튼 배경 (브랜드 가이드 유지)",
+        "$type": "color",
+        "$value": "#fee500"
+      },
       "color.muted": {
         "$description": "크몽 값 — 보조 설명 텍스트",
         "$type": "color",
         "$value": "#555969"
+      },
+      "color.on-biz-brand": {
+        "$description": "결심 디테일 — 업체 포인트 색 위 글씨 (흰색)",
+        "$type": "color",
+        "$value": "#ffffff"
       },
       "color.on-brand": {
         "$description": "크몽 값 — 핑크 위 텍스트",
@@ -619,11 +687,11 @@
         "$value": "12px"
       },
       "space.section": {
-        "$description": "결심 디테일 — 섹션 사이 간격",
+        "$description": "결심 디테일 — 섹션 사이 간격 (사용자 조정: 80 → 95px)",
         "$type": "dimension",
         "$value": {
-          "desktop": "80px",
-          "mobile": "48px"
+          "desktop": "95px",
+          "mobile": "63px"
         }
       },
       "space.sm": {
@@ -676,6 +744,33 @@
         ],
         "path": "/typography_assets/assets/2",
         "source_class": "unresolved"
+      },
+      {
+        "evidence": [
+          "css/style.css"
+        ],
+        "path": "foundations.tokens.color.biz-brand",
+        "source_class": "prompt-fact",
+        "value": {
+          "$description": "결심 디테일 — 업체 화면 포인트 색 (웜톤 로즈 브라운). 우리 업체 알리기 · 업체 가입 · 내 업체 · 업체 회원가입에서 color.brand 대신 사용",
+          "$type": "color",
+          "$value": "#b45a5e"
+        }
+      },
+      {
+        "evidence": [
+          "css/style.css"
+        ],
+        "path": "foundations.tokens.space.section",
+        "source_class": "prompt-fact",
+        "value": {
+          "$description": "결심 디테일 — 섹션 사이 간격 (사용자 조정: 80 → 95px)",
+          "$type": "dimension",
+          "$value": {
+            "desktop": "95px",
+            "mobile": "63px"
+          }
+        }
       }
     ],
     "priority": [
@@ -713,7 +808,7 @@
   "projection": {
     "locale": "en",
     "path": "DESIGN.md",
-    "sha256": "06550f9b341604fa5e1848c93d8c20b6ab0236cdad307ea3572444314f5fcaba"
+    "sha256": "b0c3b28af985a5455bd29bea79860406b766e26a1856b7da0d8e3c0aaf14471c"
   },
   "schema_version": "2.0.0",
   "typography_assets": {
@@ -757,10 +852,18 @@
         "family": "Pretendard",
         "id": "section-title",
         "line_height": 1.4,
-        "size": "22px (모바일 20px)",
+        "size": "26px (모바일 24px)",
         "tracking": "-0.01em",
-        "usage": "섹션 제목 (hm-head h2) · 출처: 결심 디테일",
+        "usage": "섹션 제목 (hm-head h2) · 출처: 결심 디테일 — 사용자 조정 22 → 26px",
         "weight": 700
+      },
+      {
+        "family": "Pretendard",
+        "id": "section-desc",
+        "line_height": 1.5,
+        "size": "16px",
+        "usage": "섹션 제목 아래 설명 (hm-head p) · 출처: 결심 디테일 — 사용자 조정 14 → 16px",
+        "weight": 400
       },
       {
         "family": "Pretendard",

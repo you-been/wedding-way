@@ -2,35 +2,35 @@
   "authority": "system-graph",
   "inputs": {
     "coverage_sha256": "2de6156c24acc42c7543732d287588f60ba241b779ecca15242beb5d8591a360",
-    "graph_sha256": "3b7ba6c6459170a15b879397b2fdfbff461624c62563a0b3d1595e03115db43e",
-    "provenance_sha256": "28da4d3455817f60406f1aaa9976ee8743d3a706d7b9acb5ffd7ff40292ad28e"
+    "graph_sha256": "aff70eaa5bdc183546be6d6af4290c4fd03492122a5670007f38e7d00464f2e3",
+    "provenance_sha256": "911b4bf163ba1fcd5365e1996ab02d3462e1ecfea180bc2190db586d222d9633"
   },
   "kind": "design-md-core-adoption-receipt",
   "outputs": {
     "coverage": {
       "path": ".omd/system/coverage.json",
-      "sha256": "50ae7c47eb0732d309674c0e2b32a10e95b6293c9e3081ab7c6e128c72961900"
+      "sha256": "a55df5119377692c79a1fd77eb0b02e06b7011108c4740693f52007bb83a0a7b"
     },
     "design_md": {
       "path": "DESIGN.md",
-      "sha256": "06550f9b341604fa5e1848c93d8c20b6ab0236cdad307ea3572444314f5fcaba"
+      "sha256": "b0c3b28af985a5455bd29bea79860406b766e26a1856b7da0d8e3c0aaf14471c"
     },
     "graph": {
       "path": ".omd/system/graph.json",
-      "sha256": "8ca46a572d2b0b5919ac7e5dceeec49e088ecb6fb8e517deb86fa1ab57713392"
+      "sha256": "c811589ac96d19eb7758002dfe981e7dba3e44abf9883475304b0fca62364e7e"
     },
     "manifest": {
       "path": ".omd/system/manifest.json",
-      "sha256": "7f8101815c6d641d2993464d7249a8c1245f7729ddaf4c435dd0c50548075e91"
+      "sha256": "8e779c0324629b39f1c44c9d193c297a917aad5cdf2ce190684c2516a0645d35"
     },
     "provenance": {
       "path": ".omd/system/provenance.json",
-      "sha256": "97ac2c365fa3b5a77457b4d8a074907bfc4cbff1dfdaaae13043a90744ca8f4a"
+      "sha256": "f27367327779818fe16d52e8b396040d9419de0bfd1fbdba9858f2669fe5234c"
     }
   },
   "review": {
     "authority_transition_approved": true,
-    "receipt_sha256": "e1f5b2e0463ea270c2667dae5645b79768481eabaabd7facf354fdcd08029353",
+    "receipt_sha256": "c97401d518af24326efb5552d68454e3853ac638a8e9cf92ae34ae5ebb2b08d2",
     "reviewer": {
       "identifier": "you-been",
       "role": "project-owner"

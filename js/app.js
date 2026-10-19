@@ -1692,7 +1692,20 @@ function renderVendor() {
   const v = currentVendor;
   $('#vdName').textContent = v.name;
   $('#vdCat').textContent = v.cat;
-  $('#vdMeta').textContent = `${v.region} | ${v.type}`;
+  $('#vdMeta').textContent = `${v.region} · ${v.type}`;
+  $('#vdRating').textContent = v.rating;
+  $('#vdReviews2').textContent = v.reviews;
+  $('#vdVerified').textContent = v.verified;
+  $('#vdReviewCount').textContent = v.verified;
+  // 갤러리: 큰 칸은 이 업체 사진, 작은 칸은 다른 목업 사진을 이어서 (프로토타입용)
+  const pool = Object.values(VENDOR_IMG);
+  const start = Math.max(0, pool.indexOf(VENDOR_IMG[v.id]));
+  const shots = Array.from({ length: 4 }, (_, i) => pool[(start + 1 + i) % pool.length]);
+  const main = vendorImg(v.id)
+    ? `<img class="big" src="${vendorImg(v.id)}" alt="${v.name} 대표 사진" />`
+    : `<span class="big v-empty" aria-hidden="true"><i data-lucide="${catIcon(v.cat)}"></i></span>`;
+  $('#vdGallery').innerHTML = main + shots.map((p, i) =>
+    `<span class="vg-shot${i === 3 ? ' more' : ''}"><img src="images/${p}.jpg" alt="" loading="lazy" />${i === 3 ? '<b>+24</b>' : ''}</span>`).join('');
   const avg = CATEGORY_AVG[v.cat] || '';
   $('#vdPriceLabel').textContent = v.price ? '평균 견적' : '가격';
   $('#vdPrice').textContent = v.price || '상담 후 안내';
@@ -1943,8 +1956,10 @@ document.addEventListener('click', (e) => {
   if (action === 'pj-prev') { if (pjIdx === 0) history.back(); else showPj(pjIdx - 1); }
   if (action === 'like') {
     const b = t.closest('[data-action]');
-    b.classList.toggle('liked');
-    b.textContent = b.classList.contains('liked') ? '♥ 찜함' : '♡ 찜하기';
+    const on = b.classList.toggle('liked');
+    b.setAttribute('aria-pressed', on);
+    b.querySelector('span').textContent = on ? '찜함' : '찜하기';
+    toast(on ? '찜 목록에 담았어요' : '찜을 해제했어요');
   }
 
   const msg = t.closest('[data-toast]')?.dataset.toast;

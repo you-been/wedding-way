@@ -60,12 +60,14 @@
 - **color.control-border**: `#c8cad2` — 크몽 값 — 입력칸 · 선택 컨트롤 테두리
 - **color.hairline**: `#f2f3f7` — 크몽 값 — 구분선 · 회색 칩 배경 · 태그 배경
 - **color.ink**: `#212224` — 크몽 값 — 제목 · 본문 · 주요 버튼 배경 · 선택 상태
+- **color.ink-hover**: `#000000` — 결심 디테일 — 잉크 버튼 hover
 - **color.muted**: `#555969` — 크몽 값 — 보조 설명 텍스트
 - **color.on-brand**: `#212224` — 크몽 값 — 핑크 위 텍스트
 - **color.on-ink**: `#ffffff` — 크몽 값 — 잉크 위 텍스트
 - **color.panel**: `#fafafc` — 크몽 값 — 카테고리 아이콘 타일 · 푸터 · 읽기 전용 입력 배경
 - **color.panel-border**: `#e4e5ed` — 크몽 값 — 패널 · 카드 · 헤더 테두리
 - **color.subtle**: `#6b6e7d` — 결심 디테일 (크몽 푸터 링크 #727585와 다른 값) — 푸터 링크 · 보조 아이콘
+- **radius.bar**: `2px` — 결심 디테일 — 6px 높이 진행률 · 금액 막대 (홈 예산 예시, 타임라인 진행률, 예산 사용 현황)
 - **radius.chip**: `9999px` — 크몽 값 — 칩 · 원형 버튼
 - **radius.control**: `8px` — 크몽 값 — 입력칸 · 36px 버튼 · 사진 썸네일
 - **radius.cta**: `4px` — 크몽 값 — 52px 주요 버튼 · 태그
@@ -156,7 +158,7 @@ Required.
 - Anatomy: 배경 면, 레이블, 선택적 Lucide 아이콘(18px)
 - Variants: ink 52px (크몽 primary CTA 크기 · 결심 잉크 색), brand 핑크 52px (크몽 primary CTA 크기 · 결심 핑크), outline 40px (크몽 outline-link-button: 둥글기 8px · 테두리 #c8cad2 · 14px/700), line 52px 잉크 테두리 (결심 디테일: 핑크 히어로 위에서만, 회색 테두리는 핑크 위 대비 부족), small 36px (크몽 header action)
 - States: default, hover, focus-visible, disabled
-- Token references: color.ink, color.on-ink, color.brand, color.brand-hover, color.on-brand, radius.cta, radius.control, size.button-primary, size.button-small
+- Token references: color.ink, color.on-ink, color.brand, color.brand-hover, color.on-brand, radius.cta, radius.control, size.button-primary, size.button-small, color.ink-hover
 
 - Interaction kind: interactive
 

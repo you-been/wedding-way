@@ -1,9 +1,9 @@
 {
-  "design_md_hash": "912b6be3bd47",
+  "design_md_hash": "06550f9b3416",
   "targets": {
     "CLAUDE.md": "a0905ab87d60",
     "AGENTS.md": "fcd83d14cd18",
     ".cursor/rules/omd-design.mdc": "143fd16a0413"
   },
-  "updated_at": "2026-10-19T01:33:49.754Z"
+  "updated_at": "2026-10-19T01:57:01.995Z"
 }

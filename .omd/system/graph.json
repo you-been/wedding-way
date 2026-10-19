@@ -54,7 +54,8 @@
           "radius.cta",
           "radius.control",
           "size.button-primary",
-          "size.button-small"
+          "size.button-small",
+          "color.ink-hover"
         ],
         "variants": [
           "ink 52px (크몽 primary CTA 크기 · 결심 잉크 색)",
@@ -496,6 +497,11 @@
         "$type": "color",
         "$value": "#212224"
       },
+      "color.ink-hover": {
+        "$description": "결심 디테일 — 잉크 버튼 hover",
+        "$type": "color",
+        "$value": "#000000"
+      },
       "color.muted": {
         "$description": "크몽 값 — 보조 설명 텍스트",
         "$type": "color",
@@ -525,6 +531,11 @@
         "$description": "결심 디테일 (크몽 푸터 링크 #727585와 다른 값) — 푸터 링크 · 보조 아이콘",
         "$type": "color",
         "$value": "#6b6e7d"
+      },
+      "radius.bar": {
+        "$description": "결심 디테일 — 6px 높이 진행률 · 금액 막대 (홈 예산 예시, 타임라인 진행률, 예산 사용 현황)",
+        "$type": "dimension",
+        "$value": "2px"
       },
       "radius.chip": {
         "$description": "크몽 값 — 칩 · 원형 버튼",
@@ -702,7 +713,7 @@
   "projection": {
     "locale": "en",
     "path": "DESIGN.md",
-    "sha256": "912b6be3bd47aa4b3da6fc9394738abd3dfb6c182beda7f2bbcb3fab6dfce6aa"
+    "sha256": "06550f9b341604fa5e1848c93d8c20b6ab0236cdad307ea3572444314f5fcaba"
   },
   "schema_version": "2.0.0",
   "typography_assets": {

@@ -81,10 +81,10 @@ const VENDORS = [
 ];
 
 const REVIEWS = [
-  { who: '민트초코', when: '2026.09 본식', vendor: '필름하루 스냅 · 아이폰스냅', stars: 5, verified: true, price: '48만 원', extra: '추가금 없음', text: '원본을 정말 다 주셔서 놀랐어요. 보정본도 2주 안에 와서 모바일 청첩장에 바로 썼습니다. 제주 바람 많이 불었는데 오히려 그걸 살려서 찍어주셨어요.', imgs: 3 },
-  { who: '봄날의곰', when: '2026.10 본식', vendor: '오월의 헤어 · 헤어변형', stars: 5, verified: true, price: '55만 원', extra: '추가금 없음', text: '스튜디오 일정 잡자마자 바로 예약했는데도 겨우 잡았어요. 컨셉별로 4번 변형해주셨고 사진 결과물에서 차이가 확실히 납니다.', imgs: 2 },
+  { who: '민트초코', when: '2026.09 본식', vendor: '필름하루 스냅 · 아이폰스냅', stars: 5, verified: true, price: '48만 원', extra: '추가금 없음', photos: ['biz_07', 'biz_08', 'biz_03'], text: '원본을 정말 다 주셔서 놀랐어요. 보정본도 2주 안에 와서 모바일 청첩장에 바로 썼습니다. 제주 바람 많이 불었는데 오히려 그걸 살려서 찍어주셨어요.', imgs: 3 },
+  { who: '봄날의곰', when: '2026.10 본식', vendor: '오월의 헤어 · 헤어변형', stars: 5, verified: true, price: '55만 원', extra: '추가금 없음', photos: ['biz_01', 'biz_11'], text: '스튜디오 일정 잡자마자 바로 예약했는데도 겨우 잡았어요. 컨셉별로 4번 변형해주셨고 사진 결과물에서 차이가 확실히 납니다.', imgs: 2 },
   { who: '두부', when: '2026.08 본식', vendor: '플랜비 웨딩 · 플래너', stars: 4, verified: true, price: '동행 120만 원', extra: '사전 안내된 추가금', text: '일부동행으로 진행했어요. 제휴 안 된 인디 드레스숍도 같이 봐주셔서 좋았고, 견적 비교표를 정리해주셔서 결정이 빨랐어요.', imgs: 0 },
-  { who: '여름밤', when: '2026.07 본식', vendor: '라메르 빈티지 · 드레스', stars: 5, verified: false, price: '-', extra: '-', text: '빈티지 베일이 정말 예뻐요. 피팅비 없이 투어 가능했어요.', imgs: 1 },
+  { who: '여름밤', when: '2026.07 본식', vendor: '라메르 빈티지 · 드레스', stars: 5, verified: false, price: '-', extra: '-', photos: ['biz_02'], text: '빈티지 베일이 정말 예뻐요. 피팅비 없이 투어 가능했어요.', imgs: 1 },
 ];
 
 /* 추가 위시리스트 — 분류별 목록 (평균가는 프로토타입 예시, 만 원) */
@@ -328,9 +328,10 @@ function vendorCard(v, { masonry = false, reasons = null } = {}) {
     </a>`;
 }
 
+// 후기 사진: 프로토타입용 업체 목업 사진(images/biz_XX.jpg)
 function reviewCard(r) {
-  const badge = r.verified ? '<span class="badge-verified">✔ 계약 인증</span>' : '<span class="badge-normal">일반 후기</span>';
-  const imgs = r.imgs ? `<div class="review-imgs">${Array.from({ length: r.imgs }, (_, i) => `<span class="ph ph-${(i % 6) + 1}"></span>`).join('')}</div>` : '';
+  const badge = r.verified ? '<span class="badge-verified"><i data-lucide="badge-check"></i>계약 인증</span>' : '<span class="badge-normal">일반 후기</span>';
+  const imgs = r.photos?.length ? `<div class="review-imgs">${r.photos.map((p) => `<img src="images/${p}.jpg" alt="${r.vendor} 후기 사진" loading="lazy" />`).join('')}</div>` : '';
   return `
     <div class="review">
       <div class="review-top">
@@ -338,7 +339,7 @@ function reviewCard(r) {
         <span class="who">${r.who}<small>${r.when} · ${r.vendor}</small></span>
         ${badge}
       </div>
-      <span class="stars-s">${'★'.repeat(r.stars)}${'☆'.repeat(5 - r.stars)}</span>
+      <span class="stars-s" aria-label="별점 ${r.stars}점">${Array.from({ length: 5 }, (_, i) => `<i data-lucide="star" class="${i < r.stars ? 'on' : ''}"></i>`).join('')}</span>
       <p>${r.text}</p>
       ${r.verified ? `<div class="review-facts"><span class="tag">계약금액 ${r.price}</span><span class="tag ${r.extra === '추가금 없음' ? 'tag-ok' : 'tag-warn'}">${r.extra}</span></div>` : ''}
       ${imgs}
@@ -1369,18 +1370,18 @@ function renderTimeline() {
     const badge = i === nowIdx ? '<span class="tag tag-new">지금 할 일</span>' : '';
     const rows = items.map((it, idx) => `
       <div class="tl-item ${it.done ? 'done' : ''}" data-item="${it.id}">
-        <span class="tl-handle" title="끌어서 순서 · 단계 변경">⠿</span>
+        <span class="tl-handle" title="끌어서 순서 · 단계 변경"><i data-lucide="grip-vertical"></i></span>
         <input type="checkbox" class="tl-check" ${it.done ? 'checked' : ''} aria-label="${esc(it.t)} 완료" />
         <div class="tl-main">
           <b>${esc(it.t)}</b>${it.tag ? `<span class="tag mode-tag">${it.tag}</span>` : ''}
           ${it.d ? `<p>${esc(it.d)}</p>` : ''}
-          ${it.date || it.memo ? `<div class="tl-meta">${it.date ? `<span>📅 ${fmtMD(it.date)}</span>` : ''}${it.memo ? '<span>📝 메모</span>' : ''}</div>` : ''}
+          ${it.date || it.memo ? `<div class="tl-meta">${it.date ? `<span><i data-lucide="calendar"></i>${fmtMD(it.date)}</span>` : ''}${it.memo ? '<span><i data-lucide="notebook-pen"></i>메모</span>' : ''}</div>` : ''}
         </div>
         <div class="tl-side">
-          ${it.link ? `<a class="link-more" href="${it.link[1]}">${it.link[0]} →</a>` : ''}
+          ${it.link ? `<a class="link-more" href="${it.link[1]}">${it.link[0]} <i data-lucide="arrow-right"></i></a>` : ''}
           <span class="tl-arrows">
-            <button data-move="up" aria-label="위로" ${idx === 0 ? 'disabled' : ''}>↑</button>
-            <button data-move="down" aria-label="아래로" ${idx === items.length - 1 ? 'disabled' : ''}>↓</button>
+            <button data-move="up" aria-label="위로" ${idx === 0 ? 'disabled' : ''}><i data-lucide="chevron-up"></i></button>
+            <button data-move="down" aria-label="아래로" ${idx === items.length - 1 ? 'disabled' : ''}><i data-lucide="chevron-down"></i></button>
           </span>
         </div>
       </div>`).join('');
@@ -1394,7 +1395,7 @@ function renderTimeline() {
           <div class="phase-body">
             ${rows || '<p class="muted sm tl-empty">항목이 없어요. 여기로 끌어다 놓을 수 있어요.</p>'}
             <div class="tl-add" data-phase="${i}">
-              <button class="text-btn" data-action="tl-add-open">+ 항목 추가</button>
+              <button class="text-btn" data-action="tl-add-open"><i data-lucide="plus"></i>항목 추가</button>
               <div class="tl-add-form" hidden>
                 <input type="text" class="tl-add-input" placeholder="예: 브라이덜 샤워, 웨딩 네일" maxlength="40" />
                 <button class="btn btn-primary btn-sm" data-action="tl-add-save">추가</button>
@@ -1538,7 +1539,7 @@ function renderMyCalendar() {
   const today = ymd(new Date());
   const wedding = $('#weddingDate').value;
   const byDate = {};
-  // 본식 당일은 칩 대신 💍 표시로만 보여줌 (중복 방지)
+  // 본식 당일은 칩 대신 '본식' 표시로만 보여줌 (중복 방지)
   tlItems.filter((it) => it.date && !it.hidden && it.id !== WEDDING_ITEM).forEach((it) => { (byDate[it.date] = byDate[it.date] || []).push(it); });
   const weddingVisible = tlItems.some((it) => it.id === WEDDING_ITEM && !it.hidden);
 
@@ -1552,10 +1553,11 @@ function renderMyCalendar() {
     const more = items.length > 2 ? `<span class="mc-more">+${items.length - 2}</span>` : '';
     const cls = [key === today ? 'today' : '', key === wedding ? 'wedding' : '', (first + d - 1) % 7 === 0 ? 'sun' : ''].join(' ');
     const weddingMark = key !== wedding ? ''
-      : weddingVisible ? `<button class="mc-wedding" data-open="${WEDDING_ITEM}">💍 본식</button>` : '<span class="mc-wedding">💍 본식</span>';
+      : weddingVisible ? `<button class="mc-wedding" data-open="${WEDDING_ITEM}"><i data-lucide="gem"></i>본식</button>` : '<span class="mc-wedding"><i data-lucide="gem"></i>본식</span>';
     html += `<div class="mc-cell ${cls}"><span class="mc-day">${d}</span>${weddingMark}${chips}${more}</div>`;
   }
   $('#mcGrid').innerHTML = html;
+  drawIcons();
 }
 
 /* ---------- 항목 상세 패널 ---------- */
@@ -1707,6 +1709,7 @@ function renderVendor() {
   $('#vdWhy').hidden = !reasons.length;
   $('#vdWhyChips').innerHTML = reasons.map((r) => `<span>${r}</span>`).join('');
   $('#vdReviews').innerHTML = REVIEWS.slice(0, 2).map(reviewCard).join('');
+  drawIcons();
   renderCalendar($('#vdCal'), {
     year: 2027, month: 5,
     status: (d, dow) => (dow === 6 || dow === 0 ? (d % 3 === 0 ? 'no' : 'few') : d % 5 === 0 ? 'no' : 'ok'),
@@ -1733,6 +1736,17 @@ document.addEventListener('click', (e) => {
   }
   const sns = t.closest('[data-sns]');
   if (sns) { location.hash = `#signup-user?provider=${sns.dataset.sns}`; return; }
+
+  // 후기 작성 별점: 누른 별까지 채움
+  const star = t.closest('.rw-stars [data-star]');
+  if (star) {
+    const n = +star.dataset.star;
+    $('.rw-stars [data-star]').forEach((b) => {
+      b.classList.toggle('on', +b.dataset.star <= n);
+      b.setAttribute('aria-checked', +b.dataset.star === n);
+    });
+    return;
+  }
 
   // 타임라인 순서 ↑↓ · 되살리기
   const mover = t.closest('[data-move]');

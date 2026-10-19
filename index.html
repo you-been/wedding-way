@@ -37,6 +37,14 @@
 <!-- ============ 00. 스플래시 (첫 방문 갈림길) ============ -->
 <section class="screen" id="screen-splash">
   <div class="splash">
+    <!-- 둥둥 떠다니는 하트 (장식) — 위치 · 크기 · 속도는 하트마다 다르게 -->
+    <div class="splash-hearts" aria-hidden="true">
+      <img src="images/heart.png" alt="" style="--x:66%;--y:-8%;--w:240px;--dur:9s;--delay:-2s;--rot:-8deg" />
+      <img src="images/heart.png" alt="" style="--x:12%;--y:22%;--w:180px;--dur:7s;--delay:-4s;--rot:6deg" />
+      <img src="images/heart.png" alt="" style="--x:78%;--y:40%;--w:360px;--dur:11s;--delay:0s;--rot:4deg" />
+      <img src="images/heart.png" alt="" style="--x:-5%;--y:72%;--w:290px;--dur:10s;--delay:-6s;--rot:-5deg" />
+      <img class="far" src="images/heart.png" alt="" style="--x:3%;--y:1%;--w:110px;--dur:8s;--delay:-1s;--rot:10deg" />
+    </div>
     <div class="splash-inner">
       <div class="logo splash-logo">결심</div>
       <h1>결혼을 결심한 순간,<br/>준비도 여기서 시작해요.</h1>
@@ -666,16 +674,15 @@
 
 <!-- ============ 8. 실후기 피드 ============ -->
 <section class="screen" id="screen-reviews">
-  <div class="container narrow-lg">
-    <div class="page-head row">
+  <div class="hm-wrap rv-wrap">
+    <div class="ds-page-head rv-head">
       <div>
-        <span class="eyebrow">Verified Reviews</span>
         <h1>인증 실후기</h1>
-        <p class="muted">견적서 · 결제 내역으로 실제 계약이 확인된 후기만 인증 배지가 붙어요.</p>
+        <p>견적서 · 결제 내역으로 실제 계약이 확인된 후기만 인증 배지가 붙어요.</p>
       </div>
-      <a href="#review-write" class="btn btn-primary">후기 쓰기</a>
+      <a href="#review-write" class="ds-btn ds-btn-ink"><i data-lucide="pen-line"></i>후기 쓰기</a>
     </div>
-    <div class="chip-group" data-single>
+    <div class="chip-group rv-filters" data-single>
       <button class="chip active">전체</button><button class="chip">인증 후기만</button>
       <button class="chip">스드메</button><button class="chip">플래너</button><button class="chip">스냅</button><button class="chip">헤어변형</button>
     </div>
@@ -685,39 +692,41 @@
 
 <!-- ============ 9. 후기 작성 ============ -->
 <section class="screen" id="screen-review-write">
-  <div class="container narrow">
-    <a href="#reviews" class="back">← 후기 피드</a>
-    <h1>후기 작성</h1>
+  <div class="hm-wrap rw-wrap">
+    <a href="#reviews" class="auth-back"><i data-lucide="chevron-left"></i>후기 피드</a>
+    <div class="ds-page-head rw-head">
+      <h1>후기 작성</h1>
+      <p>실제 진행 과정을 남겨 주시면 다른 예비부부에게 큰 도움이 돼요.</p>
+    </div>
     <div class="card">
       <label class="field"><span>업체 선택</span><input type="text" value="필름하루 스냅 (아이폰스냅)" /></label>
       <label class="field"><span>계약 금액</span><input type="text" placeholder="예: 480,000원" /></label>
       <div class="field"><span>추가금 발생 여부</span>
         <div class="chip-group" data-single><button class="chip active">없음</button><button class="chip">있음 (사전 안내)</button><button class="chip">있음 (사전 안내 없음)</button></div>
       </div>
-      <div class="field"><span>만족도</span><div class="stars">★★★★★</div></div>
+      <div class="field"><span>만족도</span><div class="rw-stars" role="radiogroup" aria-label="만족도"><button type="button" class="on" data-star="1" role="radio" aria-checked="false" aria-label="1점"><i data-lucide="star"></i></button><button type="button" class="on" data-star="2" role="radio" aria-checked="false" aria-label="2점"><i data-lucide="star"></i></button><button type="button" class="on" data-star="3" role="radio" aria-checked="false" aria-label="3점"><i data-lucide="star"></i></button><button type="button" class="on" data-star="4" role="radio" aria-checked="false" aria-label="4점"><i data-lucide="star"></i></button><button type="button" class="on" data-star="5" role="radio" aria-checked="true" aria-label="5점"><i data-lucide="star"></i></button></div></div>
       <label class="field"><span>후기 내용</span><textarea rows="5" placeholder="실제 진행 과정, 좋았던 점과 아쉬운 점을 알려주세요."></textarea></label>
     </div>
     <div class="card verify">
-      <h3>🔒 계약 인증하기 <small class="muted">선택 · 인증 배지 부여</small></h3>
+      <h3><i data-lucide="shield-check"></i>계약 인증하기 <small class="muted">선택 · 인증 배지 부여</small></h3>
       <div class="verify-opts" data-single>
         <button class="option-card active"><b>견적서 · 계약서</b><small>개인정보 자동 블라인드 처리</small></button>
         <button class="option-card"><b>결제 내역 캡처</b><small>카카오페이 · 토스 · 카드 내역</small></button>
       </div>
-      <div class="upload">＋ 파일 업로드 (JPG, PNG, PDF)</div>
+      <div class="upload"><i data-lucide="upload"></i>파일 업로드 (JPG, PNG, PDF)</div>
       <p class="muted sm">업로드한 증빙은 인증 확인 후 즉시 삭제되며, 다른 사용자에게 공개되지 않아요.</p>
     </div>
-    <button class="btn btn-primary btn-block btn-lg" data-toast="후기가 등록되었어요. 인증 검토 후 배지가 부여됩니다.">후기 등록</button>
+    <button class="ds-btn ds-btn-ink rw-submit" data-toast="후기가 등록되었어요. 인증 검토 후 배지가 부여됩니다.">후기 등록</button>
   </div>
 </section>
 
 <!-- ============ 10. 내 웨딩 (타임라인 · 캘린더 / 예산 · 찜) ============ -->
 <section class="screen" id="screen-mypage">
-  <div class="container">
-    <div class="my-head card">
+  <div class="hm-wrap">
+    <div class="my-head">
       <div>
-        <span class="eyebrow">My Wedding</span>
         <h1 id="myTitle">민지 ♥ 준호 님의 웨딩</h1>
-        <p class="muted">본식 <b id="ddayDate">2027.06.12</b> · 더채플 강남</p>
+        <p class="my-sub"><i data-lucide="calendar-heart"></i>본식 <b id="ddayDate">2027.06.12</b> · 더채플 강남</p>
       </div>
       <div class="my-head-right">
         <strong class="dday" id="ddayText">D-243</strong>
@@ -733,9 +742,9 @@
     <div class="my-panel active" data-mypanel="timeline">
       <div class="card my-cal">
         <div class="mc-head">
-          <button class="mc-nav" data-action="cal-prev" aria-label="이전 달">◀</button>
+          <button class="mc-nav" data-action="cal-prev" aria-label="이전 달"><i data-lucide="chevron-left"></i></button>
           <h3 id="mcTitle">2026년 10월</h3>
-          <button class="mc-nav" data-action="cal-next" aria-label="다음 달">▶</button>
+          <button class="mc-nav" data-action="cal-next" aria-label="다음 달"><i data-lucide="chevron-right"></i></button>
           <button class="btn btn-ghost btn-sm mc-today" data-action="cal-today">오늘</button>
         </div>
         <div class="mc-grid" id="mcGrid"></div>
@@ -754,7 +763,7 @@
       </div>
       <div class="card tl-hidden-list" id="tlHiddenList" hidden></div>
       <div class="tl-help">
-        <p class="muted sm">⠿ 를 끌어서 순서나 단계를 바꾸고, 항목을 누르면 날짜 · 메모를 추가할 수 있어요. 변경 내용은 이 브라우저에 저장돼요.</p>
+        <p class="muted sm"><i data-lucide="grip-vertical"></i>를 끌어서 순서나 단계를 바꾸고, 항목을 누르면 날짜 · 메모를 추가할 수 있어요. 변경 내용은 이 브라우저에 저장돼요.</p>
         <button class="text-btn tl-reset" data-action="tl-reset">기본값으로 되돌리기</button>
       </div>
       <div class="timeline" id="timelineList"></div>
@@ -766,7 +775,7 @@
           <small class="muted">예산 사용 현황</small>
           <div class="dash-money"><b>1,420만</b> / 3,000만 원</div>
           <div class="mini-bar"><i style="width:47%"></i></div>
-          <a href="#budget-result" class="link-more">진단 리포트 →</a>
+          <a href="#budget-result" class="hm-more">진단 리포트 <i data-lucide="arrow-right"></i></a>
         </div>
         <div class="card">
           <small class="muted">이번 달 할 일</small>
@@ -791,7 +800,7 @@
         </table>
       </div>
 
-      <div class="section-head"><h2>찜한 업체</h2><a href="#directory" class="link-more">디렉토리 →</a></div>
+      <div class="section-head"><h2>찜한 업체</h2><a href="#directory" class="hm-more">디렉토리 <i data-lucide="arrow-right"></i></a></div>
       <div class="vendor-grid small" id="myVendors"></div>
     </div>
   </div>
@@ -1272,7 +1281,7 @@
 <aside class="drawer" id="tlDrawer" aria-hidden="true" aria-labelledby="dwTitle">
   <div class="drawer-head">
     <span class="eyebrow" id="dwPhase">Phase 1</span>
-    <button class="drawer-close" data-action="drawer-close" aria-label="닫기">✕</button>
+    <button class="drawer-close" data-action="drawer-close" aria-label="닫기"><i data-lucide="x"></i></button>
   </div>
   <h2 id="dwTitle">항목</h2>
   <p class="muted" id="dwDesc"></p>
@@ -1284,7 +1293,7 @@
   <label class="dw-done"><input type="checkbox" id="dwDone" /> 완료했어요</label>
 
   <div class="dw-section">
-    <h4>📅 일정</h4>
+    <h4><i data-lucide="calendar"></i>일정</h4>
     <div class="dw-date-row">
       <input type="date" id="dwDate" />
       <button class="btn btn-primary btn-sm" data-action="dw-add-cal" id="dwAddBtn">캘린더에 추가</button>
@@ -1294,12 +1303,12 @@
   </div>
 
   <div class="dw-section">
-    <h4>📝 메모 <small class="muted" id="dwMemoSaved"></small></h4>
+    <h4><i data-lucide="notebook-pen"></i>메모 <small class="muted" id="dwMemoSaved"></small></h4>
     <textarea id="dwMemo" rows="5" placeholder="예: 드레스샵 3곳 예약함, 토요일 2시"></textarea>
   </div>
 
   <a class="btn btn-ghost btn-block" id="dwLink" href="#directory" hidden>관련 업체 보기</a>
-  <button class="dw-hide" data-action="dw-hide">내 타임라인에서 빼기</button>
+  <button class="dw-hide" data-action="dw-hide"><i data-lucide="eye-off"></i>내 타임라인에서 빼기</button>
 </aside>
 
 <div class="toast" id="toast"></div>

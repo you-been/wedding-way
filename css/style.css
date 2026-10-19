@@ -1653,3 +1653,223 @@ body.is-splash .site-footer { display: none; }
   .v-thumb img, .dr-cat { transition: none; }
   .v-card:hover .v-thumb img { transform: none; }
 }
+
+/* ===== 스플래시: 둥둥 떠다니는 하트 (장식) ===== */
+/* heart.png는 진한 핑크라 색조를 살짝 따뜻하게 돌리고 채도를 낮추고 밝혀 복숭아빛 파스텔로 보이게 한다. 멀리 있는 하트(.far)는 작고 흐리게 */
+.splash { position: relative; overflow: hidden; isolation: isolate; }
+.splash-inner { position: relative; z-index: 1; }
+.splash-hearts { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+.splash-hearts img { position: absolute; left: var(--x); top: var(--y); width: var(--w); height: auto; filter: hue-rotate(10deg) saturate(.62) brightness(1.16); opacity: .9; transform: rotate(var(--rot)); animation: heart-float var(--dur) ease-in-out var(--delay) infinite; will-change: transform; user-select: none; }
+.splash-hearts img.far { filter: hue-rotate(10deg) saturate(.55) brightness(1.2) blur(2px); opacity: .65; }
+@keyframes heart-float {
+  0%, 100% { transform: translateY(0) rotate(var(--rot)); }
+  50% { transform: translateY(-22px) rotate(calc(var(--rot) * -1)); }
+}
+@media (max-width: 760px) {
+  /* 모바일은 카드가 세로로 쌓여 가운데를 덮으므로, 하트를 제목 오른쪽 빈 곳과 화면 아래로 옮긴다 */
+  .splash-hearts img { width: calc(var(--w) * .5); }
+  .splash-hearts img:nth-child(1) { left: 64%; top: -2%; }
+  .splash-hearts img:nth-child(2) { display: none; }
+  .splash-hearts img:nth-child(3) { left: 62%; top: 88%; }
+  .splash-hearts img:nth-child(4) { left: -12%; top: 90%; }
+  .splash-hearts img:nth-child(5) { left: 84%; top: 18%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .splash-hearts img { animation: none; }
+}
+
+/* ===== 실후기 · 후기 작성 · 내 웨딩 (디자인 시스템 적용) ===== */
+#screen-reviews, #screen-review-write, #screen-mypage { background: var(--ds-canvas); color: var(--ds-ink); }
+.rv-wrap { max-width: calc(820px + 48px); }
+.rw-wrap { max-width: calc(620px + 48px); }
+.rv-head { display: flex; justify-content: space-between; align-items: flex-end; gap: var(--ds-s-base); flex-wrap: wrap; }
+.rw-head { padding-top: var(--ds-s-base); }
+
+/* 세 화면 공통: 패널 · 버튼 · 칩 · 태그 · 입력 · 텍스트 버튼 */
+:is(#screen-reviews, #screen-review-write, #screen-mypage) .card { border: 1px solid var(--ds-panel-border); border-radius: var(--ds-r-panel); box-shadow: none; padding: var(--ds-s-xl); margin-bottom: var(--ds-s-base); }
+:is(#screen-reviews, #screen-review-write, #screen-mypage, #tlDrawer) .btn { height: 52px; padding: 0 24px; border-radius: var(--ds-r-cta); font-size: 16px; font-weight: 500; }
+:is(#screen-reviews, #screen-review-write, #screen-mypage, #tlDrawer) .btn-sm { height: 36px; padding: 0 14px; border-radius: var(--ds-r-control); font-size: 14px; }
+:is(#screen-reviews, #screen-review-write, #screen-mypage, #tlDrawer) .btn-primary { background: var(--ds-ink); color: var(--ds-on-ink); }
+:is(#screen-reviews, #screen-review-write, #screen-mypage, #tlDrawer) .btn-primary:hover { background: #000; }
+:is(#screen-reviews, #screen-review-write, #screen-mypage, #tlDrawer) .btn-ghost { background: var(--ds-canvas); border: 1px solid var(--ds-control-border); border-radius: var(--ds-r-control); color: var(--ds-ink); }
+:is(#screen-reviews, #screen-review-write, #screen-mypage, #tlDrawer) .btn-ghost:hover { border-color: var(--ds-ink); }
+:is(#screen-reviews, #screen-review-write, #screen-mypage) .chip { height: 36px; padding: 0 var(--ds-s-base); border: 0; border-radius: var(--ds-r-chip); background: var(--ds-hairline); color: var(--ds-ink); font-size: 14px; }
+:is(#screen-reviews, #screen-review-write, #screen-mypage) .chip:hover { background: var(--ds-panel-border); }
+:is(#screen-reviews, #screen-review-write, #screen-mypage) .chip.active { background: var(--ds-ink); color: var(--ds-on-ink); }
+:is(#screen-reviews, #screen-review-write, #screen-mypage, #tlDrawer) :is(.chip, .btn, button, a):focus-visible { outline: 2px solid var(--ds-ink); outline-offset: 2px; }
+:is(#screen-reviews, #screen-mypage) .tag { height: 24px; padding: 0 8px; border-radius: var(--ds-r-cta); background: var(--ds-hairline); color: var(--ds-ink); font-size: 12px; font-weight: 500; }
+:is(#screen-reviews, #screen-mypage) .tag-ok { background: var(--ds-ink); color: var(--ds-on-ink); }
+:is(#screen-reviews, #screen-mypage) .tag-warn { background: var(--ds-brand-soft); color: var(--ds-ink); }
+#screen-mypage .tag-new { background: var(--ds-brand); color: var(--ds-on-brand); font-weight: 700; }
+:is(#screen-reviews, #screen-review-write, #screen-mypage) .muted { color: var(--ds-muted); }
+:is(#screen-review-write, #screen-mypage, #tlDrawer) .field > span { font-size: 14px; font-weight: 700; color: var(--ds-ink); margin-bottom: var(--ds-s-sm); }
+:is(#screen-review-write, #screen-mypage, #tlDrawer) :is(.field input, .field textarea, #dwMemo, .dw-date-row input, .dw-phase select, .tl-add-input) { border: 1px solid var(--ds-control-border); border-radius: var(--ds-r-control); background: var(--ds-canvas); font-size: 16px; color: var(--ds-ink); }
+:is(#screen-review-write, #tlDrawer) .field input, .dw-date-row input, .dw-phase select { height: 52px; padding: 0 var(--ds-s-base); }
+:is(#screen-review-write, #tlDrawer) .field textarea, #dwMemo { padding: 14px var(--ds-s-base); }
+:is(#screen-review-write, #screen-mypage, #tlDrawer) :is(.field input, .field textarea, #dwMemo, .dw-date-row input, .dw-phase select, .tl-add-input):focus { outline: 2px solid var(--ds-ink); outline-offset: -1px; border-color: var(--ds-ink); }
+:is(#screen-mypage, #tlDrawer) .text-btn { display: inline-flex; align-items: center; gap: 4px; color: var(--ds-ink); font-weight: 500; text-decoration: underline; text-underline-offset: 3px; }
+:is(#screen-mypage, #tlDrawer) .text-btn svg { width: 16px; height: 16px; }
+
+/* 실후기: 필터 · 후기 카드 (업체 상세의 후기에도 같은 카드) */
+.rv-filters { gap: 6px; margin: 0 0 var(--ds-s-xl); }
+#screen-reviews .review-list { gap: var(--ds-s-base); margin: 0; }
+.review { border: 1px solid var(--ds-panel-border); border-radius: var(--ds-r-panel); padding: var(--ds-s-xl); color: var(--ds-ink); }
+.review-top { gap: var(--ds-s-md); margin-bottom: var(--ds-s-md); }
+.review .avatar { width: 40px; height: 40px; background: var(--ds-brand-soft); color: var(--ds-ink); font-size: 15px; }
+.review-top .who { font-size: 15px; font-weight: 700; }
+.review-top .who small { font-size: 13px; color: var(--ds-muted); }
+.badge-verified { gap: 4px; height: 28px; padding: 0 10px; border-radius: var(--ds-r-chip); background: var(--ds-hairline); color: var(--ds-ink); font-size: 13px; font-weight: 700; }
+.badge-verified svg { width: 16px; height: 16px; }
+.badge-normal { font-size: 13px; color: var(--ds-subtle); }
+.review .stars-s { display: inline-flex; gap: 2px; }
+.review .stars-s svg { width: 16px; height: 16px; color: var(--ds-control-border); }
+.review .stars-s svg.on { color: var(--ds-ink); fill: var(--ds-ink); }
+.review p { margin: var(--ds-s-sm) 0 var(--ds-s-md); font-size: 15px; line-height: 1.6; }
+.review-facts { gap: 6px; }
+.review-imgs { gap: var(--ds-s-sm); margin-top: var(--ds-s-md); }
+.review-imgs img { width: 88px; height: 88px; border-radius: var(--ds-r-control); object-fit: cover; background: var(--ds-panel); }
+
+/* 후기 작성: 별점 · 인증 · 업로드 */
+.rw-stars { display: flex; gap: 4px; }
+.rw-stars button { display: grid; place-items: center; width: 44px; height: 44px; border-radius: var(--ds-r-control); color: var(--ds-control-border); }
+.rw-stars button svg { width: 30px; height: 30px; }
+.rw-stars button.on { color: var(--ds-ink); }
+.rw-stars button.on svg { fill: var(--ds-ink); }
+#screen-review-write .card h3 { display: flex; align-items: center; gap: 8px; font-size: 18px; font-weight: 700; margin-bottom: var(--ds-s-base); }
+#screen-review-write .card h3 svg { width: 20px; height: 20px; }
+#screen-review-write .card h3 small { font-size: 13px; font-weight: 400; }
+#screen-review-write .option-card { padding: var(--ds-s-base); border: 1px solid var(--ds-control-border); border-radius: var(--ds-r-control); background: var(--ds-canvas); }
+#screen-review-write .option-card:hover { border-color: var(--ds-ink); }
+#screen-review-write .option-card.active { border-color: var(--ds-ink); background: var(--ds-panel); }
+#screen-review-write .option-card b { font-size: 15px; }
+#screen-review-write .option-card small { font-size: 13px; color: var(--ds-muted); }
+#screen-review-write .upload { display: flex; align-items: center; justify-content: center; gap: 8px; border: 1px dashed var(--ds-control-border); border-radius: var(--ds-r-control); padding: var(--ds-s-xl); color: var(--ds-muted); font-size: 14px; font-weight: 500; }
+#screen-review-write .upload svg { width: 18px; height: 18px; }
+#screen-review-write .upload:hover { border-color: var(--ds-ink); color: var(--ds-ink); }
+#screen-review-write h1 { margin-bottom: 0; }
+.rw-submit { width: 100%; margin-top: var(--ds-s-sm); }
+
+/* 내 웨딩: 핑크 헤더 (D-day) */
+#screen-mypage > .hm-wrap { padding-top: var(--ds-s-xxl); } /* 헤더 margin이 화면 밖으로 새지 않게 padding으로 */
+#screen-mypage .my-head { margin-top: 0; padding: var(--ds-s-xxl); border-radius: var(--ds-r-panel); background: var(--ds-brand); color: var(--ds-on-brand); }
+#screen-mypage .my-head h1 { font-size: 36px; font-weight: 700; line-height: 1.22; letter-spacing: -.02em; }
+.my-sub { display: flex; align-items: center; gap: 6px; margin-top: var(--ds-s-sm); font-size: 16px; }
+.my-sub svg { width: 18px; height: 18px; }
+#screen-mypage .dday { font-size: 56px; font-weight: 700; line-height: 1; letter-spacing: -.03em; color: var(--ds-ink); font-variant-numeric: tabular-nums; }
+#screen-mypage .my-head .field { margin: 0; display: flex; align-items: center; gap: var(--ds-s-sm); }
+#screen-mypage .my-head .field > span { margin: 0; font-size: 13px; }
+#screen-mypage .my-head .field input { width: auto; height: 36px; padding: 0 var(--ds-s-md); border-color: var(--ds-ink); font-size: 14px; }
+
+/* 탭: 밑줄 탭 (48px · 16px/500) */
+#screen-mypage .my-tabs { gap: 0; margin: var(--ds-s-xl) 0; border-bottom: 1px solid var(--ds-panel-border); }
+#screen-mypage .my-tab { height: 48px; padding: 0 var(--ds-s-lg); margin-bottom: -1px; font-size: 16px; font-weight: 500; color: var(--ds-muted); }
+#screen-mypage .my-tab.active { color: var(--ds-ink); font-weight: 700; border-color: var(--ds-ink); }
+
+/* 캘린더 */
+#screen-mypage .my-cal { padding: var(--ds-s-xl); }
+.mc-head h3 { font-size: 18px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.mc-nav { display: grid; place-items: center; width: 36px; height: 36px; border: 1px solid var(--ds-panel-border); background: var(--ds-canvas); color: var(--ds-ink); }
+.mc-nav svg { width: 18px; height: 18px; }
+.mc-nav:hover { border-color: var(--ds-ink); color: var(--ds-ink); }
+.mc-dow { font-size: 13px; color: var(--ds-muted); }
+.mc-cell { border-radius: var(--ds-r-control); background: var(--ds-panel); }
+.mc-day { font-size: 13px; font-weight: 500; color: var(--ds-ink); font-variant-numeric: tabular-nums; }
+.mc-cell.sun .mc-day { color: var(--ds-muted); }
+.mc-cell.today { box-shadow: inset 0 0 0 2px var(--ds-ink); }
+.mc-cell.wedding { background: var(--ds-brand-soft); }
+.mc-chip { border-radius: var(--ds-r-cta); background: var(--ds-ink); color: var(--ds-on-ink); font-weight: 500; }
+.mc-chip.done { background: var(--ds-hairline); color: var(--ds-muted); text-decoration: line-through; }
+.mc-more { color: var(--ds-muted); }
+.mc-wedding { display: flex; align-items: center; gap: 3px; border-radius: var(--ds-r-cta); background: var(--ds-brand); border: 0; color: var(--ds-on-brand); }
+.mc-wedding svg { width: 12px; height: 12px; flex: none; }
+button.mc-wedding:hover { background: var(--ds-brand-hover); }
+
+/* 타임라인 */
+#screen-mypage .tl-title h2, #screen-mypage .section-head h2 { font-size: 22px; font-weight: 700; letter-spacing: -.01em; }
+#screen-mypage .tl-progress { color: var(--ds-muted); font-size: 14px; font-variant-numeric: tabular-nums; }
+#screen-mypage .tl-progress-bar { height: 6px; border-radius: 2px; background: var(--ds-hairline); }
+#screen-mypage .tl-progress-bar i { background: var(--ds-ink); border-radius: 2px; }
+.tl-help .muted svg { width: 14px; height: 14px; vertical-align: -2px; }
+#screen-mypage .tl-help .tl-reset { color: var(--ds-muted); }
+#screen-mypage .tl-help .tl-reset:hover { color: var(--ds-ink); }
+#screen-mypage .timeline::before { background: var(--ds-panel-border); }
+#screen-mypage .phase::before { border-color: var(--ds-control-border); background: var(--ds-canvas); }
+#screen-mypage .phase.past::before { background: var(--ds-ink); border-color: var(--ds-ink); }
+#screen-mypage .phase.now::before { background: var(--ds-brand); border-color: var(--ds-ink); box-shadow: 0 0 0 5px var(--ds-brand-soft); }
+#screen-mypage .phase.now .card { border: 1.5px solid var(--ds-ink); box-shadow: 6px 6px 0 var(--ds-brand); }
+#screen-mypage .phase-head h3 { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 18px; font-weight: 700; }
+#screen-mypage .phase-head .when { color: var(--ds-muted); font-variant-numeric: tabular-nums; }
+#screen-mypage .tl-item { border-radius: var(--ds-r-control); background: var(--ds-panel); }
+#screen-mypage .tl-item:hover { background: var(--ds-hairline); }
+#screen-mypage .tl-check { accent-color: var(--ds-ink); }
+#screen-mypage .tl-main b { font-weight: 700; }
+#screen-mypage .tl-main p, #screen-mypage .tl-item.done .tl-main b { color: var(--ds-muted); }
+#screen-mypage .tl-handle { color: var(--ds-control-border); }
+#screen-mypage .tl-handle svg { width: 16px; height: 16px; }
+#screen-mypage .tl-handle:hover { color: var(--ds-ink); }
+#screen-mypage .tl-meta span { display: inline-flex; align-items: center; gap: 3px; height: 22px; border: 0; border-radius: var(--ds-r-cta); background: var(--ds-canvas); color: var(--ds-ink); font-size: 12px; font-weight: 500; }
+#screen-mypage .tl-meta svg { width: 12px; height: 12px; }
+#screen-mypage .tl-item .link-more { display: inline-flex; align-items: center; gap: 2px; color: var(--ds-ink); font-weight: 500; }
+#screen-mypage .tl-item .link-more svg { width: 14px; height: 14px; }
+#screen-mypage .tl-item .link-more:hover { text-decoration: underline; text-underline-offset: 3px; }
+#screen-mypage .tl-arrows button { display: grid; place-items: center; width: 28px; height: 28px; border: 1px solid var(--ds-panel-border); border-radius: var(--ds-r-control); background: var(--ds-canvas); color: var(--ds-ink); }
+#screen-mypage .tl-arrows button svg { width: 16px; height: 16px; }
+#screen-mypage .tl-arrows button:hover:not(:disabled) { border-color: var(--ds-ink); color: var(--ds-ink); }
+#screen-mypage .tl-item.drop-before { box-shadow: 0 -3px 0 var(--ds-ink); }
+#screen-mypage .tl-item.drop-after { box-shadow: 0 3px 0 var(--ds-ink); }
+#screen-mypage .phase.drop-into .card { border-color: var(--ds-ink); background: var(--ds-brand-soft); }
+#screen-mypage .tl-add-input { height: 36px; padding: 0 var(--ds-s-md); font-size: 14px; }
+#screen-mypage .tl-hidden-list { padding: var(--ds-s-sm) var(--ds-s-xl); }
+#screen-mypage .tl-hidden-row { border-color: var(--ds-hairline); }
+
+/* 예산 · 찜 */
+#screen-mypage .dash-grid.two { gap: var(--ds-s-base); }
+#screen-mypage .dash-money { font-variant-numeric: tabular-nums; }
+#screen-mypage .dash-money b { font-size: 28px; font-weight: 700; }
+#screen-mypage .mini-bar { height: 6px; border-radius: 2px; background: var(--ds-hairline); margin: var(--ds-s-sm) 0 var(--ds-s-base); }
+#screen-mypage .mini-bar i { background: var(--ds-ink); border-radius: 2px; }
+#screen-mypage .todo li::before { border-color: var(--ds-control-border); border-radius: 4px; }
+#screen-mypage .todo li.done { color: var(--ds-muted); }
+#screen-mypage .todo li.done::before { background: var(--ds-ink); border-color: var(--ds-ink); }
+#screen-mypage .card h3 { font-size: 18px; font-weight: 700; margin-bottom: var(--ds-s-base); }
+#screen-mypage .range-table th { color: var(--ds-muted); font-size: 13px; font-weight: 500; border-color: var(--ds-panel-border); }
+#screen-mypage .range-table td { border-color: var(--ds-hairline); padding: 12px 6px; }
+#screen-mypage .range-table td:nth-child(3) { color: var(--ds-ink); }
+#screen-mypage .section-head { margin: var(--ds-s-xxl) 0 var(--ds-s-base); }
+
+/* 항목 상세 패널 */
+#tlDrawer { color: var(--ds-ink); padding: var(--ds-s-xl); box-shadow: none; border-left: 1px solid var(--ds-panel-border); }
+.drawer-backdrop { background: rgba(33, 34, 36, .4); }
+#tlDrawer .eyebrow { display: inline-flex; align-items: center; height: 24px; padding: 0 8px; border-radius: var(--ds-r-cta); background: var(--ds-hairline); color: var(--ds-ink); font-size: 12px; font-weight: 500; }
+#tlDrawer .drawer-close { display: grid; place-items: center; width: 36px; height: 36px; background: var(--ds-canvas); border: 1px solid var(--ds-panel-border); color: var(--ds-ink); }
+#tlDrawer .drawer-close svg { width: 18px; height: 18px; }
+#tlDrawer .drawer-close:hover { border-color: var(--ds-ink); }
+#tlDrawer h2 { font-size: 22px; font-weight: 700; margin: var(--ds-s-md) 0 4px; }
+#tlDrawer .muted { color: var(--ds-muted); }
+#tlDrawer .dw-phase { font-size: 14px; font-weight: 700; }
+#tlDrawer .dw-done input { accent-color: var(--ds-ink); }
+#tlDrawer .dw-section { border-color: var(--ds-hairline); }
+#tlDrawer .dw-section h4 { display: flex; align-items: center; gap: 6px; font-size: 16px; font-weight: 700; }
+#tlDrawer .dw-section h4 svg { width: 18px; height: 18px; }
+#tlDrawer .dw-date-row .btn { height: 52px; }
+#tlDrawer .dw-hide { display: flex; align-items: center; justify-content: center; gap: 6px; border-radius: var(--ds-r-control); color: var(--ds-muted); font-weight: 500; }
+#tlDrawer .dw-hide svg { width: 16px; height: 16px; }
+#tlDrawer .dw-hide:hover { background: var(--ds-hairline); color: var(--ds-ink); }
+
+@media (max-width: 760px) {
+  .rv-head .ds-btn { width: 100%; }
+  .rv-filters { flex-wrap: nowrap; overflow-x: auto; margin: 0 -16px var(--ds-s-lg); padding: 0 16px; scrollbar-width: none; }
+  .rv-filters::-webkit-scrollbar { display: none; }
+  .rv-filters .chip { flex: none; }
+  .review { padding: var(--ds-s-lg) var(--ds-s-base); }
+  .review-imgs img { width: 72px; height: 72px; }
+  :is(#screen-reviews, #screen-review-write, #screen-mypage) .card { padding: var(--ds-s-lg) var(--ds-s-base); }
+  #screen-mypage > .hm-wrap { padding-top: var(--ds-s-lg); }
+  #screen-mypage .my-head { padding: var(--ds-s-xl) var(--ds-s-lg); }
+  #screen-mypage .my-head h1 { font-size: 24px; }
+  #screen-mypage .dday { font-size: 40px; }
+  #screen-mypage .my-tab { flex: 1; padding: 0 var(--ds-s-sm); font-size: 15px; }
+  #screen-mypage .my-cal { padding: var(--ds-s-base) var(--ds-s-md); }
+  #screen-mypage .tl-title h2, #screen-mypage .section-head h2 { font-size: 20px; }
+  #tlDrawer { border-left: 0; border-top: 1px solid var(--ds-panel-border); border-radius: var(--ds-r-panel) var(--ds-r-panel) 0 0; }
+}

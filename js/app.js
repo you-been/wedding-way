@@ -371,6 +371,36 @@ const AUTH_KEY = 'ww-auth';
 let authUser = null;
 try { authUser = JSON.parse(localStorage.getItem(AUTH_KEY)); } catch { authUser = null; }
 
+// 예비부부 ↔ 업체 모드: 메뉴 구성을 정함 (업체 모드 = '내 웨딩' 대신 '내 업체')
+// 로그인하면 계정 유형에 맞춰 바뀌고, 헤더의 '결심 Biz' 스위치로 언제든 전환
+const MODE_KEY = 'ww-mode';
+const MODE_TIP_KEY = 'ww-biz-tip-closed';
+let bizMode = authUser?.type === 'biz';
+try { const m = localStorage.getItem(MODE_KEY); if (m) bizMode = m === 'biz'; } catch { /* 저장 불가 환경 무시 */ }
+
+function setMode(biz) {
+  bizMode = biz;
+  try { localStorage.setItem(MODE_KEY, biz ? 'biz' : 'user'); } catch { /* 저장 불가 환경 무시 */ }
+  applyMode();
+}
+
+function applyMode() {
+  document.body.classList.toggle('is-biz', bizMode);
+  const sw = $('.mode-switch');
+  sw.classList.toggle('on', bizMode);
+  sw.setAttribute('aria-checked', bizMode);
+  // '내 업체': 업체 로그인 상태면 대시보드, 아니면 우리 업체 알리기
+  $$('[data-role="biz"]').forEach((a) => a.setAttribute('href', authUser?.type === 'biz' ? '#partner-dash' : '#partner'));
+  let tipClosed = false;
+  try { tipClosed = localStorage.getItem(MODE_TIP_KEY) === '1'; } catch { /* 저장 불가 환경 무시 */ }
+  $('#modeTip').hidden = bizMode || tipClosed;
+}
+
+function closeModeTip() {
+  try { localStorage.setItem(MODE_TIP_KEY, '1'); } catch { /* 저장 불가 환경 무시 */ }
+  $('#modeTip').hidden = true;
+}
+
 // 화면별 필요한 계정 유형 (없으면 비회원도 이용 가능)
 const SCREEN_AUTH = { mypage: 'user', 'review-write': 'user', 'partner-join': 'biz', 'partner-dash': 'biz' };
 const AUTH_COPY = {
@@ -395,21 +425,23 @@ const proofLabel = (kind) => (kind === 'free' ? '신분증 + 포트폴리오' : 
 
 function saveAuth(u) {
   authUser = u;
+  if (u) setMode(u.type === 'biz'); // 로그인한 계정 유형에 맞는 메뉴로
   try { if (u) localStorage.setItem(AUTH_KEY, JSON.stringify(u)); else localStorage.removeItem(AUTH_KEY); } catch { /* 저장 불가 환경 무시 */ }
   applyAuthUI();
 }
 
 function applyAuthUI() {
   const type = authUser?.type;
-  document.body.classList.toggle('is-biz', type === 'biz');
+  applyMode();
   $$('[data-guest]').forEach((el) => { el.hidden = !!authUser; });
   $$('[data-member]').forEach((el) => { el.hidden = !authUser; });
   $('#gnbName').textContent = authUser ? `${authLabel(authUser)} 님` : '';
-  if (type === 'user') $('#myTitle').textContent = `${authUser.nick} 님의 웨딩`;
+  if (type === 'user') renderCouple();
   if (type === 'biz') {
-    $('#dashTitle').textContent = authUser.bizName;
+    renderBizHead();
     $('#pjName').value = authUser.bizName;
     $('#dashProof').hidden = !!authUser.proof;
+    if ($('#screen-partner-dash').classList.contains('active')) renderBiz();
     $('#pjDoneMsg').textContent = authUser.proof
       ? '검토 후 24시간 이내에 예비부부에게 소개돼요.'
       : '프로필이 저장됐어요. 증빙 서류를 올리면 검토 후 예비부부에게 소개돼요.';
@@ -452,6 +484,99 @@ function finishLogin(u, msg, fallback) {
   const next = authNext && SCREEN_AUTH[authNext.split('?')[0]] !== (u.type === 'biz' ? 'user' : 'biz') ? authNext : fallback;
   authNext = null;
   location.replace(`#${next}`);
+}
+
+/* ---------- 짝꿍 초대 · 내 웨딩 연동 (프로토타입: 서버 없이 이 브라우저에 저장) ---------- */
+// 실서비스에서는 초대 코드를 서버에서 발급하고, 카카오 공유 SDK(Kakao.Share)로 링크를 보냄
+const COUPLE_KEY = 'ww-couple';
+const INVITE_CODE = 'A7K2P9';
+const DEMO_PARTNER = '준혁'; // 같은 브라우저로 시연할 때 수락하는 예시 짝꿍
+let couple = null; // { a: 초대한 사람, b: 수락한 사람, since: 'YYYY-MM-DD' }
+try { couple = JSON.parse(localStorage.getItem(COUPLE_KEY)); } catch { couple = null; }
+
+const myNick = () => authUser?.nick || '민지';
+const inviteUrl = () => `${location.href.split('#')[0]}#invite?code=${INVITE_CODE}&from=${encodeURIComponent(myNick())}`;
+
+function saveCouple(c) {
+  couple = c;
+  try { if (c) localStorage.setItem(COUPLE_KEY, JSON.stringify(c)); else localStorage.removeItem(COUPLE_KEY); } catch { /* 저장 불가 환경 무시 */ }
+  renderCouple();
+}
+
+// 내 웨딩 배너: 제목(민지 ♥ 준혁 님의 웨딩)과 짝꿍 영역
+function renderCouple() {
+  const me = myNick();
+  $('#myTitle').textContent = couple ? `${couple.a} ♥ ${couple.b} 님의 웨딩` : `${me} 님의 웨딩`;
+  $('#myCouple').innerHTML = couple
+    ? `<span class="mc-avatars"><i>${esc(couple.a[0])}</i><i class="b">${esc(couple.b[0])}</i></span>
+       <span class="mc-text"><b>${esc(couple.a === me ? couple.b : couple.a)} 님과 함께 관리 중</b><small><i data-lucide="link"></i>타임라인 · 예산 · 찜한 업체가 연동돼요</small></span>
+       <button class="mc-btn ghost" data-action="invite-open">연동 관리</button>`
+    : `<span class="mc-avatars"><i>${esc(me[0])}</i><i class="add"><i data-lucide="plus"></i></i></span>
+       <span class="mc-text"><b>짝꿍과 함께 준비해요</b><small>초대하면 계획을 함께 보고 고칠 수 있어요</small></span>
+       <button class="mc-btn" data-action="invite-open"><i data-lucide="user-plus"></i>짝꿍 초대하기</button>`;
+  drawIcons();
+}
+
+const INVITE_PERKS = `
+  <ul class="iv-perks">
+    <li><span><i data-lucide="list-checks"></i></span><b>타임라인 함께 체크</b><small>한 명이 완료하면 둘 다 반영돼요</small></li>
+    <li><span><i data-lucide="wallet"></i></span><b>예산 함께 관리</b><small>항목별 금액을 같이 정해요</small></li>
+    <li><span><i data-lucide="bookmark"></i></span><b>찜한 업체 공유</b><small>서로 찜한 업체를 한곳에서 봐요</small></li>
+  </ul>`;
+
+function openInvite() {
+  $('#ivTitle').textContent = couple ? '짝꿍과 연동 중' : '짝꿍 초대하기';
+  $('#inviteBody').innerHTML = couple
+    ? `<div class="iv-linked">
+         <span class="mc-avatars lg"><i>${esc(couple.a[0])}</i><i class="b">${esc(couple.b[0])}</i></span>
+         <b>${esc(couple.a)} ♥ ${esc(couple.b)}</b>
+         <small>${couple.since.replaceAll('-', '.')}부터 내 웨딩을 함께 관리하고 있어요</small>
+       </div>
+       ${INVITE_PERKS}
+       <button class="iv-unlink" data-action="invite-unlink"><i data-lucide="unlink"></i>연동 해제</button>`
+    : `<p class="iv-lead">초대 링크를 받은 짝꿍이 수락하면, 내 웨딩을 함께 보고 고칠 수 있어요.</p>
+       ${INVITE_PERKS}
+       <button class="iv-kakao" data-action="invite-kakao"><i data-lucide="message-circle"></i>카카오톡으로 초대하기</button>
+       <div class="iv-link">
+         <input type="text" id="inviteUrl" readonly value="${esc(inviteUrl())}" aria-label="초대 링크" />
+         <button class="ds-btn ds-btn-sm iv-copy" data-action="invite-copy"><i data-lucide="copy"></i>복사</button>
+       </div>
+       <p class="iv-note">링크는 7일 동안 유효해요. 한 명만 연동할 수 있어요.</p>
+       <a class="iv-demo" href="#invite?code=${INVITE_CODE}&from=${encodeURIComponent(myNick())}" data-action="invite-close">프로토타입: 짝꿍이 받는 초대 화면 보기 →</a>`;
+  $('#inviteModal').hidden = false;
+  $('#inviteModalBg').hidden = false;
+  document.body.classList.add('modal-open');
+  drawIcons();
+}
+
+function closeInvite() {
+  $('#inviteModal').hidden = true;
+  $('#inviteModalBg').hidden = true;
+  document.body.classList.remove('modal-open');
+}
+
+// 초대 링크로 들어온 화면
+let pendingInvite = null;
+function renderInvite(params) {
+  const from = (params.get('from') || '민지').slice(0, 12);
+  pendingInvite = { from, code: params.get('code') || INVITE_CODE };
+  $('#ivFrom').textContent = from;
+  $('#ivFrom2').textContent = from;
+  $('#ivFromInitial').textContent = from[0];
+  const note = $('#ivNote');
+  if (couple) note.textContent = `이미 ${couple.a} ♥ ${couple.b} 님으로 연동되어 있어요. 수락하면 새로 연동돼요.`;
+  else if (authUser?.type !== 'user') note.textContent = '수락하려면 로그인이 필요해요. 카카오로 3초 만에 시작할 수 있어요.';
+  else if (authUser.nick === from) note.textContent = `프로토타입: 같은 브라우저라 짝꿍(${DEMO_PARTNER}) 계정으로 수락한 것처럼 처리해요.`;
+  else note.textContent = '';
+}
+
+function acceptInvite() {
+  if (authUser?.type !== 'user') { requireLogin('user', location.hash.slice(1)); return; }
+  const { from } = pendingInvite || { from: '민지' };
+  const partner = authUser.nick === from ? DEMO_PARTNER : authUser.nick;
+  saveCouple({ a: from, b: partner, since: ymd(new Date()) });
+  location.hash = '#mypage';
+  toast(`${from} 님과 내 웨딩이 연동됐어요. 이제 함께 관리해요`);
 }
 
 // ① 일반: SNS 버튼 → (신규) 추가 정보 입력. 받아온 정보는 미리 채워두고 수정 가능
@@ -562,10 +687,13 @@ function route() {
     renderDirectory();
   }
   if (name === 'home') requestAnimationFrame(updateFeedNav); // 화면이 보인 뒤에 너비를 재야 함
+  requestAnimationFrame(onPartnerScroll); // 업체 알리기 화면이 아니면 고정 버튼을 숨김
   if (name === 'guide') showGuide(1);
   if (name === 'partner-join') showPj(0);
   if (name === 'budget-result') renderReport();
   if (name === 'vendor') renderVendor();
+  if (name === 'invite') renderInvite(params);
+  if (name === 'partner-dash') renderBiz();
   if (name === 'mypage') showMyTab(params.get('tab') || 'timeline');
   if (name === 'login') renderLogin(params);
   if (name === 'signup-user') renderSignupUser(params);
@@ -595,6 +723,22 @@ function renderHome() {
   updateFeedNav();
 }
 
+
+// 프로모션 배너: 5초마다 다음 배너로, 마우스를 올리거나 초점이 있으면 멈춤 (동작 줄이기 설정이면 자동 넘김 없음)
+const promo = { i: 0, timer: null };
+function showPromo(i) {
+  const slides = $$('#homePromo .hp-slide');
+  promo.i = (i + slides.length) % slides.length;
+  $('#homePromo .hp-track').style.transform = `translateX(${-promo.i * 100}%)`;
+  slides.forEach((sl, k) => { sl.setAttribute('aria-hidden', k !== promo.i); sl.tabIndex = k === promo.i ? 0 : -1; });
+  $('#promoNo').textContent = promo.i + 1;
+}
+function stopPromo() { clearInterval(promo.timer); promo.timer = null; }
+function startPromo() {
+  stopPromo();
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  promo.timer = setInterval(() => showPromo(promo.i + 1), 5000);
+}
 
 // 사진 피드 슬라이드: 양끝에서는 이전 · 다음 버튼을 끔
 function updateFeedNav() {
@@ -1357,7 +1501,9 @@ function renderTimeline() {
   const weddingItem = tlItems.find((it) => it.id === WEDDING_ITEM);
   if (weddingItem) weddingItem.date = value;
   $('#ddayText').textContent = days > 0 ? `D-${days}` : days === 0 ? 'D-Day' : `D+${-days}`;
-  $('#ddayDate').textContent = value.replaceAll('-', '.');
+  $('#ddayDate').textContent = `${value.replaceAll('-', '.')} (${'일월화수목금토'[new Date(value).getDay()]})`;
+  $('#myPhase').textContent = TL_PHASES[nowIdx].title;
+  $('#myPhaseNote').textContent = `Phase ${nowIdx + 1} / ${TL_PHASES.length}`;
 
   const openPhases = new Set($$('#timelineList .phase:not(.collapsed)').map((p) => +p.dataset.phase));
   const firstRender = !$('#timelineList .phase');
@@ -1518,6 +1664,8 @@ function updateTimelineProgress() {
   const pct = visible.length ? Math.round((done / visible.length) * 100) : 0;
   $('#tlBar').style.width = `${pct}%`;
   $('#tlPct').textContent = `${pct}% 완료 (${done}/${visible.length})`;
+  $('#myProgPct').textContent = `${pct}%`;
+  $('#myProgBar').style.width = `${pct}%`;
 }
 
 function showMyTab(tab) {
@@ -1625,6 +1773,7 @@ function closeDrawer() {
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape' && drawerItem) closeDrawer();
   if (e.key === 'Escape' && !$('#hallModal').hidden) closeHallModal();
+  if (e.key === 'Escape' && !$('#inviteModal').hidden) closeInvite();
   if (e.target.id === 'biCustomInput' && e.key === 'Enter') { e.preventDefault(); addCustomBudgetCat(); }
   if (e.target.matches?.('.tl-add-input')) {
     if (e.key === 'Enter') { e.preventDefault(); addCustomItem(e.target.closest('.tl-add')); }
@@ -1699,10 +1848,11 @@ function renderVendor() {
   $('#vdReviewCount').textContent = v.verified;
   // 갤러리: 큰 칸은 이 업체 사진, 작은 칸은 다른 목업 사진을 이어서 (프로토타입용)
   const pool = Object.values(VENDOR_IMG);
-  const start = Math.max(0, pool.indexOf(VENDOR_IMG[v.id]));
+  const mainSrc = v.photo ? `images/${v.photo}.jpg` : vendorImg(v.id); // 내 업체 미리보기는 저장한 대표 사진
+  const start = Math.max(0, pool.indexOf(v.photo || VENDOR_IMG[v.id]));
   const shots = Array.from({ length: 4 }, (_, i) => pool[(start + 1 + i) % pool.length]);
-  const main = vendorImg(v.id)
-    ? `<img class="big" src="${vendorImg(v.id)}" alt="${v.name} 대표 사진" />`
+  const main = mainSrc
+    ? `<img class="big" src="${mainSrc}" alt="${v.name} 대표 사진" />`
     : `<span class="big v-empty" aria-hidden="true"><i data-lucide="${catIcon(v.cat)}"></i></span>`;
   $('#vdGallery').innerHTML = main + shots.map((p, i) =>
     `<span class="vg-shot${i === 3 ? ' more' : ''}"><img src="images/${p}.jpg" alt="" loading="lazy" />${i === 3 ? '<b>+24</b>' : ''}</span>`).join('');
@@ -1729,11 +1879,240 @@ function renderVendor() {
   });
 }
 
+/* ---------- 내 업체 (업체 회원 페이지, 프로토타입: 이 브라우저에 저장) ---------- */
+const BIZ_KEY = 'ww-biz-profile';
+const BIZ_DEFAULT = {
+  photos: ['biz_07', 'biz_03'], cat: '아이폰스냅', region: '서울 · 제주', type: '1인 작가',
+  priceMode: 'range', priceMin: '35만 원', priceMax: '75만 원', moods: ['#야외스냅', '#필름감성', '#내추럴'],
+  intro: '자연광과 필름 감성을 담는 1인 아이폰스냅 작가입니다. 제주 · 서울 야외 촬영 위주로 진행해요.', insta: '',
+};
+const BIZ_MOODS = ['#야외스냅', '#클래식', '#빈티지', '#미니멀', '#내추럴', '#하우스웨딩', '#필름감성', '#유니크헤어'];
+let bizProfile = { ...BIZ_DEFAULT };
+try { bizProfile = { ...BIZ_DEFAULT, ...JSON.parse(localStorage.getItem(BIZ_KEY) || '{}') }; } catch { /* 저장 불가 환경 무시 */ }
+let bzDraftPhotos = [...bizProfile.photos];
+const bizNameNow = () => authUser?.bizName || '필름하루 스냅';
+
+const INQUIRIES = [
+  { id: 1, who: '예비부부 K', when: '10.18', tags: ['2027.06.12', '예산 50만 원'], text: '6/12 제주 스냅 가능할까요? 오후 시간대로 생각하고 있어요.', status: 'new' },
+  { id: 2, who: '예비부부 L', when: '10.17', tags: ['스탠다드 패키지'], text: '스탠다드 패키지로 주말에 촬영하면 추가금이 있나요?', status: 'new' },
+  { id: 3, who: '예비부부 P', when: '10.15', tags: ['2027.04 셋째 주'], text: '4월 셋째 주 서울 일정 문의드려요.', status: 'done', reply: '4월 19일 오전이 가능해요! 원하시는 장소를 알려주세요.' },
+];
+let inqFilter = 'all';
+let inqOpen = null;
+
+// 일정: 날짜별 상태 ok(예약 가능) · no(마감) · booked(예약 확정). 바꾼 날짜만 marks에 저장
+const bizCal = { y: new Date().getFullYear(), m: new Date().getMonth(), marks: {} };
+function bizDayStatus(y, m, d) {
+  const key = `${y}-${pad2(m + 1)}-${pad2(d)}`;
+  if (bizCal.marks[key]) return bizCal.marks[key];
+  const dow = new Date(y, m, d).getDay();
+  if ([3, 10, 17, 18, 25].includes(d)) return 'booked';
+  return dow === 0 || dow === 6 || d % 4 === 0 ? 'ok' : 'no';
+}
+
+// 프로필 완성도: 필수 4개 15%씩 + 선택 4개 10%씩
+function bizChecks(p) {
+  return [
+    { label: '대표 사진', ok: p.photos.length > 0, w: 15 },
+    { label: '업종', ok: !!p.cat, w: 15 },
+    { label: '업체명', ok: !!bizNameNow(), w: 15 },
+    { label: '무드 태그', ok: p.moods.length > 0, w: 15 },
+    { label: '가격 공개', ok: p.priceMode === 'range' && !!p.priceMin && !!p.priceMax, w: 10, tab: 'profile' },
+    { label: '소개글', ok: p.intro.trim().length >= 10, w: 10, tab: 'profile' },
+    { label: '인스타 연동', ok: !!p.insta.trim(), w: 10, tab: 'profile' },
+    { label: '예약 일정', ok: true, w: 10, tab: 'schedule' },
+  ];
+}
+
+function renderBizHead() {
+  const p = bizProfile;
+  $('#dashTitle').textContent = bizNameNow();
+  $('#bzCatChip').textContent = p.cat;
+  $('#bzRegionChip').textContent = p.region || '지역 미입력';
+  const open = !!authUser?.proof;
+  $('#bzStatus').classList.toggle('off', !open);
+  $('#bzStatus span').textContent = open ? '디렉토리 공개 중' : '비공개 · 증빙 필요';
+  const checks = bizChecks(p);
+  const pct = checks.reduce((sum, c) => sum + (c.ok ? c.w : 0), 0);
+  $('#bzCompletePct').textContent = `${pct}%`;
+  $('#bzCompleteBar').style.width = `${pct}%`;
+  const todo = checks.filter((c) => !c.ok);
+  $('#bzTodo').innerHTML = todo.length
+    ? todo.map((c) => `<li><button data-goto-bztab="${c.tab || 'profile'}"><i data-lucide="plus"></i>${c.label}<em>+${c.w}%</em></button></li>`).join('')
+    : '<li class="done"><i data-lucide="check"></i>모든 항목을 채웠어요</li>';
+  const newCount = INQUIRIES.filter((q) => q.status === 'new').length;
+  $('#bzNewCount').textContent = newCount;
+  $('#bzInqBadge').textContent = newCount;
+  $('#bzInqBadge').hidden = !newCount;
+  const now = new Date();
+  const days = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+  $('#bzBookedCount').textContent = Array.from({ length: days }, (_, i) => bizDayStatus(now.getFullYear(), now.getMonth(), i + 1)).filter((x) => x === 'booked').length;
+  drawIcons();
+}
+
+function renderBiz() {
+  renderBizHead();
+  $('#bzInqPreview').innerHTML = INQUIRIES.map((q) => `
+    <li data-open-inq="${q.id}"><b>${esc(q.who)}</b><span>${esc(q.text)}</span><em class="tag ${q.status === 'new' ? 'tag-new' : ''}">${q.status === 'new' ? 'NEW' : '답변 완료'}</em></li>`).join('');
+  const now = new Date();
+  renderCalendar($('#dashCal'), { year: now.getFullYear(), month: now.getMonth(), status: (d) => bizDayStatus(now.getFullYear(), now.getMonth(), d) });
+  showBzTab($('.bz-tab.active')?.dataset.bztab || 'home');
+}
+
+function showBzTab(tab) {
+  $$('.bz-tab').forEach((b) => { b.classList.toggle('active', b.dataset.bztab === tab); b.setAttribute('aria-selected', b.dataset.bztab === tab); });
+  $$('.bz-panel').forEach((p) => p.classList.toggle('active', p.dataset.bzpanel === tab));
+  if (tab === 'profile') fillBizForm();
+  if (tab === 'inquiry') renderInquiries();
+  if (tab === 'schedule') renderBizCal();
+  if (tab === 'account') renderBizAccount();
+  drawIcons();
+}
+
+// 업체 정보: 저장된 값으로 폼을 채우고, 입력하는 대로 미리보기를 갱신 (저장하기 전까지는 반영 안 됨)
+function fillBizForm() {
+  const p = bizProfile;
+  bzDraftPhotos = [...p.photos];
+  renderBizPhotos();
+  $('#bzCats').innerHTML = CATEGORIES.slice(1).map((c) => `<button class="chip ${c.name === p.cat ? 'active' : ''}">${c.name}</button>`).join('');
+  $('#bzName').value = bizNameNow();
+  $('#bzRegion').value = p.region;
+  $('#bzType').value = p.type;
+  $$('#bzPriceMode .chip').forEach((b) => b.classList.toggle('active', b.dataset.price === p.priceMode));
+  $('#bzPriceMin').value = p.priceMin;
+  $('#bzPriceMax').value = p.priceMax;
+  $('#bzMoods').innerHTML = BIZ_MOODS.map((m) => `<button class="chip ${p.moods.includes(m) ? 'active' : ''}">${m}</button>`).join('');
+  $('#bzIntro').value = p.intro;
+  $('#bzInsta').value = p.insta;
+  $('#bzError').classList.remove('show');
+  updateBizPreview();
+}
+
+function renderBizPhotos() {
+  $('#bzPhotos').innerHTML = bzDraftPhotos.map((ph, i) => `
+    <span class="bz-thumb"><img class="thumb" src="images/${ph}.jpg" alt="대표 사진 ${i + 1}" /><button class="bz-thumb-del" data-del-photo="${i}" aria-label="사진 ${i + 1} 삭제"><i data-lucide="x"></i></button></span>`).join('')
+    + (bzDraftPhotos.length < 5 ? '<button class="upload-add" data-action="bz-photo-add"><i data-lucide="plus"></i><small>사진 추가</small></button>' : '');
+  drawIcons();
+}
+
+function readBizForm() {
+  return {
+    photos: [...bzDraftPhotos],
+    cat: $('#bzCats .chip.active')?.textContent || '',
+    region: $('#bzRegion').value.trim(),
+    type: $('#bzType').value.trim(),
+    priceMode: $('#bzPriceMode .chip.active')?.dataset.price || 'none',
+    priceMin: $('#bzPriceMin').value.trim(),
+    priceMax: $('#bzPriceMax').value.trim(),
+    moods: $$('#bzMoods .chip.active').map((b) => b.textContent),
+    intro: $('#bzIntro').value,
+    insta: $('#bzInsta').value.trim().replace(/^@/, ''),
+  };
+}
+
+const bizPriceText = (p) => (p.priceMode === 'range' && p.priceMin && p.priceMax ? `${p.priceMin.replace(/\s*원$/, '')}~${p.priceMax}` : null);
+
+function updateBizPreview() {
+  const p = readBizForm();
+  const name = $('#bzName').value.trim() || '업체명';
+  const price = bizPriceText(p);
+  $('#bzPriceRange').hidden = p.priceMode !== 'range';
+  $('#bzPreviewCard').innerHTML = `
+    <div class="v-card bz-vcard">
+      <div class="v-thumb" style="height:200px">${p.photos[0]
+        ? `<img src="images/${p.photos[0]}.jpg" alt="" />`
+        : `<span class="v-empty" aria-hidden="true"><i data-lucide="${catIcon(p.cat)}"></i></span>`}</div>
+      <div class="v-body">
+        <span class="v-tag">${esc(p.cat || '업종')}</span>
+        <h4>${esc(name)}</h4>
+        <div class="v-meta">${esc([p.region, p.type].filter(Boolean).join(' · ') || '지역 · 유형')}</div>
+        ${priceHTML(price && esc(price), p.cat)}
+        <div class="tag-row">${p.moods.map((m) => `<span class="tag">${esc(m)}</span>`).join('')}</div>
+        ${p.insta ? `<div class="bz-vinsta"><i data-lucide="at-sign"></i>${esc(p.insta)}</div>` : ''}
+      </div>
+    </div>`;
+  drawIcons();
+}
+
+function saveBizProfile() {
+  const p = readBizForm();
+  const name = $('#bzName').value.trim();
+  const err = $('#bzError');
+  const miss = [!p.photos.length && '대표 사진', !p.cat && '업종', !name && '업체명', !p.moods.length && '무드 태그'].filter(Boolean);
+  if (miss.length) { err.textContent = `필수 항목을 채워주세요: ${miss.join(', ')}`; err.classList.add('show'); return; }
+  err.classList.remove('show');
+  bizProfile = p;
+  try { localStorage.setItem(BIZ_KEY, JSON.stringify(p)); } catch { /* 저장 불가 환경 무시 */ }
+  if (authUser?.type === 'biz' && authUser.bizName !== name) saveAuth({ ...authUser, bizName: name });
+  renderBizHead();
+  toast('업체 정보를 저장했어요');
+}
+
+// 예비부부에게 보이는 업체 상세로 (저장된 정보 기준)
+function previewBizVendor() {
+  const p = bizProfile;
+  currentVendor = {
+    ...VENDORS[0], id: 0, photo: p.photos[0], name: bizNameNow(), cat: p.cat,
+    region: p.region || '지역 미입력', type: p.type || '유형 미입력', price: bizPriceText(p), moods: p.moods,
+  };
+  location.hash = '#vendor';
+}
+
+function renderInquiries() {
+  const list = INQUIRIES.filter((q) => inqFilter === 'all' || q.status === inqFilter);
+  $('#bzInqList').innerHTML = list.length ? list.map((q) => `
+    <article class="bz-inq ${q.status}">
+      <div class="bz-inq-top">
+        <span class="avatar">${esc(q.who.slice(-1))}</span>
+        <b>${esc(q.who)}</b><small>${q.when}</small>
+        <span class="tag ${q.status === 'new' ? 'tag-new' : ''}">${q.status === 'new' ? '새 문의' : '답변 완료'}</span>
+      </div>
+      <p>${esc(q.text)}</p>
+      <div class="bz-inq-tags">${q.tags.map((t) => `<span class="tag">${esc(t)}</span>`).join('')}</div>
+      ${q.status === 'done'
+        ? `<div class="bz-reply"><small><i data-lucide="corner-down-right"></i>내 답장</small><p>${esc(q.reply)}</p></div>`
+        : inqOpen === q.id
+          ? `<div class="bz-reply-form"><textarea id="bzReply" rows="3" placeholder="답장을 입력하세요" aria-label="답장"></textarea>
+              <div><button class="ds-btn ds-btn-sm ds-btn-line" data-action="bz-reply-cancel">취소</button><button class="ds-btn ds-btn-sm ds-btn-ink" data-action="bz-reply-send" data-id="${q.id}">보내기</button></div></div>`
+          : `<button class="ds-btn ds-btn-sm bz-reply-btn" data-action="bz-reply-open" data-id="${q.id}"><i data-lucide="reply"></i>답장하기</button>`}
+    </article>`).join('') : '<p class="bz-empty">해당하는 문의가 없어요.</p>';
+  drawIcons();
+  if (inqOpen) $('#bzReply')?.focus();
+}
+
+function renderBizCal() {
+  const { y, m } = bizCal;
+  $('#bzCalTitle').textContent = `${y}년 ${m + 1}월`;
+  renderCalendar($('#bzCal'), { year: y, month: m, status: (d) => bizDayStatus(y, m, d) });
+  $('#bzCal .cal-title').remove(); // 제목은 위쪽 이동 버튼 사이에 따로 표시
+}
+
+function renderBizAccount() {
+  const u = authUser || {};
+  $('#bzAccount').innerHTML = `
+    <dl class="bz-acc">
+      <div><dt>로그인 이메일</dt><dd>${esc(u.email || '-')}</dd></div>
+      <div><dt>업체명</dt><dd>${esc(bizNameNow())}</dd></div>
+      <div><dt>연락처</dt><dd>${esc(u.phone || '-')}</dd></div>
+      <div><dt>주소</dt><dd>${esc(u.address || '-')}</dd></div>
+      <div><dt>증빙 서류</dt><dd>${u.proof
+        ? `<span class="tag tag-ok">${proofLabel(u.proof)} 확인됨</span>`
+        : '<span class="tag tag-warn">미제출</span> <button class="ds-btn ds-btn-sm ds-btn-ink" data-action="dash-proof">올리기</button>'}</dd></div>
+      <div><dt>요금제</dt><dd>업체 등록 · 지금은 무료</dd></div>
+    </dl>
+    <div class="bz-acc-actions">
+      <button class="ds-btn ds-btn-sm ds-btn-line" data-toast="비밀번호 변경 메일을 보냈어요 (프로토타입)">비밀번호 변경</button>
+      <button class="ds-btn ds-btn-sm ds-btn-line" data-action="logout">로그아웃</button>
+    </div>`;
+}
+
 /* ---------- 이벤트 위임 ---------- */
 document.addEventListener('click', (e) => {
   const t = e.target;
 
   if (t.closest('[data-splash-done]')) markSplashDone();
+  const setM = t.closest('[data-set-mode]');
+  if (setM) setMode(setM.dataset.setMode === 'biz');
 
   // 같은 화면 안 이동 (#pt-price 등) — 라우터가 화면 이름으로 읽지 않게
   const jump = t.closest('[data-scroll]');
@@ -1754,7 +2133,7 @@ document.addEventListener('click', (e) => {
   const star = t.closest('.rw-stars [data-star]');
   if (star) {
     const n = +star.dataset.star;
-    $('.rw-stars [data-star]').forEach((b) => {
+    $$('.rw-stars [data-star]').forEach((b) => {
       b.classList.toggle('on', +b.dataset.star <= n);
       b.setAttribute('aria-checked', +b.dataset.star === n);
     });
@@ -1812,6 +2191,8 @@ document.addEventListener('click', (e) => {
     if (single.dataset.mytab) showMyTab(single.dataset.mytab);
     if (single.dataset.authtab) showAuthTab(single.dataset.authtab);
     if (single.dataset.proof) updateProofUI();
+    if (single.dataset.bztab) showBzTab(single.dataset.bztab);
+    if (single.dataset.inq) { inqFilter = single.dataset.inq; renderInquiries(); }
     if (single.dataset.price) {
       $$('[data-price-panel]').forEach((p) => { p.hidden = !p.dataset.pricePanel.split(' ').includes(single.dataset.price); });
     }
@@ -1855,6 +2236,26 @@ document.addEventListener('click', (e) => {
   const ph = t.closest('.phase-head');
   if (ph) ph.closest('.phase').classList.toggle('collapsed');
 
+  // 내 업체: 탭 이동 링크 · 문의 미리보기 · 사진 삭제 · 일정 날짜 순환
+  const goto = t.closest('[data-goto-bztab]');
+  if (goto) showBzTab(goto.dataset.gotoBztab);
+  const openInq = t.closest('[data-open-inq]');
+  if (openInq) {
+    const q = INQUIRIES.find((x) => x.id === +openInq.dataset.openInq);
+    inqOpen = q.status === 'new' ? q.id : null;
+    showBzTab('inquiry');
+  }
+  const delPhoto = t.closest('[data-del-photo]');
+  if (delPhoto) { bzDraftPhotos.splice(+delPhoto.dataset.delPhoto, 1); renderBizPhotos(); updateBizPreview(); }
+  const bzDay = t.closest('#bzCal .d:not(.empty)');
+  if (bzDay) {
+    const d = +bzDay.textContent;
+    const next = { ok: 'no', no: 'booked', booked: 'ok' }[bizDayStatus(bizCal.y, bizCal.m, d)];
+    bizCal.marks[`${bizCal.y}-${pad2(bizCal.m + 1)}-${pad2(d)}`] = next;
+    renderBiz();
+  }
+  if (t.closest('#bzForm .chip')) requestAnimationFrame(updateBizPreview);
+
   // 업체 프로필 만들기 · 일정 캘린더 토글
   const day = t.closest('#pjCal .d:not(.empty)');
   if (day) { day.classList.toggle('ok'); day.classList.toggle('no'); }
@@ -1877,6 +2278,17 @@ document.addEventListener('click', (e) => {
   }
   if (action === 'b-unpin-all') { budget.locks.clear(); updatePreview(); toast('고정을 모두 풀었어요'); }
   // 예식장 · 식대 추천받기 모달
+  if (action === 'invite-open') openInvite();
+  if (action === 'invite-close') closeInvite();
+  if (action === 'invite-accept') acceptInvite();
+  if (action === 'invite-kakao') toast('카카오톡 공유 창이 열려요. 짝꿍을 골라 초대 링크를 보내세요 (프로토타입)');
+  if (action === 'invite-copy') {
+    const url = $('#inviteUrl').value;
+    const done = () => toast('초대 링크를 복사했어요');
+    if (navigator.clipboard) navigator.clipboard.writeText(url).then(done, () => { $('#inviteUrl').select(); toast('링크를 길게 눌러 복사해 주세요'); });
+    else { $('#inviteUrl').select(); document.execCommand('copy'); done(); }
+  }
+  if (action === 'invite-unlink') { const was = couple; saveCouple(null); closeInvite(); toast(`${was.b === myNick() ? was.a : was.b} 님과의 연동을 해제했어요`); }
   if (action === 'hall-modal-open') { e.preventDefault(); openHallModal(); }
   if (action === 'hall-modal-close') closeHallModal();
   if (action === 'hall-reco-clear') { e.preventDefault(); changeKeepingOthers(['hall'], () => { budget.hallSetup = null; const h = budget.cats.find((c) => c.id === 'hall'); if (h) h.w = 1; }); refreshBudgetForm(); toast('예식장 · 식대를 평균가로 되돌렸어요'); }
@@ -1890,6 +2302,7 @@ document.addEventListener('click', (e) => {
     renderHallModal();
   }
   if (action === 'toggle-menu') $('.gnb-menu').classList.toggle('open');
+  if (action === 'promo-prev' || action === 'promo-next') { showPromo(promo.i + (action === 'promo-next' ? 1 : -1)); startPromo(); }
   if (action === 'feed-prev') slideFeed(-1);
   if (action === 'feed-next') slideFeed(1);
   // 로그인 · 회원가입
@@ -1897,6 +2310,37 @@ document.addEventListener('click', (e) => {
   if (action === 'biz-login') bizLogin();
   if (action === 'signup-user') signupUser();
   if (action === 'signup-biz') signupBiz();
+  if (action === 'bz-save') saveBizProfile();
+  if (action === 'bz-preview') previewBizVendor();
+  if (action === 'bz-photo-add') {
+    const pool = Object.values(VENDOR_IMG).filter((p) => !bzDraftPhotos.includes(p));
+    if (pool.length) { bzDraftPhotos.push(pool[0]); renderBizPhotos(); updateBizPreview(); toast('사진을 추가했어요 (프로토타입: 예시 사진)'); }
+  }
+  if (action === 'bz-reply-open') { inqOpen = +t.closest('[data-id]').dataset.id; renderInquiries(); }
+  if (action === 'bz-reply-cancel') { inqOpen = null; renderInquiries(); }
+  if (action === 'bz-reply-send') {
+    const text = $('#bzReply').value.trim();
+    if (!text) { toast('답장 내용을 입력해 주세요'); return; }
+    const q = INQUIRIES.find((x) => x.id === +t.closest('[data-id]').dataset.id);
+    Object.assign(q, { status: 'done', reply: text });
+    inqOpen = null;
+    renderBiz();
+    toast(`${q.who} 님에게 답장을 보냈어요`);
+  }
+  if (action === 'bz-cal-prev' || action === 'bz-cal-next') {
+    const d = new Date(bizCal.y, bizCal.m + (action === 'bz-cal-next' ? 1 : -1), 1);
+    bizCal.y = d.getFullYear(); bizCal.m = d.getMonth();
+    renderBizCal();
+  }
+  if (action === 'toggle-mode') {
+    closeModeTip();
+    const on = !bizMode;
+    setMode(on);
+    if (on) location.hash = authUser?.type === 'biz' ? '#partner-dash' : '#partner';
+    else if (/^#(partner|signup-biz)/.test(location.hash)) location.hash = '#home';
+    toast(on ? '업체 모드로 전환했어요' : '예비부부 모드로 전환했어요');
+  }
+  if (action === 'close-mode-tip') closeModeTip();
   if (action === 'logout') { saveAuth(null); toast('로그아웃했어요'); location.hash = '#home'; }
   if (action === 'addr-search') { $('#sbAddr').value = '서울 마포구 양화로 45'; toast('주소 검색 창이 열려요 (프로토타입) · 예시 주소를 넣었어요'); }
   if (action === 'proof-upload') {
@@ -2050,6 +2494,144 @@ document.addEventListener('change', (e) => {
   }
 });
 
+/* ---------- 우리 업체 알리기: 진행 단계 가로 넘김 · 고정 버튼 ---------- */
+const reduceMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// 섹션이 화면에 고정된 동안의 세로 스크롤 진행률(0~1)을 목표값으로 두고,
+// 매 프레임 조금씩 따라가며(관성) 카드 줄을 밀고 카드 크기를 거리에 따라 연속으로 바꿈
+const ptFlow = { cur: 0, target: 0, maxShift: 0, raf: 0 };
+
+function updatePtFlow() {
+  const flow = $('#ptFlow');
+  const track = $('#ptFlowTrack');
+  const cards = $$('.pt-step', track);
+  if (reduceMotion()) {
+    track.style.transform = '';
+    cards.forEach((c) => { c.style.transform = ''; c.classList.add('is-active'); });
+    $$('[data-seq]', track).forEach((e) => e.classList.add('on'));
+    return;
+  }
+  const sticky = flow.firstElementChild;
+  const top = parseFloat(getComputedStyle(sticky).top) || 0;
+  const range = flow.offsetHeight - sticky.offsetHeight;
+  ptFlow.target = range > 0 ? Math.min(1, Math.max(0, (top - flow.getBoundingClientRect().top) / range)) : 0;
+  ptFlow.maxShift = Math.max(0, track.scrollWidth - track.parentElement.clientWidth);
+  if (!ptFlow.raf) ptFlow.raf = requestAnimationFrame(stepPtFlow);
+}
+
+function stepPtFlow() {
+  ptFlow.raf = 0;
+  ptFlow.cur += (ptFlow.target - ptFlow.cur) * 0.12;
+  if (Math.abs(ptFlow.target - ptFlow.cur) < 0.0004) ptFlow.cur = ptFlow.target;
+  renderPtFlow(ptFlow.cur);
+  if (ptFlow.cur !== ptFlow.target) ptFlow.raf = requestAnimationFrame(stepPtFlow);
+}
+
+function renderPtFlow(p) {
+  const track = $('#ptFlowTrack');
+  const cards = $$('.pt-step', track);
+  const pos = p * (cards.length - 1);
+  track.style.transform = `translate3d(${(-p * ptFlow.maxShift).toFixed(1)}px, 0, 0)`;
+  cards.forEach((c, i) => {
+    const d = Math.min(1, Math.abs(i - pos));
+    const eased = d * d * (3 - 2 * d); // smoothstep: 가까울수록 1에 붙고 멀어질수록 부드럽게 작아짐
+    c.style.transform = `scale(${(1 - 0.1 * eased).toFixed(4)})`;
+  });
+  const active = Math.round(pos);
+  cards.forEach((c, i) => c.classList.toggle('is-active', i === active));
+  $$('.pt-flow-dots i').forEach((d, i) => d.classList.toggle('on', i === active));
+  runPtSeq(cards[active]);
+}
+
+// 카드 설명 애니메이션: 강조된 카드 안의 [data-seq] 요소에 순서대로 on을 붙이고,
+// 다 보여준 뒤 함께 사라졌다가 처음부터 반복.
+// 다른 카드로 넘어가면 그 순간 모습 그대로 정지(진행 중이던 전환 · 애니메이션까지),
+// 다시 돌아오면 멈춘 지점부터 이어서 재생 (초기화하지 않음)
+const ptSeqState = new Map();
+let ptSeqCard = null;
+
+function ptSeqSchedule(st, fn, ms) {
+  st.fn = fn;
+  st.due = performance.now() + ms;
+  st.timer = setTimeout(() => { st.timer = null; fn(); }, ms);
+}
+
+// 카드 그림 속 CSS 전환 · 애니메이션(가상 요소 포함)을 그 자리에서 멈추거나 이어서 재생
+// (카드 자체의 테두리 · 그림자 강조 전환은 제외해야 강조가 바로 옮겨감)
+const ptCardAnims = (card, action) => $('.pt-step-art', card).getAnimations({ subtree: true }).forEach((a) => a[action]());
+
+function ptSeqPause(card) {
+  ptCardAnims(card, 'pause');
+  const st = ptSeqState.get(card);
+  if (!st || !st.timer) return;
+  clearTimeout(st.timer);
+  st.timer = null;
+  st.remaining = Math.max(0, st.due - performance.now());
+}
+
+function ptSeqStart(card) {
+  // 타이핑 폭을 실제 글자 폭에 맞춤 (잘려 있어도 Range는 글자 자체의 폭을 돌려줌)
+  $$('.a1-name span', card).forEach((t) => {
+    const r = document.createRange();
+    r.selectNodeContents(t);
+    t.style.setProperty('--w', `${Math.ceil(r.getBoundingClientRect().width)}px`);
+  });
+  const items = $$('[data-seq]', card);
+  const last = Math.max(...items.map((e) => +e.dataset.seq));
+  const st = { n: 0, fn: null, due: 0, timer: null, remaining: 0 };
+  const tick = () => {
+    st.n += 1;
+    items.forEach((e) => e.classList.toggle('on', +e.dataset.seq <= st.n));
+    if (st.n < last) ptSeqSchedule(st, tick, 800);
+    else ptSeqSchedule(st, fadeOut, 3000);
+  };
+  const fadeOut = () => {
+    items.forEach((e) => e.classList.remove('on'));
+    st.n = 0;
+    ptSeqSchedule(st, tick, 1100);
+  };
+  ptSeqState.set(card, st);
+  ptSeqSchedule(st, tick, 500);
+}
+
+function runPtSeq(card) {
+  if (card === ptSeqCard) return;
+  if (ptSeqCard) ptSeqPause(ptSeqCard);
+  else if (card) $$('.pt-step').forEach((c) => { if (c !== card) ptCardAnims(c, 'pause'); }); // 처음엔 강조된 카드만 움직임
+  ptSeqCard = card;
+  if (!card) return;
+  ptCardAnims(card, 'play');
+  const st = ptSeqState.get(card);
+  if (st && st.fn) ptSeqSchedule(st, st.fn, st.remaining); // 멈췄던 곳부터 이어서
+  else ptSeqStart(card);
+}
+
+// 고정 버튼: 히어로의 '우리 업체 알리기'가 화면 위로 지나가면 보이고, 맨 아래 배너가 보이면 숨김
+function updatePtFab() {
+  const fab = $('#ptFab');
+  const on = $('#screen-partner').classList.contains('active');
+  const gnb = $('.gnb').offsetHeight;
+  const show = on && $('.pt-hero .hm-cta').getBoundingClientRect().bottom < gnb
+    && $('.pt-cta').getBoundingClientRect().top > innerHeight;
+  fab.classList.toggle('show', show);
+  fab.tabIndex = show ? 0 : -1;
+  fab.setAttribute('aria-hidden', !show);
+}
+
+let ptTicking = false;
+function onPartnerScroll() {
+  if (ptTicking) return;
+  ptTicking = true;
+  requestAnimationFrame(() => {
+    ptTicking = false;
+    updatePtFab();
+    if ($('#screen-partner').classList.contains('active')) updatePtFlow();
+    else runPtSeq(null);
+  });
+}
+window.addEventListener('scroll', onPartnerScroll, { passive: true });
+window.addEventListener('resize', onPartnerScroll);
+
 /* ---------- 초기화 ---------- */
 renderHome();
 renderBudgetInputs();
@@ -2062,10 +2644,14 @@ $('#bizCats').innerHTML = CATEGORIES.slice(1).map((c) => `<span><i data-lucide="
 $('#pjCats').innerHTML =CATEGORIES.slice(1).map((c) =>
   `<button class="chip ${c.name === '아이폰스냅' ? 'active' : ''}">${c.name}</button>`).join('');
 renderCalendar($('#pjCal'), { year: 2027, month: 4, status: (d, dow) => (dow === 0 || dow === 6 ? 'ok' : 'no') });
-renderCalendar($('#dashCal'), { year: 2026, month: 9, status: (d) => ([3, 10, 17, 18, 25].includes(d) ? 'booked' : d < 12 ? 'no' : 'ok') });
 applyAuthUI();
 drawIcons();
 startHeroDemo();
 $('#homeFeed').addEventListener('scroll', updateFeedNav, { passive: true });
+showPromo(0);
+startPromo();
+['mouseenter', 'focusin'].forEach((ev) => $('#homePromo').addEventListener(ev, stopPromo));
+['mouseleave', 'focusout'].forEach((ev) => $('#homePromo').addEventListener(ev, startPromo));
+$('#bzForm').addEventListener('input', updateBizPreview); // 업체 정보 입력 → 미리보기 바로 갱신
 window.addEventListener('resize', updateFeedNav);
 route();

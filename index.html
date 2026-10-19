@@ -18,10 +18,19 @@
       <a href="#directory" data-nav="directory">업체 디렉토리</a>
       <a href="#reviews" data-nav="reviews">실후기</a>
       <a href="#mypage" data-nav="mypage" data-role="consumer">내 웨딩</a>
-      <a href="#partner-dash" data-nav="partner" data-role="biz">업체 대시보드</a>
+      <a href="#partner" data-nav="partner" data-role="biz">내 업체</a>
     </nav>
     <div class="gnb-right">
-      <a href="#partner" class="link-sub" data-nav="partner">우리 업체 알리기</a>
+      <!-- 예비부부 ↔ 업체 모드 전환 (업체 모드: '내 웨딩' 대신 '내 업체') -->
+      <div class="gnb-mode">
+        <button class="mode-switch" data-action="toggle-mode" role="switch" aria-checked="false" aria-describedby="modeTip">
+          <span class="ms-label">결심 Biz</span><span class="ms-track" aria-hidden="true"><i></i></span>
+        </button>
+        <div class="mode-tip" id="modeTip" role="note" hidden>
+          <p><b>업체회원</b>이신가요?<br/>우리 업체를 <b>딱 맞는 예비부부</b>에게 알려보세요!</p>
+          <button class="mode-tip-close" data-action="close-mode-tip" aria-label="안내 닫기"><i data-lucide="x"></i></button>
+        </div>
+      </div>
       <a href="#login" class="ds-btn ds-btn-sm ds-btn-ink" data-guest>로그인</a>
       <div class="gnb-user" data-member hidden>
         <span class="gnb-name" id="gnbName"></span>
@@ -51,13 +60,13 @@
       <p class="splash-sub">어떤 분이신지 알려주시면 딱 맞는 길로 안내해 드릴게요.</p>
 
       <div class="splash-choices">
-        <a href="#guide" class="splash-card" data-splash-done>
+        <a href="#guide" class="splash-card" data-splash-done data-set-mode="user">
           <span class="splash-ico"><i data-lucide="heart"></i></span>
           <b>결혼을 준비하고 있어요</b>
           <small>막 결혼을 결심했다면, 큰 그림부터 함께 볼게요</small>
           <span class="splash-go">새내기 가이드 보기 <i data-lucide="arrow-right"></i></span>
         </a>
-        <a href="#partner" class="splash-card biz" data-splash-done>
+        <a href="#partner" class="splash-card biz" data-splash-done data-set-mode="biz">
           <span class="splash-ico"><i data-lucide="store"></i></span>
           <b>웨딩 관련 일을 하고 있어요</b>
           <small>스튜디오 · 드레스 · 스냅 · 플래너 등, 우리 업체를 예비부부에게 알려보세요</small>
@@ -221,6 +230,38 @@
     <div class="hm-cats" id="homeCats"></div>
   </div>
 
+  <!-- 프로모션 배너 (PC 전용 이미지, 760px 이하에서는 숨김) · 자동 슬라이드 -->
+  <div class="hm-wrap hm-section hm-promo-wrap">
+    <div class="hm-promo" id="homePromo" aria-roledescription="carousel" aria-label="프로모션 배너">
+      <div class="hp-track">
+        <a class="hp-slide" href="#directory?cat=아이폰스냅" aria-roledescription="slide" aria-label="1 / 2">
+          <img src="images/banner_01.jpg" alt="빈티지 제주스냅 찾는다면? 들꽃스냅 패키지 프로모션 · 제주스냅+드레스+헤어메이크업 패키지 할인 중" />
+        </a>
+        <a class="hp-slide" href="#guide" aria-roledescription="slide" aria-label="2 / 2">
+          <img src="images/banner_02.jpg" alt="웨딩준비 뭐부터 해야 할지 모르겠다면? 블라썸 웨딩 페스타 · 결심회원 한정 프로모션 진행 중" loading="lazy" />
+        </a>
+      </div>
+      <button class="hp-nav prev" data-action="promo-prev" aria-label="이전 배너"><i data-lucide="chevron-left"></i></button>
+      <button class="hp-nav next" data-action="promo-next" aria-label="다음 배너"><i data-lucide="chevron-right"></i></button>
+      <span class="hp-count" aria-hidden="true"><b id="promoNo">1</b> / 2</span>
+    </div>
+  </div>
+
+  <div class="hm-wrap hm-section">
+    <div class="hm-head">
+      <div>
+        <h2>이런 업체 찾고 있나요?</h2>
+        <p>취향에 맞는 업체를 모아봤어요.</p>
+      </div>
+      <a href="#directory" class="hm-more">디렉토리 <i data-lucide="arrow-right"></i></a>
+    </div>
+    <div class="hm-slider">
+      <button class="hs-nav prev" data-action="feed-prev" aria-label="이전 사진" disabled><i data-lucide="chevron-left"></i></button>
+      <div class="hm-feed" id="homeFeed" tabindex="0" aria-label="업체 사진 목록, 좌우로 넘겨보세요"></div>
+      <button class="hs-nav next" data-action="feed-next" aria-label="다음 사진"><i data-lucide="chevron-right"></i></button>
+    </div>
+  </div>
+
   <div class="hm-wrap hm-section">
     <div class="hm-head">
       <h2>결심을 더 잘 활용하는 방법</h2>
@@ -266,21 +307,6 @@
         <p>스드메부터 식전영상, 축의대, 본식 사회자까지 <br/>한곳에서 같은 기준으로 비교해요.</p>
         <a href="#directory" class="ds-btn-outline">업체 디렉토리 보러가기</a>
       </article>
-    </div>
-  </div>
-
-  <div class="hm-wrap hm-section">
-    <div class="hm-head">
-      <div>
-        <h2>이런 업체 찾고 있나요?</h2>
-        <p>취향에 맞는 업체를 모아봤어요.</p>
-      </div>
-      <a href="#directory" class="hm-more">디렉토리 <i data-lucide="arrow-right"></i></a>
-    </div>
-    <div class="hm-slider">
-      <button class="hs-nav prev" data-action="feed-prev" aria-label="이전 사진" disabled><i data-lucide="chevron-left"></i></button>
-      <div class="hm-feed" id="homeFeed" tabindex="0" aria-label="업체 사진 목록, 좌우로 넘겨보세요"></div>
-      <button class="hs-nav next" data-action="feed-next" aria-label="다음 사진"><i data-lucide="chevron-right"></i></button>
     </div>
   </div>
 </section>
@@ -720,14 +746,39 @@
 <!-- ============ 10. 내 웨딩 (타임라인 · 캘린더 / 예산 · 찜) ============ -->
 <section class="screen" id="screen-mypage">
   <div class="hm-wrap">
+    <!-- 상단 배너: 왼쪽 정보 · 요약 수치, 오른쪽 D-day 카드 -->
     <div class="my-head">
-      <div>
+      <div class="my-head-main">
+        <span class="my-kicker"><i data-lucide="heart"></i>내 웨딩</span>
         <h1 id="myTitle">민지 ♥ 준호 님의 웨딩</h1>
-        <p class="my-sub"><i data-lucide="calendar-heart"></i>본식 <b id="ddayDate">2027.06.12</b> · 더채플 강남</p>
+        <ul class="my-meta">
+          <li><i data-lucide="calendar-heart"></i>본식 <b id="ddayDate">2027.06.12</b></li>
+          <li><i data-lucide="map-pin"></i>더채플 강남</li>
+        </ul>
+        <!-- 짝꿍 초대 · 연동 상태 (js: renderCouple) -->
+        <div class="my-couple" id="myCouple"></div>
+        <div class="my-stats">
+          <div class="my-stat">
+            <small>준비 진행률</small>
+            <strong id="myProgPct">0%</strong>
+            <span class="my-stat-bar"><i id="myProgBar"></i></span>
+          </div>
+          <div class="my-stat">
+            <small>지금 단계</small>
+            <strong id="myPhase">-</strong>
+            <span class="my-stat-note" id="myPhaseNote"></span>
+          </div>
+          <div class="my-stat">
+            <small>예산 사용</small>
+            <strong>1,420만</strong>
+            <span class="my-stat-note">/ 3,000만 원</span>
+          </div>
+        </div>
       </div>
-      <div class="my-head-right">
+      <div class="my-dday-card">
+        <small>본식까지</small>
         <strong class="dday" id="ddayText">D-243</strong>
-        <label class="field inline"><span>예식일</span><input type="date" id="weddingDate" value="2027-06-12" /></label>
+        <label class="my-date"><i data-lucide="calendar"></i><span>예식일</span><input type="date" id="weddingDate" value="2027-06-12" /></label>
       </div>
     </div>
 
@@ -799,6 +850,26 @@
 
       <div class="section-head"><h2>찜한 업체</h2><a href="#directory" class="hm-more">디렉토리 <i data-lucide="arrow-right"></i></a></div>
       <div class="vendor-grid small" id="myVendors"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 10-1. 짝꿍 초대 받기 (초대 링크로 들어오는 화면) ============ -->
+<section class="screen" id="screen-invite">
+  <div class="hm-wrap iv-wrap">
+    <div class="iv-card">
+      <div class="iv-avatars" aria-hidden="true"><i id="ivFromInitial">민</i><span class="iv-heart"><i data-lucide="heart"></i></span><i class="add"><i data-lucide="user-round"></i></i></div>
+      <span class="my-kicker"><i data-lucide="mail-open"></i>짝꿍 초대</span>
+      <h1><span id="ivFrom">민지</span> 님이 함께 결혼 준비를<br/>하자고 초대했어요</h1>
+      <p class="iv-desc">수락하면 <b id="ivFrom2">민지</b> 님의 내 웨딩과 연동돼서, 같은 계획을 함께 보고 고칠 수 있어요.</p>
+      <ul class="iv-perks">
+        <li><span><i data-lucide="list-checks"></i></span><b>타임라인 함께 체크</b><small>한 명이 완료하면 둘 다 반영돼요</small></li>
+        <li><span><i data-lucide="wallet"></i></span><b>예산 함께 관리</b><small>항목별 금액을 같이 정해요</small></li>
+        <li><span><i data-lucide="bookmark"></i></span><b>찜한 업체 공유</b><small>서로 찜한 업체를 한곳에서 봐요</small></li>
+      </ul>
+      <button class="ds-btn ds-btn-ink iv-accept" data-action="invite-accept">초대 수락하고 함께 관리하기</button>
+      <a href="#home" class="iv-later">다음에 할게요</a>
+      <p class="iv-note" id="ivNote"></p>
     </div>
   </div>
 </section>
@@ -880,33 +951,80 @@
     </div>
     <div class="pt-free">
       <div class="pt-free-col">
-        <span class="pt-free-label">필수</span>
-        <ul class="pt-must">
-          <li><i data-lucide="check"></i>대표 사진</li>
-          <li><i data-lucide="check"></i>업종</li>
-          <li><i data-lucide="check"></i>업체명</li>
-          <li><i data-lucide="check"></i>무드 태그 <small>1개 이상</small></li>
+        <div class="pt-free-head"><span class="pt-free-label">필수</span><b>4가지만 있으면 바로 소개돼요</b></div>
+        <ul class="pt-tiles">
+          <li class="pt-tile must"><span class="pt-tile-ico"><i data-lucide="image"></i></span><b>대표 사진</b><small>1장 이상 · 첫인상이 돼요</small><span class="pt-tile-mark" aria-hidden="true"><i data-lucide="check"></i></span></li>
+          <li class="pt-tile must"><span class="pt-tile-ico"><i data-lucide="tag"></i></span><b>업종</b><small>17개 업종 중 선택</small><span class="pt-tile-mark" aria-hidden="true"><i data-lucide="check"></i></span></li>
+          <li class="pt-tile must"><span class="pt-tile-ico"><i data-lucide="store"></i></span><b>업체명</b><small>활동명도 괜찮아요</small><span class="pt-tile-mark" aria-hidden="true"><i data-lucide="check"></i></span></li>
+          <li class="pt-tile must"><span class="pt-tile-ico"><i data-lucide="sparkles"></i></span><b>무드 태그</b><small>1개 이상 · 취향 매칭에 쓰여요</small><span class="pt-tile-mark" aria-hidden="true"><i data-lucide="check"></i></span></li>
         </ul>
       </div>
-      <div class="pt-free-col">
-        <span class="pt-free-label soft">선택 · 원하는 것만</span>
-        <div class="pt-opts">
-          <span><i data-lucide="instagram"></i> 인스타 연동</span>
-          <span><i data-lucide="calendar-days"></i> 예약 일정 공개</span>
-          <span><i data-lucide="wallet"></i> 가격 공개</span>
-          <span><i data-lucide="pencil-line"></i> 상세 소개</span>
-        </div>
+      <div class="pt-free-col soft">
+        <div class="pt-free-head"><span class="pt-free-label soft">선택</span><b>원하는 것만, 언제든 추가</b></div>
+        <ul class="pt-tiles">
+          <li class="pt-tile opt"><span class="pt-tile-ico"><i data-lucide="images"></i></span><b>인스타 연동</b><small>게시물을 사진으로 자동 정리</small><span class="pt-tile-mark" aria-hidden="true"><i data-lucide="plus"></i></span></li>
+          <li class="pt-tile opt"><span class="pt-tile-ico"><i data-lucide="calendar-days"></i></span><b>예약 일정 공개</b><small>반복되는 날짜 문의를 줄여요</small><span class="pt-tile-mark" aria-hidden="true"><i data-lucide="plus"></i></span></li>
+          <li class="pt-tile opt"><span class="pt-tile-ico"><i data-lucide="wallet"></i></span><b>가격 공개</b><small>범위만 공개해도 돼요</small><span class="pt-tile-mark" aria-hidden="true"><i data-lucide="plus"></i></span></li>
+          <li class="pt-tile opt"><span class="pt-tile-ico"><i data-lucide="file-pen-line"></i></span><b>상세 소개</b><small>서비스 범위 · 소개글</small><span class="pt-tile-mark" aria-hidden="true"><i data-lucide="plus"></i></span></li>
+        </ul>
       </div>
     </div>
   </div>
 
-  <div class="hm-wrap hm-section">
-    <div class="hm-head"><h2>이렇게 진행돼요</h2></div>
-    <ol class="pt-steps">
-      <li><span>1</span><b>필수 정보 입력</b><p>대표 사진 · 업종 · 업체명 · 무드 태그</p></li>
-      <li><span>2</span><b>원하는 항목만 골라 추가</b><p>인스타 · 일정 · 가격 · 상세 소개 (선택)</p></li>
-      <li><span>3</span><b>예비부부에게 소개</b><p>검토 후 디렉토리에 소개</p></li>
-    </ol>
+  <!-- 이렇게 진행돼요: 세로 스크롤 동안 화면에 고정되고 카드가 옆으로 넘어감 (js: updatePtFlow) -->
+  <div class="pt-flow hm-section" id="ptFlow">
+    <div class="pt-flow-sticky">
+      <div class="hm-wrap">
+        <div class="hm-head pt-flow-head">
+          <h2>이렇게 진행돼요</h2>
+          <div class="pt-flow-dots" aria-hidden="true"><i class="on"></i><i></i><i></i><i></i></div>
+        </div>
+      </div>
+      <div class="pt-flow-viewport">
+        <ol class="pt-flow-track" id="ptFlowTrack">
+          <li class="pt-step is-active">
+            <div class="pt-step-art art-a1" aria-hidden="true">
+              <div class="a1-form">
+                <div class="a1-photos"><i data-seq="1"></i><i data-seq="2"></i><i class="add"></i></div>
+                <span class="a1-chip" data-seq="3">아이폰스냅</span>
+                <div class="a1-name"><span data-seq="4">필름하루 스냅</span></div>
+                <div class="a1-moods"><em data-seq="5">#야외스냅</em><em data-seq="6">#필름감성</em></div>
+              </div>
+            </div>
+            <div class="pt-step-body"><small>Step 1</small><b>필수 정보 4가지를<br/>입력해요</b><p>대표 사진 · 업종 · 업체명 · 무드 태그</p></div>
+          </li>
+          <li class="pt-step">
+            <div class="pt-step-art art-a2" aria-hidden="true">
+              <ul class="a2-list">
+                <li data-seq="1"><i data-lucide="images"></i>인스타 연동<span class="a2-tg"></span></li>
+                <li data-seq="2"><i data-lucide="calendar-days"></i>예약 일정<span class="a2-tg"></span></li>
+                <li data-seq="3"><i data-lucide="wallet"></i>가격 공개<span class="a2-tg"></span></li>
+                <li data-seq="4"><i data-lucide="file-pen-line"></i>상세 소개<span class="a2-tg"></span></li>
+              </ul>
+            </div>
+            <div class="pt-step-body"><small>Step 2</small><b>보여주고 싶은 항목만<br/>골라서 추가해요</b><p>인스타 · 일정 · 가격 · 상세 소개 (선택)</p></div>
+          </li>
+          <li class="pt-step">
+            <div class="pt-step-art art-a3" aria-hidden="true">
+              <div class="a3-grid"><i></i><i></i><i></i><i></i><i></i></div>
+              <div class="a3-card" data-seq="1"><span class="a3-img"></span><b>필름하루 스냅</b><small>아이폰스냅 · 35~75만 원</small></div>
+              <span class="a3-stamp" data-seq="2"><i data-lucide="badge-check"></i>검토 완료</span>
+            </div>
+            <div class="pt-step-body"><small>Step 3</small><b>검토 후 디렉토리에<br/>소개돼요</b><p>24시간 이내 · 취향이 맞는 예비부부에게 추천</p></div>
+          </li>
+          <li class="pt-step">
+            <div class="pt-step-art art-a4" aria-hidden="true">
+              <div class="a4-chat">
+                <p class="a4-in" data-seq="1">6/12 제주 스냅 가능할까요?</p>
+                <p class="a4-out" data-seq="2">네, 그날 오후 가능해요!</p>
+                <span class="a4-done" data-seq="3"><i data-lucide="calendar-check"></i>6월 12일 예약 확정</span>
+              </div>
+            </div>
+            <div class="pt-step-body"><small>Step 4</small><b>문의를 받고<br/>예약을 확정해요</b><p>업체 대시보드에서 문의 · 일정을 한눈에</p></div>
+          </li>
+        </ol>
+      </div>
+    </div>
   </div>
 
   <div class="hm-wrap hm-section" id="pt-price">
@@ -940,10 +1058,14 @@
     </div>
   </div>
 
-  <div class="hm-wrap hm-section">
-    <div class="pt-cta">
+  <!-- 마지막 배너: 화면 전체 너비 · 배경 이미지(more_bg.webp) -->
+  <div class="pt-cta">
+    <div class="hm-wrap pt-cta-inner">
       <div><h3>3분이면 우리 업체 소개가 완성돼요</h3><p>필수 정보 4가지만 있으면 바로 시작할 수 있어요.</p></div>
-      <a href="#partner-join" class="ds-btn ds-btn-ink">우리 업체 알리기 <i data-lucide="arrow-right"></i></a>
+      <div class="pt-cta-btns">
+        <button class="ds-btn pt-btn-ask" data-toast="입점 문의를 남길 수 있는 창이 열려요 (프로토타입)"><i data-lucide="message-circle"></i>업체 입점문의</button>
+        <a href="#partner-join" class="ds-btn pt-btn-go">우리 업체 알리기 <i data-lucide="arrow-right"></i></a>
+      </div>
     </div>
   </div>
 </section>
@@ -1061,36 +1183,124 @@
   </div>
 </section>
 
-<!-- ============ 13. 업체 대시보드 ============ -->
+<!-- ============ 13. 내 업체 (업체 회원 페이지: 대시보드 · 업체 정보 · 문의 · 일정 · 계정) ============ -->
 <section class="screen" id="screen-partner-dash">
   <div class="hm-wrap">
-    <div class="ds-page-head">
-      <span class="pd-kicker">업체 대시보드</span>
-      <h1 id="dashTitle">필름하루 스냅</h1>
+    <!-- 상단 배너: 업체 정보 · 요약 수치, 오른쪽 프로필 완성도 -->
+    <div class="bz-head">
+      <div class="bz-head-main">
+        <span class="my-kicker"><i data-lucide="store"></i>내 업체</span>
+        <h1 id="dashTitle">필름하루 스냅</h1>
+        <ul class="my-meta">
+          <li><i data-lucide="tag"></i><span id="bzCatChip">아이폰스냅</span></li>
+          <li><i data-lucide="map-pin"></i><span id="bzRegionChip">서울 · 제주</span></li>
+          <li class="bz-status" id="bzStatus"><i></i><span>디렉토리 공개 중</span></li>
+        </ul>
+        <div class="my-stats bz-stats">
+          <div class="my-stat"><small>이번 주 조회</small><strong>1,284</strong><span class="my-stat-note"><i data-lucide="trending-up"></i>18%</span></div>
+          <div class="my-stat"><small>새 문의</small><strong id="bzNewCount">2</strong><span class="my-stat-note">답장을 기다려요</span></div>
+          <div class="my-stat"><small>찜</small><strong>86</strong><span class="my-stat-note"><i data-lucide="trending-up"></i>9</span></div>
+          <div class="my-stat"><small>예약 확정</small><strong id="bzBookedCount">5</strong><span class="my-stat-note">이번 달</span></div>
+        </div>
+      </div>
+      <div class="bz-side-card">
+        <small>프로필 완성도</small>
+        <strong id="bzCompletePct">0%</strong>
+        <span class="my-stat-bar"><i id="bzCompleteBar"></i></span>
+        <ul class="bz-todo" id="bzTodo"></ul>
+        <button class="bz-preview" data-action="bz-preview"><i data-lucide="eye"></i>예비부부에게 보이는 페이지 보기</button>
+      </div>
     </div>
+
     <div class="card proof-banner" id="dashProof" hidden>
       <div><b>증빙 서류를 올리면 디렉토리에 소개돼요</b><p class="muted sm">지금은 프로필이 비공개 상태예요. 사업자 등록증, 또는 프리랜서라면 신분증 + 포트폴리오를 올려주세요.</p></div>
       <button class="btn btn-primary" data-action="dash-proof">증빙 서류 올리기</button>
     </div>
-    <div class="stat-grid">
-      <div class="card stat"><small>이번 주 프로필 조회</small><strong>1,284</strong><span class="up"><i data-lucide="trending-up"></i>18%</span></div>
-      <div class="card stat"><small>새 문의</small><strong>12</strong><span class="up"><i data-lucide="trending-up"></i>4</span></div>
-      <div class="card stat"><small>찜</small><strong>86</strong><span class="up"><i data-lucide="trending-up"></i>9</span></div>
-      <div class="card stat"><small>예약 확정</small><strong>5</strong><span class="muted">이번 달</span></div>
+
+    <div class="bz-tabs" data-single role="tablist">
+      <button class="bz-tab active" data-bztab="home" role="tab">대시보드</button>
+      <button class="bz-tab" data-bztab="profile" role="tab">업체 정보</button>
+      <button class="bz-tab" data-bztab="inquiry" role="tab">문의 <span class="bz-count" id="bzInqBadge">2</span></button>
+      <button class="bz-tab" data-bztab="schedule" role="tab">일정</button>
+      <button class="bz-tab" data-bztab="account" role="tab">계정</button>
     </div>
-    <div class="report-grid">
-      <div class="card">
-        <h3>새 문의</h3>
-        <ul class="inq-list">
-          <li><b>예비부부 K</b><span>6/12 제주 스냅 가능할까요? · 예산 50만 원</span><em class="tag tag-new">NEW</em></li>
-          <li><b>예비부부 L</b><span>스탠다드 패키지 주말 추가금 문의</span><em class="tag tag-new">NEW</em></li>
-          <li><b>예비부부 P</b><span>4월 셋째 주 서울 일정 문의</span><em class="tag">답변 완료</em></li>
-        </ul>
+
+    <!-- ① 대시보드 -->
+    <div class="bz-panel active" data-bzpanel="home">
+      <div class="report-grid">
+        <div class="card">
+          <div class="bz-card-head"><h3>새 문의</h3><button class="hm-more" data-goto-bztab="inquiry">전체 보기 <i data-lucide="arrow-right"></i></button></div>
+          <ul class="inq-list" id="bzInqPreview"></ul>
+        </div>
+        <div class="card">
+          <div class="bz-card-head"><h3>이번 달 일정</h3><button class="hm-more" data-goto-bztab="schedule">일정 관리 <i data-lucide="arrow-right"></i></button></div>
+          <div class="cal" id="dashCal"></div>
+        </div>
       </div>
-      <div class="card">
-        <h3>예약 일정</h3>
-        <div class="cal" id="dashCal"></div>
+    </div>
+
+    <!-- ② 업체 정보 (입력하면 오른쪽 미리보기가 바로 바뀜) -->
+    <div class="bz-panel" data-bzpanel="profile">
+      <div class="bz-profile">
+        <div class="card bz-form" id="bzForm">
+          <div class="field"><span>대표 사진 <small class="muted">필수</small></span>
+            <div class="upload-row" id="bzPhotos"></div>
+          </div>
+          <div class="field"><span>업종 <small class="muted">필수</small></span><div class="chip-group" data-single id="bzCats"></div></div>
+          <label class="field"><span>업체 / 활동명 <small class="muted">필수</small></span><input type="text" id="bzName" maxlength="20" /></label>
+          <div class="bz-row">
+            <label class="field"><span>활동 지역</span><input type="text" id="bzRegion" placeholder="예: 서울, 제주" /></label>
+            <label class="field"><span>유형</span><input type="text" id="bzType" placeholder="예: 1인 작가" /></label>
+          </div>
+          <div class="field"><span>가격 공개</span>
+            <div class="chip-group" data-single id="bzPriceMode">
+              <button class="chip" data-price="none">공개 안 함</button><button class="chip" data-price="range">범위만</button>
+            </div>
+            <div class="price-range" id="bzPriceRange">
+              <label class="field"><span>최저</span><input type="text" id="bzPriceMin" placeholder="예: 35만 원" /></label>
+              <span>~</span>
+              <label class="field"><span>최고</span><input type="text" id="bzPriceMax" placeholder="예: 75만 원" /></label>
+            </div>
+          </div>
+          <div class="field"><span>무드 태그 <small class="muted">필수 · 1개 이상</small></span><div class="chip-group" data-multi id="bzMoods"></div></div>
+          <label class="field"><span>소개글</span><textarea id="bzIntro" rows="4" placeholder="어떤 서비스를 제공하는지 알려주세요."></textarea></label>
+          <label class="field"><span>인스타그램 계정</span><input type="text" id="bzInsta" placeholder="예: filmharu.snap" /></label>
+          <p class="pj-error" id="bzError"></p>
+          <button class="ds-btn ds-btn-ink bz-save" data-action="bz-save">저장하기</button>
+        </div>
+        <aside class="bz-preview-col">
+          <small class="bz-preview-label">예비부부에게 이렇게 보여요</small>
+          <div id="bzPreviewCard"></div>
+        </aside>
       </div>
+    </div>
+
+    <!-- ③ 문의 -->
+    <div class="bz-panel" data-bzpanel="inquiry">
+      <div class="chip-group bz-filters" data-single id="bzInqFilter">
+        <button class="chip active" data-inq="all">전체</button><button class="chip" data-inq="new">새 문의</button><button class="chip" data-inq="done">답변 완료</button>
+      </div>
+      <div class="bz-inq-list" id="bzInqList"></div>
+    </div>
+
+    <!-- ④ 일정: 날짜를 누르면 예약 가능 → 마감 → 예약 확정 순으로 바뀜 -->
+    <div class="bz-panel" data-bzpanel="schedule">
+      <div class="card bz-sched">
+        <div class="bz-sched-head">
+          <button class="mc-nav" data-action="bz-cal-prev" aria-label="이전 달"><i data-lucide="chevron-left"></i></button>
+          <h3 id="bzCalTitle">2026년 10월</h3>
+          <button class="mc-nav" data-action="bz-cal-next" aria-label="다음 달"><i data-lucide="chevron-right"></i></button>
+          <p class="muted sm">날짜를 누르면 <b>예약 가능 → 마감 → 예약 확정</b> 순으로 바뀌어요.</p>
+        </div>
+        <div class="cal editable" id="bzCal"></div>
+        <div class="cal-legend"><span><i class="dot ok"></i>예약 가능</span><span><i class="dot no"></i>마감</span><span><i class="dot booked"></i>예약 확정</span></div>
+        <p class="muted sm bz-sched-note">예비부부에게는 예약 가능 · 마감만 보이고, 예약 확정은 마감으로 보여요.</p>
+      </div>
+    </div>
+
+    <!-- ⑤ 계정 -->
+    <div class="bz-panel" data-bzpanel="account">
+      <div class="card bz-account" id="bzAccount"></div>
     </div>
   </div>
 </section>
@@ -1240,13 +1450,25 @@
   <a href="#directory" data-nav="directory">▦<span>디렉토리</span></a>
   <a href="#reviews" data-nav="reviews">★<span>실후기</span></a>
   <a href="#mypage" data-nav="mypage" data-role="consumer">♡<span>내 웨딩</span></a>
-  <a href="#partner-dash" data-nav="partner" data-role="biz">▤<span>대시보드</span></a>
+  <a href="#partner" data-nav="partner" data-role="biz">▤<span>내 업체</span></a>
 </nav>
 
 <!-- 프로토타입 화면 이동 버튼 -->
 <a href="#flow" class="proto-fab" title="화면 구성 · 플로우 보기">플로우 맵</a>
+<!-- 우리 업체 알리기 화면 전용: 히어로 버튼이 지나가면 나타나는 고정 버튼 -->
+<a href="#partner-join" class="pt-fab" id="ptFab" tabindex="-1" aria-hidden="true"><i data-lucide="store"></i>우리 업체 알리기<i data-lucide="arrow-right"></i></a>
 
 <!-- 예식장 · 식대 추천받기 모달 (예식 종류 → 지역 → 하객 수) -->
+<!-- 짝꿍 초대 창 -->
+<div class="modal-backdrop" id="inviteModalBg" data-action="invite-close" hidden></div>
+<div class="modal" id="inviteModal" role="dialog" aria-modal="true" aria-labelledby="ivTitle" hidden>
+  <div class="modal-head">
+    <h2 id="ivTitle">짝꿍 초대하기</h2>
+    <button class="drawer-close" data-action="invite-close" aria-label="닫기"><i data-lucide="x"></i></button>
+  </div>
+  <div id="inviteBody"></div>
+</div>
+
 <div class="modal-backdrop" id="hallModalBg" data-action="hall-modal-close" hidden></div>
 <div class="modal" id="hallModal" role="dialog" aria-modal="true" aria-labelledby="hmTitle" hidden>
   <div class="modal-head">

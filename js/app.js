@@ -720,7 +720,7 @@ function renderPjPreview() {
     ? `${$('#pjPriceMin').value} ~ ${$('#pjPriceMax').value}` : null;
   $('#pjPreview').innerHTML = `
     <div class="v-card">
-      <span class="ph ph-1" style="height:150px"></span>
+      <div class="v-thumb" style="height:150px"><img src="images/biz_07.jpg" alt="" /></div>
       <div class="v-body">
         <span class="tag">${esc(cat)}</span>
         <h4>${esc($('#pjName').value || '업체명')}</h4>

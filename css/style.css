@@ -1982,3 +1982,204 @@ button.mc-wedding:hover { background: var(--ds-brand-hover); }
   #screen-vendor .vd-tab { padding: 0 var(--ds-s-md); font-size: 15px; }
   #screen-vendor .vd-side { padding: var(--ds-s-lg) var(--ds-s-base); }
 }
+
+/* ===== 새내기 가이드 · 온보딩 · 진단 리포트 · 업체 가입 · 업체 대시보드 (디자인 시스템 적용) ===== */
+#screen-guide, #screen-onboarding, #screen-budget-result, #screen-partner-join, #screen-partner-dash { background: var(--ds-canvas); color: var(--ds-ink); }
+.gd-wrap { max-width: calc(620px + 48px); }
+
+/* 다섯 화면 공통: 패널 · 버튼 · 칩 · 태그 · 입력 · 선택 카드 · 안내 상자 */
+:is(#screen-guide, #screen-onboarding, #screen-budget-result, #screen-partner-join, #screen-partner-dash) .card { border: 1px solid var(--ds-panel-border); border-radius: var(--ds-r-panel); box-shadow: none; padding: var(--ds-s-xl); margin-bottom: var(--ds-s-base); }
+:is(#screen-guide, #screen-onboarding, #screen-budget-result, #screen-partner-join, #screen-partner-dash) .btn { height: 52px; padding: 0 24px; border-radius: var(--ds-r-cta); font-size: 16px; font-weight: 500; }
+:is(#screen-guide, #screen-onboarding, #screen-budget-result, #screen-partner-join, #screen-partner-dash) .btn svg { width: 18px; height: 18px; }
+:is(#screen-guide, #screen-onboarding, #screen-budget-result, #screen-partner-join, #screen-partner-dash) .btn-primary { background: var(--ds-ink); color: var(--ds-on-ink); }
+:is(#screen-guide, #screen-onboarding, #screen-budget-result, #screen-partner-join, #screen-partner-dash) .btn-primary:hover { background: #000; }
+:is(#screen-guide, #screen-onboarding, #screen-budget-result, #screen-partner-join, #screen-partner-dash) .btn-ghost { background: var(--ds-canvas); border: 1px solid var(--ds-control-border); border-radius: var(--ds-r-control); color: var(--ds-ink); }
+:is(#screen-guide, #screen-onboarding, #screen-budget-result, #screen-partner-join, #screen-partner-dash) .btn-ghost:hover { border-color: var(--ds-ink); }
+:is(#screen-guide, #screen-onboarding, #screen-budget-result, #screen-partner-join, #screen-partner-dash) :is(.btn, .chip, a, button):focus-visible { outline: 2px solid var(--ds-ink); outline-offset: 2px; }
+:is(#screen-onboarding, #screen-partner-join) .chip { height: 36px; padding: 0 var(--ds-s-base); border: 0; border-radius: var(--ds-r-chip); background: var(--ds-hairline); color: var(--ds-ink); font-size: 14px; }
+:is(#screen-onboarding, #screen-partner-join) .chip-group.big .chip { height: 48px; padding: 0 var(--ds-s-lg); font-size: 16px; }
+:is(#screen-onboarding, #screen-partner-join) .chip:hover { background: var(--ds-panel-border); }
+:is(#screen-onboarding, #screen-partner-join) .chip.active { background: var(--ds-ink); color: var(--ds-on-ink); }
+:is(#screen-guide, #screen-onboarding, #screen-budget-result, #screen-partner-join, #screen-partner-dash) .tag { height: 24px; padding: 0 8px; border-radius: var(--ds-r-cta); background: var(--ds-hairline); color: var(--ds-ink); font-size: 12px; font-weight: 500; }
+:is(#screen-guide, #screen-onboarding, #screen-budget-result, #screen-partner-join, #screen-partner-dash) .tag-new { background: var(--ds-brand); color: var(--ds-on-brand); font-weight: 700; }
+:is(#screen-guide, #screen-onboarding, #screen-budget-result, #screen-partner-join, #screen-partner-dash) .muted { color: var(--ds-muted); }
+:is(#screen-onboarding, #screen-partner-join) .field > span { font-size: 14px; font-weight: 700; color: var(--ds-ink); margin-bottom: var(--ds-s-sm); }
+:is(#screen-onboarding, #screen-partner-join) :is(.field input, .field textarea) { border: 1px solid var(--ds-control-border); border-radius: var(--ds-r-control); background: var(--ds-canvas); font-size: 16px; color: var(--ds-ink); }
+:is(#screen-onboarding, #screen-partner-join) .field input { height: 52px; padding: 0 var(--ds-s-base); }
+:is(#screen-onboarding, #screen-partner-join) .field textarea { padding: 14px var(--ds-s-base); }
+:is(#screen-onboarding, #screen-partner-join) :is(.field input, .field textarea):focus { outline: 2px solid var(--ds-ink); outline-offset: -1px; border-color: var(--ds-ink); }
+:is(#screen-onboarding, #screen-partner-join) .hint-box { display: flex; align-items: flex-start; gap: var(--ds-s-sm); padding: var(--ds-s-base); border-radius: var(--ds-r-control); background: var(--ds-panel); font-size: 14px; line-height: 1.6; }
+:is(#screen-onboarding, #screen-partner-join) .hint-box svg { flex: none; width: 18px; height: 18px; margin-top: 2px; }
+:is(#screen-onboarding, #screen-partner-join) .text-btn { display: inline-flex; align-items: center; gap: 4px; margin-top: var(--ds-s-base); color: var(--ds-ink); font-weight: 500; text-decoration: underline; text-underline-offset: 3px; }
+:is(#screen-onboarding, #screen-partner-join) .text-btn svg { width: 16px; height: 16px; }
+.pj-error { color: var(--ds-ink); font-weight: 500; }
+:is(#screen-onboarding, #screen-partner-join) .pj-error.show { display: flex; align-items: center; gap: 6px; }
+:is(#screen-onboarding, #screen-partner-join) .pj-error.show::before { content: "!"; display: grid; place-items: center; flex: none; width: 18px; height: 18px; border-radius: 50%; background: var(--ds-brand); color: var(--ds-on-brand); font-size: 12px; font-weight: 700; }
+
+/* 선택 표시: 잉크 원 + 흰 체크 (무드 · 선택 카드 · 불러올 사진) */
+:is(.mood.active, .pick-card.active, .import-grid .ph.sel)::after { content: ""; position: absolute; top: 8px; right: 8px; z-index: 1; width: 24px; height: 24px; border-radius: 50%; background: var(--ds-ink) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' fill='none' stroke='%23fff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 7.5 6 10.5 11 4'/%3E%3C/svg%3E") no-repeat center; }
+
+/* 단계 표시 (온보딩 · 업체 가입) */
+:is(#screen-onboarding, #screen-partner-join) .stepper { gap: var(--ds-s-md); padding: var(--ds-s-xxl) 0 var(--ds-s-xl); }
+#screen-partner-join .stepper { padding-top: 0; }
+:is(#screen-onboarding, #screen-partner-join) .stepper-bar { height: 6px; border-radius: 2px; background: var(--ds-hairline); }
+:is(#screen-onboarding, #screen-partner-join) .stepper-bar i { background: var(--ds-ink); border-radius: 2px; }
+:is(#screen-onboarding, #screen-partner-join) .stepper-label { font-size: 14px; color: var(--ds-muted); font-variant-numeric: tabular-nums; }
+:is(#screen-onboarding, #screen-partner-join) .stepper-label b { color: var(--ds-ink); }
+:is(#screen-onboarding, #screen-partner-join) :is(.ob-step, .pj-step) h2 { font-size: 28px; font-weight: 700; line-height: 1.3; letter-spacing: -.02em; margin-bottom: var(--ds-s-sm); }
+:is(#screen-onboarding, #screen-partner-join) :is(.ob-step, .pj-step) > .muted { font-size: 16px; margin-bottom: var(--ds-s-xl); }
+:is(#screen-guide, #screen-onboarding, #screen-partner-join) .ob-actions { gap: var(--ds-s-sm); margin: var(--ds-s-xxl) 0 0; }
+:is(#screen-guide, #screen-onboarding, #screen-partner-join) .ob-actions .btn { flex: 1; }
+:is(#screen-guide, #screen-onboarding, #screen-partner-join) .ob-actions .btn-primary { flex: 2; }
+
+/* 선택 카드 (온보딩 준비 방식) */
+#screen-onboarding .option-list { gap: var(--ds-s-sm); }
+#screen-onboarding .option-card { gap: 2px; padding: var(--ds-s-base) var(--ds-s-lg); border: 1px solid var(--ds-control-border); border-radius: var(--ds-r-control); background: var(--ds-canvas); }
+#screen-onboarding .option-card:hover { border-color: var(--ds-ink); }
+#screen-onboarding .option-card.active { border-color: var(--ds-ink); background: var(--ds-panel); box-shadow: inset 0 0 0 1px var(--ds-ink); }
+#screen-onboarding .option-card b { font-size: 16px; }
+#screen-onboarding .option-card small { font-size: 14px; color: var(--ds-muted); }
+
+/* 무드 선택: 사진 카드 */
+#screen-onboarding .mood-grid { gap: var(--ds-s-sm); }
+#screen-onboarding .mood { display: flex; flex-direction: column; gap: var(--ds-s-sm); padding: 0 0 var(--ds-s-sm); border: 0; border-radius: var(--ds-r-control); background: none; color: var(--ds-ink); font-size: 14px; font-weight: 500; text-align: left; }
+#screen-onboarding .mood img { display: block; width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: var(--ds-r-control); outline: 2px solid transparent; outline-offset: -2px; transition: outline-color .15s; }
+#screen-onboarding .mood:hover img { outline-color: var(--ds-control-border); }
+#screen-onboarding .mood.active img { outline: 3px solid var(--ds-ink); outline-offset: -3px; }
+#screen-onboarding .mood.active { font-weight: 700; }
+
+/* 새내기 가이드 카드 */
+#screen-guide .guide-top { padding: var(--ds-s-xxl) 0 var(--ds-s-lg); }
+#screen-guide .guide-dots i { height: 6px; border-radius: 2px; background: var(--ds-control-border); }
+#screen-guide .guide-dots i.on { width: 24px; background: var(--ds-ink); }
+#screen-guide .guide-skip { color: var(--ds-muted); text-decoration: underline; text-underline-offset: 3px; }
+#screen-guide .guide-skip:hover { color: var(--ds-ink); }
+#screen-guide .guide-card { padding: var(--ds-s-xxl) var(--ds-s-xl); border: 1px solid var(--ds-panel-border); border-radius: var(--ds-r-panel); box-shadow: none; }
+#screen-guide .guide-card .eyebrow, #screen-budget-result .report-hero .eyebrow, .pd-kicker { display: inline-flex; align-items: center; height: 28px; margin-bottom: var(--ds-s-md); padding: 0 10px; border-radius: var(--ds-r-cta); background: var(--ds-brand); color: var(--ds-on-brand); font-size: 13px; font-weight: 700; letter-spacing: 0; text-transform: none; }
+#screen-guide .guide-card h2 { font-size: 28px; font-weight: 700; line-height: 1.3; letter-spacing: -.02em; margin-bottom: var(--ds-s-sm); }
+#screen-guide .guide-card > .muted { font-size: 16px; margin-bottom: var(--ds-s-xl); }
+#screen-guide .guide-phases::before { background: var(--ds-panel-border); }
+#screen-guide .guide-phases li::before { background: var(--ds-canvas); border: 1.5px solid var(--ds-ink); color: var(--ds-ink); }
+#screen-guide .guide-phases li:first-child::before { background: var(--ds-brand); }
+#screen-guide .guide-phases em { font-size: 13px; color: var(--ds-muted); font-variant-numeric: tabular-nums; }
+#screen-guide .guide-phases b { font-size: 16px; }
+#screen-guide .guide-first { gap: var(--ds-s-sm); }
+#screen-guide .guide-first > div { padding: var(--ds-s-base); border-radius: var(--ds-r-control); background: var(--ds-panel); }
+#screen-guide .guide-first span { border-radius: 50%; background: var(--ds-ink); color: var(--ds-on-ink); font-weight: 700; }
+#screen-guide .guide-first b { font-size: 16px; }
+#screen-guide .guide-first p, #screen-guide .guide-methods p { font-size: 14px; color: var(--ds-muted); }
+#screen-guide .guide-methods { gap: var(--ds-s-sm); }
+#screen-guide .guide-methods > div { padding: var(--ds-s-base); border: 1px solid var(--ds-panel-border); border-radius: var(--ds-r-control); }
+#screen-guide .guide-methods b { font-size: 16px; }
+#screen-guide .guide-final-ico { display: grid; place-items: center; width: 64px; height: 64px; margin-bottom: var(--ds-s-md); border-radius: 50%; background: var(--ds-brand); color: var(--ds-on-brand); }
+#screen-guide .guide-final-ico svg { width: 30px; height: 30px; }
+#screen-guide .guide-final .btn { width: 100%; max-width: 360px; }
+#screen-guide .guide-final .splash-skip { color: var(--ds-muted); }
+
+/* 진단 리포트 */
+.rp-back { margin: var(--ds-s-xl) 0 var(--ds-s-base); }
+#screen-budget-result .report-hero { gap: var(--ds-s-xl); }
+#screen-budget-result .report-hero h2 { font-size: 28px; font-weight: 700; line-height: 1.3; letter-spacing: -.02em; }
+#screen-budget-result .report-hero .muted { font-size: 15px; line-height: 1.6; }
+#screen-budget-result .card h3 { font-size: 18px; font-weight: 700; margin-bottom: var(--ds-s-base); }
+#screen-budget-result .report-grid { gap: var(--ds-s-base); }
+#screen-budget-result .pie::after { background: var(--ds-canvas); }
+#screen-budget-result .legend { font-size: 14px; gap: var(--ds-s-sm); }
+#screen-budget-result .legend i { border-radius: 2px; }
+#screen-budget-result .legend span { color: var(--ds-ink); }
+#screen-budget-result .range-table th { color: var(--ds-muted); font-size: 13px; font-weight: 500; border-color: var(--ds-panel-border); }
+#screen-budget-result .range-table td { padding: 12px 6px; border-color: var(--ds-hairline); }
+#screen-budget-result .range-table .off-head td { color: var(--ds-muted); border-color: var(--ds-panel-border); }
+#screen-budget-result .range-table .off-row td { color: var(--ds-muted); }
+/* 평균가 비교 태그: 많이 높음 = 잉크, 높음 = 핑크, 평균 = 회색, 낮음 = 테두리 */
+#screen-budget-result .cmp-avg { background: var(--ds-hairline); color: var(--ds-ink); }
+#screen-budget-result .cmp-up { background: var(--ds-brand); color: var(--ds-on-brand); }
+#screen-budget-result .cmp-up2 { background: var(--ds-ink); color: var(--ds-on-ink); font-weight: 700; }
+#screen-budget-result :is(.cmp-down, .cmp-down2) { background: var(--ds-canvas); box-shadow: inset 0 0 0 1px var(--ds-control-border); color: var(--ds-ink); }
+#screen-budget-result .cmp-down2 { box-shadow: inset 0 0 0 1px var(--ds-ink); }
+#screen-budget-result .cmp-off { background: var(--ds-hairline); color: var(--ds-muted); }
+#screen-budget-result .tag-danger { background: var(--ds-brand-soft); color: var(--ds-ink); font-weight: 700; }
+#screen-budget-result .section-head.tight { margin-bottom: var(--ds-s-sm); }
+#screen-budget-result .section-head.tight h3 { margin: 0; }
+#screen-budget-result .reco-note { margin: 0 0 var(--ds-s-base); }
+#screen-budget-result .tier-result.in-report { padding: var(--ds-s-lg); border-radius: var(--ds-r-control); background: var(--ds-panel); }
+#screen-budget-result .tier-line { font-size: 16px; }
+#screen-budget-result .tier-scale span { background: var(--ds-hairline); color: var(--ds-muted); font-weight: 500; }
+#screen-budget-result .tier-scale span:first-child { border-radius: var(--ds-r-cta) 0 0 var(--ds-r-cta); }
+#screen-budget-result .tier-scale span:last-of-type { border-radius: 0 var(--ds-r-cta) var(--ds-r-cta) 0; }
+#screen-budget-result .tier-scale span.on { background: var(--ds-brand); color: var(--ds-on-brand); font-weight: 700; }
+#screen-budget-result .tier-marker { background: var(--ds-ink); box-shadow: 0 0 0 2px var(--ds-panel); }
+#screen-budget-result .tier-ticks { color: var(--ds-muted); }
+#screen-budget-result .share-bar { margin-bottom: 0; background: var(--ds-brand-soft); border-color: transparent; }
+#screen-budget-result .share-bar b { font-size: 18px; }
+#screen-budget-result .share-btns .btn { height: 44px; padding: 0 var(--ds-s-base); font-size: 14px; }
+
+/* 업체 가입 */
+.pj-head { padding-bottom: var(--ds-s-xl); }
+.pj-head h1 { font-size: 36px; }
+#screen-partner-join .upload-row { gap: var(--ds-s-sm); }
+#screen-partner-join .upload-row .thumb { display: block; width: 88px; height: 88px; border-radius: var(--ds-r-control); object-fit: cover; }
+#screen-partner-join .upload-add { width: 88px; height: 88px; gap: 2px; border: 1px dashed var(--ds-control-border); border-radius: var(--ds-r-control); color: var(--ds-muted); }
+#screen-partner-join .upload-add svg { width: 22px; height: 22px; }
+#screen-partner-join .upload-add small { font-size: 12px; }
+#screen-partner-join .upload-add:hover { border-color: var(--ds-ink); color: var(--ds-ink); }
+#screen-partner-join .pick-grid { gap: var(--ds-s-sm); }
+#screen-partner-join .pick-card { gap: 4px; padding: var(--ds-s-base) var(--ds-s-lg); border: 1px dashed var(--ds-control-border); border-radius: var(--ds-r-control); background: var(--ds-canvas); }
+#screen-partner-join .pick-card:hover { border-color: var(--ds-ink); }
+#screen-partner-join .pick-card.active { border: 1px solid var(--ds-ink); background: var(--ds-panel); box-shadow: inset 0 0 0 1px var(--ds-ink); }
+#screen-partner-join .pick-card b { display: flex; align-items: center; gap: 6px; font-size: 16px; }
+#screen-partner-join .pick-card b svg { width: 18px; height: 18px; }
+#screen-partner-join .pick-card small { font-size: 14px; color: var(--ds-muted); }
+#screen-partner-join .btn-insta { width: 100%; gap: 6px; background: var(--ds-ink); color: var(--ds-on-ink); }
+#screen-partner-join .import-grid { gap: var(--ds-s-sm); margin: var(--ds-s-lg) 0 var(--ds-s-sm); }
+#screen-partner-join .import-grid .ph { border: 0; border-radius: var(--ds-r-control); background: var(--ds-panel); }
+#screen-partner-join .import-grid .ph img { display: block; width: 100%; height: 100%; object-fit: cover; opacity: .55; transition: opacity .15s; }
+#screen-partner-join .import-grid .ph.sel img { opacity: 1; }
+#screen-partner-join .import-grid .ph.sel img { outline: 3px solid var(--ds-ink); outline-offset: -3px; }
+#screen-partner-join .price-range > span { color: var(--ds-muted); }
+#screen-partner-join .done-box { padding: var(--ds-s-xxl) 0 0; }
+#screen-partner-join .done-ico { width: 64px; height: 64px; background: var(--ds-brand); color: var(--ds-on-brand); }
+#screen-partner-join .done-ico svg { width: 30px; height: 30px; stroke-width: 2.5; }
+#screen-partner-join .done-box h2 { font-size: 28px; }
+#screen-partner-join .pj-preview > small { font-size: 13px; }
+
+/* 예약 캘린더 (업체 가입 · 대시보드) */
+:is(#screen-partner-join, #screen-partner-dash) .cal { gap: 6px; font-size: 14px; }
+:is(#screen-partner-join, #screen-partner-dash) .cal .cal-title { margin-bottom: var(--ds-s-sm); font-size: 18px; font-weight: 700; text-align: left; }
+:is(#screen-partner-join, #screen-partner-dash) .cal .dow { color: var(--ds-muted); font-size: 13px; }
+:is(#screen-partner-join, #screen-partner-dash) .cal .d { padding: 10px 0; border-radius: var(--ds-r-control); background: var(--ds-panel); font-variant-numeric: tabular-nums; }
+:is(#screen-partner-join, #screen-partner-dash) .cal .d.ok { background: var(--ds-canvas); box-shadow: inset 0 0 0 1px var(--ds-ink); color: var(--ds-ink); font-weight: 700; }
+:is(#screen-partner-join, #screen-partner-dash) .cal .d.no { background: var(--ds-panel); color: var(--ds-control-border); }
+:is(#screen-partner-join, #screen-partner-dash) .cal .d.booked { background: var(--ds-ink); color: var(--ds-on-ink); font-weight: 700; }
+:is(#screen-partner-join, #screen-partner-dash) .cal .d.empty { background: none; box-shadow: none; }
+
+/* 업체 대시보드 */
+#screen-partner-dash .ds-page-head h1 { margin-top: 0; }
+#screen-partner-dash .proof-banner { background: var(--ds-brand-soft); border-color: transparent; }
+#screen-partner-dash .stat-grid { gap: var(--ds-s-base); }
+#screen-partner-dash .stat small { font-size: 13px; color: var(--ds-muted); }
+#screen-partner-dash .stat strong { font-size: 28px; font-weight: 700; font-variant-numeric: tabular-nums; }
+#screen-partner-dash .stat .up { display: inline-flex; align-items: center; gap: 3px; color: var(--ds-ink); font-size: 13px; font-weight: 700; font-variant-numeric: tabular-nums; }
+#screen-partner-dash .stat .up svg { width: 14px; height: 14px; }
+#screen-partner-dash .report-grid { gap: var(--ds-s-base); margin-bottom: 0; }
+#screen-partner-dash .card h3 { font-size: 18px; font-weight: 700; margin-bottom: var(--ds-s-sm); }
+#screen-partner-dash .inq-list li { padding: var(--ds-s-md) 0; border-color: var(--ds-hairline); font-size: 14px; }
+#screen-partner-dash .inq-list span { color: var(--ds-muted); }
+
+@media (max-width: 760px) {
+  :is(#screen-guide, #screen-onboarding, #screen-budget-result, #screen-partner-join, #screen-partner-dash) .card { padding: var(--ds-s-lg) var(--ds-s-base); }
+  :is(#screen-onboarding, #screen-partner-join) :is(.ob-step, .pj-step) h2, #screen-guide .guide-card h2, #screen-budget-result .report-hero h2 { font-size: 22px; }
+  :is(#screen-onboarding, #screen-partner-join) .stepper { padding: var(--ds-s-lg) 0 var(--ds-s-base); }
+  #screen-guide .guide-top { padding: var(--ds-s-lg) 0 var(--ds-s-base); }
+  #screen-guide .guide-card { padding: var(--ds-s-xl) var(--ds-s-lg); min-height: 0; }
+  #screen-guide .guide-methods { grid-template-columns: 1fr; }
+  #screen-onboarding .mood-grid { grid-template-columns: repeat(2, 1fr); }
+  .pj-head h1 { font-size: 28px; }
+  .rp-back { margin: var(--ds-s-base) 0 var(--ds-s-md); }
+  #screen-budget-result .share-btns { width: 100%; display: grid; grid-template-columns: 1fr 1fr; }
+  #screen-partner-dash .stat-grid { grid-template-columns: 1fr 1fr; gap: var(--ds-s-sm); }
+  #screen-partner-dash .stat strong { font-size: 24px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #screen-onboarding .mood img, #screen-partner-join .import-grid .ph img { transition: none; }
+}

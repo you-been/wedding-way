@@ -287,7 +287,7 @@
 
 <!-- ============ 1-1. 새내기 가이드 (카드 넘기기) ============ -->
 <section class="screen" id="screen-guide">
-  <div class="container narrow">
+  <div class="hm-wrap gd-wrap">
     <div class="guide-top">
       <div class="guide-dots" id="guideDots"><i class="on"></i><i></i><i></i><i></i></div>
       <a href="#onboarding" class="guide-skip">건너뛰기</a>
@@ -332,7 +332,7 @@
 
     <div class="guide-card" data-gcard="4">
       <div class="guide-final">
-        <span class="guide-final-ico">💍</span>
+        <span class="guide-final-ico"><i data-lucide="gem"></i></span>
         <span class="eyebrow">새내기 가이드 4/4</span>
         <h2>이제 우리 커플에게 맞춰볼까요?</h2>
         <p class="muted">1분 진단으로 준비 방식 추천, 맞춤 예산, D-Day 타임라인까지 한 번에 받아보세요.</p>
@@ -350,7 +350,7 @@
 
 <!-- ============ 2. 온보딩 ============ -->
 <section class="screen" id="screen-onboarding">
-  <div class="container narrow">
+  <div class="hm-wrap gd-wrap">
     <div class="stepper">
       <div class="stepper-bar"><i id="obProgress"></i></div>
       <span class="stepper-label"><b id="obStepNo">1</b> / 4</span>
@@ -365,7 +365,7 @@
         <button class="option-card"><b>일부 동행</b><small>드레스 투어 등 중요한 순간만 함께</small></button>
         <button class="option-card"><b>완전 워크인 (셀프)</b><small>발품 팔아도 내 취향대로 온전히 커스텀</small></button>
       </div>
-      <a href="#guide" class="text-btn">잘 모르겠어요 → 새내기 가이드로 차이 먼저 보기</a>
+      <a href="#guide" class="text-btn">잘 모르겠어요 · 새내기 가이드로 차이 먼저 보기 <i data-lucide="arrow-right"></i></a>
     </div>
 
     <div class="ob-step" data-step="2">
@@ -395,21 +395,21 @@
         <button class="chip">5,500만 원 이상</button>
         <button class="chip">직접 입력</button>
       </div>
-      <div class="hint-box">💡 하객 100~200명 · 웨딩홀 기준, 비슷한 커플의 평균 예산은 <b>약 3,200만 원</b>이에요.</div>
+      <div class="hint-box"><i data-lucide="lightbulb"></i><span>하객 100~200명 · 웨딩홀 기준, 비슷한 커플의 평균 예산은 <b>약 3,200만 원</b>이에요.</span></div>
     </div>
 
     <div class="ob-step" data-step="4">
       <h2>끌리는 무드를 골라주세요</h2>
       <p class="muted">여러 개 선택 가능 · 디렉토리 추천에 반영돼요.</p>
       <div class="mood-grid">
-        <button class="mood active"><span class="ph ph-1"></span>#야외스냅</button>
-        <button class="mood"><span class="ph ph-2"></span>#클래식</button>
-        <button class="mood active"><span class="ph ph-3"></span>#빈티지</button>
-        <button class="mood"><span class="ph ph-4"></span>#미니멀</button>
-        <button class="mood"><span class="ph ph-5"></span>#내추럴</button>
-        <button class="mood"><span class="ph ph-6"></span>#하우스웨딩</button>
-        <button class="mood"><span class="ph ph-1"></span>#필름감성</button>
-        <button class="mood"><span class="ph ph-2"></span>#유니크헤어</button>
+        <button class="mood active"><img src="images/biz_03.jpg" alt="" loading="lazy" />#야외스냅</button>
+        <button class="mood"><img src="images/biz_09.jpg" alt="" loading="lazy" />#클래식</button>
+        <button class="mood active"><img src="images/biz_02.jpg" alt="" loading="lazy" />#빈티지</button>
+        <button class="mood"><img src="images/biz_06.jpg" alt="" loading="lazy" />#미니멀</button>
+        <button class="mood"><img src="images/biz_13.jpg" alt="" loading="lazy" />#내추럴</button>
+        <button class="mood"><img src="images/biz_05.jpg" alt="" loading="lazy" />#하우스웨딩</button>
+        <button class="mood"><img src="images/biz_08.jpg" alt="" loading="lazy" />#필름감성</button>
+        <button class="mood"><img src="images/biz_01.jpg" alt="" loading="lazy" />#유니크헤어</button>
       </div>
     </div>
 
@@ -478,8 +478,8 @@
 
 <!-- ============ 4. 예산 진단 리포트 ============ -->
 <section class="screen" id="screen-budget-result">
-  <div class="container">
-    <a href="#budget" class="back">← 조건 수정</a>
+  <div class="hm-wrap">
+    <a href="#budget" class="auth-back rp-back"><i data-lucide="chevron-left"></i>조건 수정</a>
     <div class="report-hero card">
       <div>
         <span class="eyebrow">총예산 밸런스 진단</span>
@@ -510,7 +510,7 @@
     <div class="card">
       <div class="section-head tight">
         <h3>진단 결과에 맞는 업체</h3>
-        <a href="#directory" class="link-more">맞춤 디렉토리로 이동 →</a>
+        <a href="#directory" class="hm-more">맞춤 디렉토리로 이동 <i data-lucide="arrow-right"></i></a>
       </div>
       <p class="muted sm reco-note">입력하신 예산 · 취향을 기준으로 골랐어요.</p>
       <div class="vendor-grid small" id="rpVendors"></div>
@@ -950,10 +950,10 @@
 
 <!-- ============ 12. 업체 프로필 만들기 (골라서 추가하기) ============ -->
 <section class="screen" id="screen-partner-join">
-  <div class="container narrow">
-    <div class="pj-head">
+  <div class="hm-wrap gd-wrap">
+    <div class="ds-page-head pj-head">
       <h1>3분 만에 업체 소개 만들기</h1>
-      <p class="muted">필수 정보만 넣고, 나머지는 원하는 것만 골라서 추가하세요.</p>
+      <p>필수 정보만 넣고, 나머지는 원하는 것만 골라서 추가하세요.</p>
     </div>
     <div class="stepper">
       <div class="stepper-bar"><i id="pjProgress"></i></div>
@@ -965,8 +965,8 @@
       <p class="muted">예비부부에게 가장 먼저 보이는 정보예요.</p>
       <div class="field"><span>대표 사진</span>
         <div class="upload-row">
-          <span class="ph ph-1 thumb"></span><span class="ph ph-4 thumb"></span>
-          <button class="upload-add" data-toast="사진 선택 창이 열려요 (프로토타입)">＋<small>사진 추가</small></button>
+          <img class="thumb" src="images/biz_07.jpg" alt="대표 사진 1" /><img class="thumb" src="images/biz_03.jpg" alt="대표 사진 2" />
+          <button class="upload-add" data-toast="사진 선택 창이 열려요 (프로토타입)"><i data-lucide="plus"></i><small>사진 추가</small></button>
         </div>
       </div>
       <div class="field"><span>업종</span><div class="chip-group" data-multi id="pjCats"></div></div>
@@ -989,10 +989,10 @@
       <h2>더 알리고 싶은 것이 있나요? <span class="tag tag-new">선택</span></h2>
       <p class="muted">고른 항목만 이어서 입력해요. 나머지는 나중에 언제든 추가할 수 있어요.</p>
       <div class="pick-grid">
-        <button class="pick-card" data-opt="insta"><b>◎ 인스타 연동</b><small>게시물을 사진으로 불러와요</small></button>
-        <button class="pick-card" data-opt="schedule"><b>▦ 예약 일정</b><small>가능한 날짜를 보여줘요</small></button>
-        <button class="pick-card" data-opt="price"><b>₩ 가격</b><small>공개 범위를 정해요</small></button>
-        <button class="pick-card" data-opt="intro"><b>✎ 상세 소개</b><small>서비스 범위 · 소개글</small></button>
+        <button class="pick-card" data-opt="insta"><b><i data-lucide="images"></i>인스타 연동</b><small>게시물을 사진으로 불러와요</small></button>
+        <button class="pick-card" data-opt="schedule"><b><i data-lucide="calendar-days"></i>예약 일정</b><small>가능한 날짜를 보여줘요</small></button>
+        <button class="pick-card" data-opt="price"><b><i data-lucide="wallet"></i>가격</b><small>공개 범위를 정해요</small></button>
+        <button class="pick-card" data-opt="intro"><b><i data-lucide="file-pen-line"></i>상세 소개</b><small>서비스 범위 · 소개글</small></button>
       </div>
       <p class="muted sm pick-hint">아무것도 고르지 않아도 바로 완료할 수 있어요. 많이 채울수록 예비부부에게 더 위에 소개돼요.</p>
     </div>
@@ -1000,10 +1000,9 @@
     <div class="pj-step" data-key="insta">
       <h2>인스타그램 연동 <span class="tag tag-new">선택</span></h2>
       <p class="muted">게시물을 불러와 업체 소개 사진으로 정리해 드려요.</p>
-      <button class="btn btn-insta btn-block btn-lg" data-toast="@filmharu.snap 계정이 연결되었어요">◎ Instagram으로 연결</button>
+      <button class="btn btn-insta btn-block btn-lg" data-toast="@filmharu.snap 계정이 연결되었어요"><i data-lucide="at-sign"></i>Instagram으로 연결</button>
       <div class="import-grid">
-        <span class="ph ph-1 sel"></span><span class="ph ph-2 sel"></span><span class="ph ph-3"></span>
-        <span class="ph ph-4 sel"></span><span class="ph ph-5"></span><span class="ph ph-6 sel"></span>
+        <span class="ph sel"><img src="images/biz_07.jpg" alt="" loading="lazy" /></span><span class="ph sel"><img src="images/biz_08.jpg" alt="" loading="lazy" /></span><span class="ph"><img src="images/biz_03.jpg" alt="" loading="lazy" /></span><span class="ph sel"><img src="images/biz_12.jpg" alt="" loading="lazy" /></span><span class="ph"><img src="images/biz_04.jpg" alt="" loading="lazy" /></span><span class="ph sel"><img src="images/biz_10.jpg" alt="" loading="lazy" /></span>
       </div>
       <p class="muted sm">소개에 쓸 게시물을 선택하세요</p>
     </div>
@@ -1043,7 +1042,7 @@
 
     <div class="pj-step" data-key="done">
       <div class="done-box">
-        <div class="done-ico">✓</div>
+        <div class="done-ico"><i data-lucide="check"></i></div>
         <h2>업체 소개가 준비됐어요!</h2>
         <p class="muted" id="pjDoneMsg">검토 후 24시간 이내에 예비부부에게 소개돼요.</p>
         <div class="pj-preview">
@@ -1064,9 +1063,9 @@
 
 <!-- ============ 13. 업체 대시보드 ============ -->
 <section class="screen" id="screen-partner-dash">
-  <div class="container">
-    <div class="page-head">
-      <span class="eyebrow">Business Dashboard</span>
+  <div class="hm-wrap">
+    <div class="ds-page-head">
+      <span class="pd-kicker">업체 대시보드</span>
       <h1 id="dashTitle">필름하루 스냅</h1>
     </div>
     <div class="card proof-banner" id="dashProof" hidden>
@@ -1074,9 +1073,9 @@
       <button class="btn btn-primary" data-action="dash-proof">증빙 서류 올리기</button>
     </div>
     <div class="stat-grid">
-      <div class="card stat"><small>이번 주 프로필 조회</small><strong>1,284</strong><span class="up">▲ 18%</span></div>
-      <div class="card stat"><small>새 문의</small><strong>12</strong><span class="up">▲ 4</span></div>
-      <div class="card stat"><small>찜</small><strong>86</strong><span class="up">▲ 9</span></div>
+      <div class="card stat"><small>이번 주 프로필 조회</small><strong>1,284</strong><span class="up"><i data-lucide="trending-up"></i>18%</span></div>
+      <div class="card stat"><small>새 문의</small><strong>12</strong><span class="up"><i data-lucide="trending-up"></i>4</span></div>
+      <div class="card stat"><small>찜</small><strong>86</strong><span class="up"><i data-lucide="trending-up"></i>9</span></div>
       <div class="card stat"><small>예약 확정</small><strong>5</strong><span class="muted">이번 달</span></div>
     </div>
     <div class="report-grid">

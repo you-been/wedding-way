@@ -12,6 +12,7 @@ export const PATHS = {
   home: '/',
   welcome: '/welcome',
   flow: '/flow',
+  uiKit: '/ui-kit', // 프로토타입 확인용: 공통 컴포넌트 모음
   guide: '/guide',
   onboarding: '/onboarding',
   budget: '/budget',

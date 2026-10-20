@@ -87,7 +87,7 @@ export default function FlowMapPage() {
       <div className="wrap">
         <div className={styles.head}>
           <h1>화면 구성 · 사용자 흐름</h1>
-          <p>프로토타입 안내용 화면이에요. 칸을 누르면 그 화면으로 이동해요.</p>
+          <p>프로토타입 안내용 화면이에요. 칸을 누르면 그 화면으로 이동해요. 공통 컴포넌트는 <Link to={PATHS.uiKit}>UI 모음</Link>에서 볼 수 있어요.</p>
         </div>
 
         {FLOWS.map((f, i) => (

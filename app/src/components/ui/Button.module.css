@@ -1,0 +1,25 @@
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; height: 52px; padding: 0 24px; border-radius: var(--ds-r-cta); font-size: 16px; font-weight: 500; line-height: 1.5; white-space: nowrap; transition: background-color .15s, border-color .15s; }
+.btn svg { width: 18px; height: 18px; flex: none; }
+.btn:focus-visible { outline: 2px solid var(--ds-ink); outline-offset: 2px; }
+.btn:disabled { opacity: .45; cursor: not-allowed; }
+.sm { height: 36px; padding: 0 14px; border-radius: var(--ds-r-control); font-size: 14px; }
+.sm svg { width: 16px; height: 16px; }
+.block { width: 100%; }
+
+.ink { background: var(--ds-ink); color: var(--ds-on-ink); }
+.ink:hover:not(:disabled) { background: var(--ds-ink-hover); }
+.brand { background: var(--ds-brand); color: var(--ds-on-brand); }
+.brand:hover:not(:disabled) { background: var(--ds-brand-hover); }
+/* line: 잉크 테두리 (핑크 면 위에서만) */
+.line { border: 1px solid var(--ds-ink); border-radius: var(--ds-r-control); background: transparent; color: var(--ds-ink); }
+.line:hover:not(:disabled) { background: rgba(255, 255, 255, .35); }
+/* outline: 크몽 outline-link-button (40px · 회색 테두리 · 14px/700) */
+.outline { height: 40px; padding: 0 var(--ds-s-base); border: 1px solid var(--ds-control-border); border-radius: var(--ds-r-control); background: var(--ds-canvas); color: var(--ds-ink); font-size: 14px; font-weight: 700; }
+.outline:hover:not(:disabled) { border-color: var(--ds-ink); }
+/* ghost: 회색 테두리 보조 버튼 */
+.ghost { border: 1px solid var(--ds-control-border); border-radius: var(--ds-r-control); background: var(--ds-canvas); color: var(--ds-ink); }
+.ghost:hover:not(:disabled) { border-color: var(--ds-ink); }
+
+@media (prefers-reduced-motion: reduce) {
+  .btn { transition: none; }
+}

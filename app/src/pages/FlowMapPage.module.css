@@ -1,6 +1,7 @@
 .head { padding: 48px 0 8px; }
 .head h1 { font-size: 36px; font-weight: 700; line-height: 1.22; letter-spacing: -.02em; }
 .head p { margin-top: 10px; font-size: 16px; color: var(--ds-muted); }
+.head p a { color: var(--ds-ink); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
 
 .flowSec { margin-top: var(--ds-s-xxl); }
 .flowSec h2 { display: flex; align-items: center; gap: var(--ds-s-sm); margin-bottom: var(--ds-s-md); font-size: 18px; font-weight: 700; }

@@ -1,0 +1,6 @@
+.tag { display: inline-flex; align-items: center; gap: 4px; height: 24px; padding: 0 8px; border-radius: var(--ds-r-cta); font-size: 12px; font-weight: 500; font-style: normal; white-space: nowrap; }
+.tag svg { width: 13px; height: 13px; }
+.default { background: var(--ds-hairline); color: var(--ds-ink); }
+.ink { background: var(--ds-ink); color: var(--ds-on-ink); }
+.brand { background: var(--ds-brand); color: var(--ds-on-brand); font-weight: 700; }
+.soft { background: var(--ds-brand-soft); color: var(--ds-ink); }

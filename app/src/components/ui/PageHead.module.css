@@ -1,0 +1,12 @@
+.head { padding: 48px 0 28px; }
+.row { display: flex; justify-content: space-between; align-items: flex-end; gap: var(--ds-s-xl); flex-wrap: wrap; }
+.head h1 { font-size: 36px; font-weight: 700; line-height: 1.22; letter-spacing: -.02em; }
+.head p { margin-top: 10px; font-size: 16px; color: var(--ds-muted); }
+.kicker { display: inline-flex; align-items: center; height: 28px; margin-bottom: var(--ds-s-md); padding: 0 10px; border-radius: var(--ds-r-cta); background: var(--ds-brand); color: var(--ds-on-brand); font-size: 13px; font-weight: 700; }
+
+@media (max-width: 760px) {
+  .head { padding: 28px 0 20px; }
+  .row { flex-direction: column; align-items: stretch; gap: var(--ds-s-base); }
+  .head h1 { font-size: 28px; }
+  .head p { font-size: 14px; }
+}

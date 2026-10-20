@@ -1,0 +1,37 @@
+.card { position: relative; break-inside: avoid; color: var(--ds-ink); }
+.link { display: block; }
+.link:focus-visible { outline: 2px solid var(--ds-ink); outline-offset: 4px; border-radius: var(--ds-r-control); }
+.thumb { overflow: hidden; border-radius: var(--ds-r-control); background: var(--ds-panel); }
+.thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform .3s; }
+.link:hover .thumb img { transform: scale(1.03); }
+.empty { display: grid; place-items: center; height: 100%; border: 1px solid var(--ds-panel-border); border-radius: var(--ds-r-control); color: var(--ds-control-border); }
+.empty svg { width: 36px; height: 36px; stroke-width: 1.5; }
+
+.body { padding: var(--ds-s-md) 2px 0; }
+.tag { display: inline-flex; align-items: center; height: 22px; margin-bottom: 6px; padding: 0 8px; border-radius: var(--ds-r-cta); background: var(--ds-hairline); font-size: 12px; font-weight: 500; }
+.body h4 { margin-bottom: 2px; font-size: 16px; font-weight: 700; line-height: 1.4; }
+.link:hover h4 { text-decoration: underline; text-underline-offset: 3px; }
+.meta { font-size: 13px; color: var(--ds-muted); }
+.why { display: flex; flex-wrap: wrap; gap: 4px; margin-top: var(--ds-s-sm); }
+.why span { padding: 2px 8px; border-radius: var(--ds-r-cta); background: var(--ds-brand-soft); font-size: 12px; font-weight: 500; }
+.foot { display: flex; flex-wrap: wrap; align-items: center; gap: 2px var(--ds-s-sm); margin-top: var(--ds-s-sm); font-size: 12px; color: var(--ds-muted); }
+.foot span { display: inline-flex; align-items: center; gap: 3px; }
+.foot svg { width: 14px; height: 14px; }
+.rating { font-weight: 700; color: var(--ds-ink); }
+.rating svg { fill: var(--ds-ink); }
+.verified { color: var(--ds-ink); font-weight: 500; }
+
+/* 찜: 사진 위 흰 원 · 북마크 */
+.like { position: absolute; top: 8px; right: 8px; display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; background: rgba(255, 255, 255, .92); color: var(--ds-ink); transition: background-color .15s; }
+.like svg { width: 18px; height: 18px; }
+.like:hover { background: #fff; }
+.like:focus-visible { outline: 2px solid var(--ds-ink); outline-offset: 2px; }
+.on svg { fill: var(--ds-ink); }
+
+@media (max-width: 760px) {
+  .body h4 { font-size: 15px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .thumb img, .like { transition: none; }
+  .link:hover .thumb img { transform: none; }
+}

@@ -4,6 +4,7 @@ import RequireAuth from './components/layout/RequireAuth';
 import { PATHS, SCREENS } from './routes';
 import FlowMapPage from './pages/FlowMapPage';
 import PlaceholderPage from './pages/PlaceholderPage';
+import UiKitPage from './pages/UiKitPage';
 
 // 옮긴 화면은 여기에 등록 (없으면 임시 화면)
 const PAGES: Record<string, React.ComponentType> = {
@@ -20,6 +21,7 @@ const router = createBrowserRouter([
         return { path: s.path, element: s.auth ? <RequireAuth type={s.auth}>{page}</RequireAuth> : page };
       }),
       { path: PATHS.flow, element: <FlowMapPage /> },
+      { path: PATHS.uiKit, element: <UiKitPage /> },
       { path: '*', element: <PlaceholderPage title="없는 화면이에요" /> },
     ],
   },

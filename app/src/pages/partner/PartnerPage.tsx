@@ -10,6 +10,10 @@ import { toast } from '../../stores/toastStore';
 import PartnerFlow from './PartnerFlow';
 import styles from './PartnerPage.module.css';
 
+// 업종 칩 두 줄 (반씩 나눠 서로 반대 방향으로 흐름)
+const half = Math.ceil(BUSINESS_CATEGORIES.length / 2);
+const CAT_ROWS = [BUSINESS_CATEGORIES.slice(0, half), BUSINESS_CATEGORIES.slice(half)];
+
 const MUST = [
   { Icon: Image, t: '대표 사진', d: '1장 이상 · 첫인상이 돼요' },
   { Icon: TagIcon, t: '업종', d: `${BUSINESS_CATEGORIES.length}개 업종 중 선택` },
@@ -82,9 +86,22 @@ export default function PartnerPage() {
         </div>
       </div>
 
-      <section className="wrap section">
-        <div className={styles.head}><h2>이런 업체와 함께해요</h2></div>
-        <div className={styles.cats}>{BUSINESS_CATEGORIES.map(({ name, Icon }) => <span key={name}><Icon />{name}</span>)}</div>
+      <section className="section">
+        <div className="wrap"><div className={styles.head}><h2>이런 업체와 함께해요</h2></div></div>
+        {/* 업종 칩: 두 줄이 서로 반대 방향으로 천천히 흐름 (마우스를 올리면 멈춤) */}
+        <div className={styles.marquee} role="list" aria-label="함께하는 업종">
+          {CAT_ROWS.map((row, r) => (
+            <div key={r} className={`${styles.marqueeRow} ${r ? styles.reverse : ''}`}>
+              <div className={styles.marqueeTrack}>
+                {[...row, ...row, ...row, ...row].map(({ name, Icon }, k) => (
+                  <span key={`${name}-${k}`} className={styles.catChip} role={k < row.length ? 'listitem' : undefined} aria-hidden={k >= row.length || undefined}>
+                    <i><Icon /></i>{name}
+                  </span>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
       </section>
 
       <section className="wrap section">

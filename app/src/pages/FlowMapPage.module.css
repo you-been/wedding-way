@@ -16,7 +16,7 @@ a.node:focus-visible { outline: 2px solid var(--ds-ink); outline-offset: 2px; }
 .node b { font-size: 14px; }
 .node small { font-size: 12px; color: var(--ds-muted); }
 .hl { background: var(--ds-brand-soft); }
-.biz { background: #f8e9e7; } /* 업체 화면 옅은 면 (color.biz-brand-soft) */
+.biz { background: #f0f0ff; } /* 업체 화면 옅은 면 (color.biz-brand-soft) */
 .ghost { background: transparent; border-style: dashed; }
 
 .list { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: var(--ds-s-sm); }

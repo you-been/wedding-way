@@ -470,47 +470,47 @@
       "선택 상태(칩 · 탭 · 카테고리)는 잉크로 채우고, 미선택 칩은 color.hairline 면 또는 color.panel-border 테두리로 표시한다",
       "카드에는 그림자를 쓰지 않는다. 예외는 검색창(shadow.search)과 강조 카드의 핑크 오프셋 그림자(shadow.accent) 두 가지다",
       "숫자(금액 · 개수 · 평점)는 font-variant-numeric: tabular-nums로 정렬한다",
-      "업체 화면(우리 업체 알리기 · 업체 가입 · 내 업체 · 업체 회원가입)은 color.brand 대신 color.biz-brand 계열을 쓰고, 포인트 면 위 글씨는 흰색(color.on-biz-brand)이다",
-      "그림 카드 배경은 예비부부 화면은 illust-pink · lilac · mint, 업체 화면은 biz-illust-rose · apricot · sage · sand를 쓴다",
+      "업체 화면(우리 업체 알리기 · 업체 가입 · 내 업체 · 업체 회원가입)은 color.brand 대신 color.biz-brand 계열을 쓰고, 포인트 면 위 글씨는 잉크(color.on-biz-brand)이고, 연한 포인트 색은 흰 바탕 위 글자색으로 쓰지 않는다",
+      "그림 카드 배경은 예비부부 화면은 illust-pink · lilac · mint, 업체 화면은 biz-illust-periwinkle · lilac · sky · mist를 쓴다",
       "SNS 로그인 · 공유 버튼(카카오 · 네이버 · 구글)은 각 플랫폼 브랜드 색을 그대로 쓴다",
       "예산 차트(도넛 · 범례)는 항목 구분용 color.chart-* 데이터 색을 쓰고, 스드메는 color.ink, 기타 준비 비용은 color.control-border를 쓴다. 차트 색은 버튼 · 글자 · 강조 표현에 쓰지 않는다",
       "첫 방문 갈림길 배경만 color.splash-* 세 가지로 만든 옅은 그라데이션을 쓴다 (사진 없음 플레이스홀더에는 쓰지 않음)"
     ],
     "tokens": {
       "color.biz-brand": {
-        "$description": "결심 디테일 — 업체 화면 포인트 색 (웜톤 로즈 브라운). 우리 업체 알리기 · 업체 가입 · 내 업체 · 업체 회원가입에서 color.brand 대신 사용",
+        "$description": "결심 디테일 — 업체 화면 포인트 색 (연한 페리윙클, 사용자 지정 #CECFFF). 예비부부 핑크처럼 위 글씨는 잉크. 우리 업체 알리기 · 업체 가입 · 내 업체 · 업체 회원가입에서 color.brand 대신 사용",
         "$type": "color",
-        "$value": "#b45a5e"
+        "$value": "#cecfff"
       },
       "color.biz-brand-hover": {
         "$description": "결심 디테일 — 업체 포인트 버튼 hover",
         "$type": "color",
-        "$value": "#a04e52"
+        "$value": "#b8b9ff"
       },
       "color.biz-brand-soft": {
         "$description": "결심 디테일 — 업체 화면 옅은 면",
         "$type": "color",
-        "$value": "#f8e9e7"
+        "$value": "#f0f0ff"
       },
-      "color.biz-illust-apricot": {
+      "color.biz-illust-lilac": {
         "$description": "결심 디테일 — 업체 화면 그림 카드 배경",
         "$type": "color",
-        "$value": "#f8e6d6"
+        "$value": "#eee7f9"
       },
-      "color.biz-illust-rose": {
+      "color.biz-illust-mist": {
         "$description": "결심 디테일 — 업체 화면 그림 카드 배경",
         "$type": "color",
-        "$value": "#f6e3e1"
+        "$value": "#f0eef6"
       },
-      "color.biz-illust-sage": {
+      "color.biz-illust-periwinkle": {
         "$description": "결심 디테일 — 업체 화면 그림 카드 배경",
         "$type": "color",
-        "$value": "#e7e9da"
+        "$value": "#e5e5fa"
       },
-      "color.biz-illust-sand": {
+      "color.biz-illust-sky": {
         "$description": "결심 디테일 — 업체 화면 그림 카드 배경",
         "$type": "color",
-        "$value": "#efe6dc"
+        "$value": "#e7eef9"
       },
       "color.brand": {
         "$description": "결심 디테일 (크몽 초록 #92fa72 대체) — 포인트 핑크: 히어로 면 · 번호 배지 · 강조 태그",
@@ -633,9 +633,9 @@
         "$value": "#03c75a"
       },
       "color.on-biz-brand": {
-        "$description": "결심 디테일 — 업체 포인트 색 위 글씨 (흰색)",
+        "$description": "결심 디테일 — 업체 포인트 색 위 글씨 (잉크)",
         "$type": "color",
-        "$value": "#ffffff"
+        "$value": "#212224"
       },
       "color.on-brand": {
         "$description": "크몽 값 — 핑크 위 텍스트",
@@ -834,14 +834,15 @@
       },
       {
         "evidence": [
+          "app/src/styles/global.css",
           "css/style.css"
         ],
         "path": "foundations.tokens.color.biz-brand",
         "source_class": "prompt-fact",
         "value": {
-          "$description": "결심 디테일 — 업체 화면 포인트 색 (웜톤 로즈 브라운). 우리 업체 알리기 · 업체 가입 · 내 업체 · 업체 회원가입에서 color.brand 대신 사용",
+          "$description": "결심 디테일 — 업체 화면 포인트 색 (연한 페리윙클, 사용자 지정 #CECFFF). 예비부부 핑크처럼 위 글씨는 잉크. 우리 업체 알리기 · 업체 가입 · 내 업체 · 업체 회원가입에서 color.brand 대신 사용",
           "$type": "color",
-          "$value": "#b45a5e"
+          "$value": "#cecfff"
         }
       },
       {
@@ -896,7 +897,7 @@
   "projection": {
     "locale": "en",
     "path": "DESIGN.md",
-    "sha256": "0759be04d697d46f44c0f523e2f4c90bdcf2d60eb8cab1fb7a8f08df1239858b"
+    "sha256": "78ea5dc14413dbb4c8606523d0fa2921d84f2ea325e3ea7a76cf3fa1bccf4068"
   },
   "schema_version": "2.0.0",
   "typography_assets": {

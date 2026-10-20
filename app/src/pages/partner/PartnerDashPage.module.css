@@ -1,19 +1,19 @@
 .wrap { padding-top: var(--ds-s-xxl); }
 :is(.wrap button, .wrap a):focus-visible { outline: 2px solid var(--ds-ink); outline-offset: 2px; }
 
-/* 상단 배너: 업체 포인트 색 면 · 흰 글씨, 오른쪽 프로필 완성도 카드 */
+/* 상단 배너: 업체 포인트 색 면 · 잉크 글씨 (내 웨딩 배너와 같은 구성), 오른쪽 프로필 완성도 카드 */
 .head { display: grid; grid-template-columns: 1fr 300px; gap: var(--ds-s-xxl); align-items: center; padding: 40px; border-radius: var(--ds-r-panel); background: var(--ds-brand); color: var(--ds-on-brand); }
 .head > * { min-width: 0; }
 .kicker { display: inline-flex; align-items: center; gap: 4px; height: 28px; margin-bottom: var(--ds-s-md); padding: 0 10px; border-radius: var(--ds-r-cta); background: var(--ds-canvas); color: var(--ds-ink); font-size: 13px; font-weight: 700; }
 .kicker svg { width: 14px; height: 14px; }
 .head h1 { font-size: 36px; font-weight: 700; line-height: 1.22; letter-spacing: -.02em; }
 .meta { display: flex; flex-wrap: wrap; gap: var(--ds-s-sm); margin-top: var(--ds-s-md); }
-.meta li { display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 var(--ds-s-md); border-radius: var(--ds-r-chip); background: rgba(255, 255, 255, .16); font-size: 14px; font-weight: 500; }
+.meta li { display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 var(--ds-s-md); border-radius: var(--ds-r-chip); background: rgba(255, 255, 255, .55); font-size: 14px; font-weight: 500; }
 .meta svg { width: 16px; height: 16px; }
-.status i { width: 8px; height: 8px; border-radius: 50%; background: var(--ds-on-brand); box-shadow: 0 0 0 3px rgba(255, 255, 255, .3); }
+.status i { width: 8px; height: 8px; border-radius: 50%; background: var(--ds-on-brand); box-shadow: 0 0 0 3px rgba(33, 34, 36, .15); }
 .status.off i { border: 1.5px solid var(--ds-on-brand); background: transparent; box-shadow: none; }
-.stats { display: grid; grid-template-columns: repeat(4, 1fr); margin-top: var(--ds-s-xl); padding-top: var(--ds-s-lg); border-top: 1px solid rgba(255, 255, 255, .28); }
-.stat { display: flex; flex-direction: column; gap: 2px; min-width: 0; padding: 0 var(--ds-s-lg); border-left: 1px solid rgba(255, 255, 255, .28); }
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); margin-top: var(--ds-s-xl); padding-top: var(--ds-s-lg); border-top: 1px solid rgba(33, 34, 36, .18); }
+.stat { display: flex; flex-direction: column; gap: 2px; min-width: 0; padding: 0 var(--ds-s-lg); border-left: 1px solid rgba(33, 34, 36, .18); }
 .stat:first-child { padding-left: 0; border-left: 0; }
 .stat small { font-size: 13px; font-weight: 500; }
 .stat strong { font-size: 22px; font-weight: 700; line-height: 1.3; font-variant-numeric: tabular-nums; }
@@ -28,7 +28,7 @@
 .todo button { display: flex; align-items: center; gap: 6px; width: 100%; height: 34px; padding: 0 10px; border: 1px dashed var(--ds-control-border); border-radius: var(--ds-r-control); font-size: 13px; font-weight: 500; text-align: left; }
 .todo button:hover { border-color: var(--ds-ink); }
 .todo svg { width: 14px; height: 14px; }
-.todo em { margin-left: auto; font-style: normal; font-weight: 700; color: var(--ds-brand); }
+.todo em { margin-left: auto; font-style: normal; font-weight: 700; }
 .allDone { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 500; color: var(--ds-muted); }
 .previewBtn { display: flex; align-items: center; justify-content: center; gap: 6px; height: 40px; margin-top: 4px; padding-top: var(--ds-s-sm); border-top: 1px solid var(--ds-hairline); font-size: 14px; font-weight: 700; }
 .previewBtn svg { width: 16px; height: 16px; }

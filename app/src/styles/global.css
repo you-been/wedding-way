@@ -64,16 +64,16 @@
   --ds-shadow-search: rgba(0, 0, 0, .06) 0 0 8px 0;
 }
 
-/* 업체 화면: 포인트 색을 웜톤 로즈 브라운으로 (DESIGN.md color.biz-*) */
+/* 업체 화면: 포인트 색을 연한 페리윙클로 · 위 글씨는 잉크 (DESIGN.md color.biz-*) */
 .biz-theme {
-  --ds-brand: #b45a5e;
-  --ds-brand-hover: #a04e52;
-  --ds-brand-soft: #f8e9e7;
-  --ds-on-brand: #ffffff;
-  --ds-illust-pink: #f6e3e1;
-  --ds-illust-lilac: #f8e6d6;
-  --ds-illust-mint: #e7e9da;
-  --ds-illust-sand: #efe6dc;
+  --ds-brand: #cecfff;
+  --ds-brand-hover: #b8b9ff;
+  --ds-brand-soft: #f0f0ff;
+  --ds-on-brand: #212224;
+  --ds-illust-pink: #e5e5fa;
+  --ds-illust-lilac: #eee7f9;
+  --ds-illust-mint: #e7eef9;
+  --ds-illust-sand: #f0eef6;
 }
 
 @media (max-width: 760px) {

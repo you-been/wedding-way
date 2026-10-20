@@ -53,13 +53,13 @@
 <!-- design-md:claim foundations kind=rules-or-constraints lang=en -->
 ### Semantic tokens
 
-- **color.biz-brand**: `#b45a5e` — 결심 디테일 — 업체 화면 포인트 색 (웜톤 로즈 브라운). 우리 업체 알리기 · 업체 가입 · 내 업체 · 업체 회원가입에서 color.brand 대신 사용
-- **color.biz-brand-hover**: `#a04e52` — 결심 디테일 — 업체 포인트 버튼 hover
-- **color.biz-brand-soft**: `#f8e9e7` — 결심 디테일 — 업체 화면 옅은 면
-- **color.biz-illust-apricot**: `#f8e6d6` — 결심 디테일 — 업체 화면 그림 카드 배경
-- **color.biz-illust-rose**: `#f6e3e1` — 결심 디테일 — 업체 화면 그림 카드 배경
-- **color.biz-illust-sage**: `#e7e9da` — 결심 디테일 — 업체 화면 그림 카드 배경
-- **color.biz-illust-sand**: `#efe6dc` — 결심 디테일 — 업체 화면 그림 카드 배경
+- **color.biz-brand**: `#cecfff` — 결심 디테일 — 업체 화면 포인트 색 (연한 페리윙클, 사용자 지정 #CECFFF). 예비부부 핑크처럼 위 글씨는 잉크. 우리 업체 알리기 · 업체 가입 · 내 업체 · 업체 회원가입에서 color.brand 대신 사용
+- **color.biz-brand-hover**: `#b8b9ff` — 결심 디테일 — 업체 포인트 버튼 hover
+- **color.biz-brand-soft**: `#f0f0ff` — 결심 디테일 — 업체 화면 옅은 면
+- **color.biz-illust-lilac**: `#eee7f9` — 결심 디테일 — 업체 화면 그림 카드 배경
+- **color.biz-illust-mist**: `#f0eef6` — 결심 디테일 — 업체 화면 그림 카드 배경
+- **color.biz-illust-periwinkle**: `#e5e5fa` — 결심 디테일 — 업체 화면 그림 카드 배경
+- **color.biz-illust-sky**: `#e7eef9` — 결심 디테일 — 업체 화면 그림 카드 배경
 - **color.brand**: `#ffa3bf` — 결심 디테일 (크몽 초록 #92fa72 대체) — 포인트 핑크: 히어로 면 · 번호 배지 · 강조 태그
 - **color.brand-hover**: `#ff8fb1` — 결심 디테일 — 핑크 버튼 hover
 - **color.brand-soft**: `#fff1f5` — 결심 디테일 — 옅은 핑크 면: 마지막 CTA 띠 · 추천 이유 칩
@@ -84,7 +84,7 @@
 - **color.kakao**: `#fee500` — 외부 브랜드 색 — 카카오 로그인 · 카카오톡 공유 버튼 배경 (브랜드 가이드 유지)
 - **color.muted**: `#555969` — 크몽 값 — 보조 설명 텍스트
 - **color.naver**: `#03c75a` — 외부 브랜드 색 — 네이버 로그인 버튼 배경, 글씨는 흰색 (브랜드 가이드 유지)
-- **color.on-biz-brand**: `#ffffff` — 결심 디테일 — 업체 포인트 색 위 글씨 (흰색)
+- **color.on-biz-brand**: `#212224` — 결심 디테일 — 업체 포인트 색 위 글씨 (잉크)
 - **color.on-brand**: `#212224` — 크몽 값 — 핑크 위 텍스트
 - **color.on-ink**: `#ffffff` — 크몽 값 — 잉크 위 텍스트
 - **color.on-kakao**: `#191919` — 외부 브랜드 색 — 카카오 버튼 위 글씨 (브랜드 가이드 유지)
@@ -145,9 +145,9 @@ Required.
 
 - 숫자(금액 · 개수 · 평점)는 font-variant-numeric: tabular-nums로 정렬한다
 
-- 업체 화면(우리 업체 알리기 · 업체 가입 · 내 업체 · 업체 회원가입)은 color.brand 대신 color.biz-brand 계열을 쓰고, 포인트 면 위 글씨는 흰색(color.on-biz-brand)이다
+- 업체 화면(우리 업체 알리기 · 업체 가입 · 내 업체 · 업체 회원가입)은 color.brand 대신 color.biz-brand 계열을 쓰고, 포인트 면 위 글씨는 잉크(color.on-biz-brand)이고, 연한 포인트 색은 흰 바탕 위 글자색으로 쓰지 않는다
 
-- 그림 카드 배경은 예비부부 화면은 illust-pink · lilac · mint, 업체 화면은 biz-illust-rose · apricot · sage · sand를 쓴다
+- 그림 카드 배경은 예비부부 화면은 illust-pink · lilac · mint, 업체 화면은 biz-illust-periwinkle · lilac · sky · mist를 쓴다
 
 - SNS 로그인 · 공유 버튼(카카오 · 네이버 · 구글)은 각 플랫폼 브랜드 색을 그대로 쓴다
 
@@ -449,5 +449,5 @@ Record, review, and validate changes before adoption.
 - foundations.tokens.color.brand — repository-fact; value: {"$description":"결심 디테일 (크몽 초록 #92fa72 대체) — 포인트 핑크: 히어로 면 · 번호 배지 · 강조 태그","$type":"color","$value":"#ffa3bf"}; evidence: css/style.css
 - /typography_assets/roles/0/size — prompt-fact; value: "56px (모바일 36px)"; evidence: css/style.css
 - /typography_assets/assets/2 — unresolved; evidence: images/biz_01.jpg
-- foundations.tokens.color.biz-brand — prompt-fact; value: {"$description":"결심 디테일 — 업체 화면 포인트 색 (웜톤 로즈 브라운). 우리 업체 알리기 · 업체 가입 · 내 업체 · 업체 회원가입에서 color.brand 대신 사용","$type":"color","$value":"#b45a5e"}; evidence: css/style.css
+- foundations.tokens.color.biz-brand — prompt-fact; value: {"$description":"결심 디테일 — 업체 화면 포인트 색 (연한 페리윙클, 사용자 지정 #CECFFF). 예비부부 핑크처럼 위 글씨는 잉크. 우리 업체 알리기 · 업체 가입 · 내 업체 · 업체 회원가입에서 color.brand 대신 사용","$type":"color","$value":"#cecfff"}; evidence: app/src/styles/global.css, css/style.css
 - foundations.tokens.space.section — prompt-fact; value: {"$description":"결심 디테일 — 섹션 사이 간격 (사용자 조정: 80 → 95px)","$type":"dimension","$value":{"desktop":"95px","mobile":"63px"}}; evidence: css/style.css

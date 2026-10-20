@@ -29,7 +29,7 @@ export default function AppLayout() {
       </main>
       {!isWelcome && <Footer />}
       {!isWelcome && <TabBar />}
-      {!isWelcome && <Link to={PATHS.flow} className={styles.protoFab} title="화면 구성 · 플로우 보기">플로우 맵</Link>}
+      {!isWelcome && <Link to={PATHS.flow} className={`${styles.protoFab} ${pathname === PATHS.partner ? styles.raised : ''}`} title="화면 구성 · 플로우 보기">플로우 맵</Link>}
       <Toast />
     </div>
   );

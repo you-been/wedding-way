@@ -32,7 +32,7 @@ const CATEGORIES = [
 const VENDOR_IMG = {
   2: 'biz_01', // 오월의 헤어 · 헤어변형
   4: 'biz_02', // 라메르 빈티지 · 드레스
-  6: 'biz_03', // 모먼트 본식스냅 · 야외스냅
+  6: 'biz_14', // 모먼트 본식스냅 · 본식스냅
   8: 'biz_04', // 들꽃 아틀리에 · 웨딩플라워
   14: 'biz_05', // 소소한 소품 · 웨딩소품
   9: 'biz_06', // 스튜디오 무드 · 스튜디오
@@ -43,11 +43,15 @@ const VENDOR_IMG = {
   10: 'biz_11', // 결 메이크업 · 메이크업
   7: 'biz_12', // 오늘의 청첩 · 모바일청첩장
   19: 'biz_13', // 블룸 플라워랩 · 웨딩플라워
+  20: 'biz_15', // 화이트룸 스튜디오 · 스튜디오
+  21: 'biz_16', // 단아 한복 · 예복·한복
+  22: 'biz_17', // 플레이풀 스튜디오 · 스튜디오
+  23: 'biz_18', // 메종 드 리본 · 드레스
 };
 const vendorImg = (id) => (VENDOR_IMG[id] ? `images/${VENDOR_IMG[id]}.jpg` : null);
 
 // 홈 사진 피드: 사진이 있는 업체만
-const FEED = [1, 4, 8, 5, 9, 14, 10, 6, 2, 19, 15, 16, 7];
+const FEED = [1, 4, 20, 8, 5, 21, 9, 14, 23, 10, 6, 2, 22, 19, 15, 16, 7];
 
 // 카테고리별 시장 평균가 (프로토타입용 예시) — 가격 비공개 업체에 참고용으로 표시
 const CATEGORY_AVG = {
@@ -78,6 +82,10 @@ const VENDORS = [
   { id: 17, name: '손길 웨딩헬퍼', cat: '헬퍼', region: '서울 · 경기', type: '1인 헬퍼', price: '본식 15~25만 원', tier: '가성비', insta: false, intro: true, moods: ['#클래식'], verified: 25, rating: 4.9, reviews: 34, ph: 5, h: 200 },
   { id: 18, name: '하루 헬퍼팀', cat: '헬퍼', region: '전국', type: '2인 팀', price: '본식+2부 20~35만 원', tier: '표준', insta: false, intro: false, moods: ['#내추럴'], verified: 8, rating: 4.7, reviews: 15, ph: 3, h: 230 },
   { id: 19, name: '블룸 플라워랩', cat: '웨딩플라워', region: '서울 한남', type: '플라워 스튜디오', price: '부케 20~45만 원', tier: '표준', insta: true, intro: true, moods: ['#클래식', '#하우스웨딩'], verified: 24, rating: 4.8, reviews: 31, ph: 5, h: 240 },
+  { id: 20, name: '화이트룸 스튜디오', cat: '스튜디오', region: '서울 성수', type: '실내 스튜디오', price: '180~260만 원', tier: '표준', insta: true, intro: true, moods: ['#미니멀', '#클래식'], verified: 27, rating: 4.8, reviews: 39, ph: 2, h: 260 },
+  { id: 21, name: '단아 한복', cat: '예복·한복', region: '서울 종로', type: '한복 대여 · 맞춤', price: '대여 25~45만 원', tier: '가성비', insta: true, intro: true, moods: ['#클래식', '#빈티지'], verified: 35, rating: 4.9, reviews: 46, ph: 6, h: 250 },
+  { id: 22, name: '플레이풀 스튜디오', cat: '스튜디오', region: '서울 망원', type: '캐주얼 웨딩 스튜디오', price: '120~190만 원', tier: '가성비', insta: true, intro: false, moods: ['#내추럴', '#빈티지'], verified: 19, rating: 4.7, reviews: 26, ph: 4, h: 230 },
+  { id: 23, name: '메종 드 리본', cat: '드레스', region: '서울 청담', type: '수입 드레스 숍', price: null, tier: '프리미엄', insta: true, intro: true, moods: ['#클래식', '#미니멀'], verified: 21, rating: 4.8, reviews: 30, ph: 1, h: 280 },
 ];
 
 const REVIEWS = [

@@ -20,6 +20,7 @@ import BudgetPage from './pages/budget/BudgetPage';
 import BudgetResultPage from './pages/budget/BudgetResultPage';
 import MyPage from './pages/mypage/MyPage';
 import InvitePage from './pages/invite/InvitePage';
+import PartnerPage from './pages/partner/PartnerPage';
 import PartnerJoinPage from './pages/partner/PartnerJoinPage';
 import PartnerDashPage from './pages/partner/PartnerDashPage';
 import PartnerPreviewPage from './pages/partner/PartnerPreviewPage';
@@ -31,6 +32,7 @@ const PAGES: Record<string, React.ComponentType> = {
   [PATHS.budgetResult]: BudgetResultPage,
   [PATHS.mypage]: MyPage,
   [PATHS.invite]: InvitePage,
+  [PATHS.partner]: PartnerPage,
   [PATHS.partnerJoin]: PartnerJoinPage,
   [PATHS.partnerDash]: PartnerDashPage,
   [PATHS.partnerPreview]: PartnerPreviewPage,

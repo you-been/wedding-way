@@ -1,0 +1,39 @@
+.backdrop { position: fixed; inset: 0; z-index: 80; background: rgba(33, 34, 36, .4); }
+.drawer { position: fixed; top: 0; right: 0; bottom: 0; z-index: 90; width: 400px; max-width: 100%; padding: var(--ds-s-xl); overflow-y: auto; border-left: 1px solid var(--ds-panel-border); background: var(--ds-canvas); color: var(--ds-ink); animation: slide-in .25s ease; }
+@keyframes slide-in { from { transform: translateX(100%); } }
+.head { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.eyebrow { display: inline-flex; align-items: center; min-height: 24px; padding: 2px 8px; border-radius: var(--ds-r-cta); background: var(--ds-hairline); font-size: 12px; font-weight: 500; }
+.close { flex: none; display: grid; place-items: center; width: 36px; height: 36px; border: 1px solid var(--ds-panel-border); border-radius: 50%; background: var(--ds-canvas); }
+.close svg { width: 18px; height: 18px; }
+.close:hover { border-color: var(--ds-ink); }
+.drawer h2 { margin: var(--ds-s-md) 0 4px; font-size: 22px; font-weight: 700; }
+.desc { font-size: 14px; color: var(--ds-muted); }
+.edit { margin-top: 14px; }
+.field { display: flex; flex-direction: column; gap: 6px; margin-top: 14px; font-size: 14px; font-weight: 700; }
+.field small { font-weight: 400; color: var(--ds-muted); }
+.field input, .field select { height: 44px; padding: 0 12px; border: 1px solid var(--ds-control-border); border-radius: var(--ds-r-control); background: var(--ds-canvas); font-size: 14px; font-weight: 400; }
+.done { display: flex; align-items: center; gap: 8px; margin: 16px 0 4px; font-size: 14px; font-weight: 700; cursor: pointer; }
+.done input { width: 18px; height: 18px; accent-color: var(--ds-ink); }
+.section { margin-top: 14px; padding: 18px 0; border-top: 1px solid var(--ds-hairline); }
+.section h4 { display: flex; align-items: center; gap: 6px; margin-bottom: 10px; font-size: 16px; font-weight: 700; }
+.section h4 svg { width: 18px; height: 18px; }
+.section h4 small { font-size: 13px; font-weight: 400; color: var(--ds-muted); }
+.dateRow { display: flex; gap: 8px; }
+.dateRow input { flex: 1; min-width: 0; height: 52px; padding: 0 12px; border: 1px solid var(--ds-control-border); border-radius: var(--ds-r-control); }
+.dateRow input:disabled { background: var(--ds-panel); color: var(--ds-muted); }
+.info { margin-top: 8px; font-size: 13px; color: var(--ds-muted); }
+.textBtn { margin-top: 6px; font-size: 13px; font-weight: 500; text-decoration: underline; text-underline-offset: 3px; }
+.section textarea { width: 100%; padding: 12px 14px; border: 1px solid var(--ds-control-border); border-radius: var(--ds-r-control); resize: vertical; }
+:is(.field input, .field select, .dateRow input, .section textarea):focus-visible { border-color: var(--ds-ink); outline: 2px solid var(--ds-ink); outline-offset: -1px; }
+.hide { display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; margin-top: 18px; padding: 12px; border-radius: var(--ds-r-control); font-size: 14px; font-weight: 500; color: var(--ds-muted); }
+.hide svg { width: 16px; height: 16px; }
+.hide:hover { background: var(--ds-hairline); color: var(--ds-ink); }
+:is(.close, .textBtn, .hide):focus-visible { outline: 2px solid var(--ds-ink); outline-offset: 2px; }
+
+@media (max-width: 760px) {
+  .drawer { top: auto; left: 0; width: 100%; max-height: 85vh; border-left: 0; border-top: 1px solid var(--ds-panel-border); border-radius: var(--ds-r-panel) var(--ds-r-panel) 0 0; animation-name: slide-up; }
+  @keyframes slide-up { from { transform: translateY(100%); } }
+}
+@media (prefers-reduced-motion: reduce) {
+  .drawer { animation: none; }
+}

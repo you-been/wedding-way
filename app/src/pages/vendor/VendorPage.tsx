@@ -8,7 +8,8 @@ import Tag from '../../components/ui/Tag';
 import ReviewCard from '../../components/vendor/ReviewCard';
 import { categoryAvg, categoryIcon } from '../../data/categories';
 import { getReviews, getVendor, getVendors } from '../../data/api';
-import { recoReasons, tierFromPreset } from '../../data/recommend';
+import { recoReasons } from '../../data/recommend';
+import { useMyTier } from '../../stores/budgetStore';
 import { imageUrl, type Vendor } from '../../data/vendors';
 import { useMemberAction } from '../../hooks/useMemberAction';
 import { PATHS } from '../../routes';
@@ -33,11 +34,12 @@ export default function VendorPage({ vendor: given }: { vendor?: Vendor }) {
 
 function VendorDetail({ v }: { v: Vendor }) {
   const [tab, setTab] = useState<Tab>('info');
-  const { moods, budgetPreset } = usePrefStore();
+  const moods = usePrefStore((s) => s.moods);
+  const myTier = useMyTier();
   const saved = useFavoriteStore((s) => s.ids.includes(v.id));
   const toggleFav = useFavoriteStore((s) => s.toggle);
   const member = useMemberAction('user');
-  const reasons = recoReasons(v, moods, tierFromPreset(budgetPreset));
+  const reasons = recoReasons(v, moods, myTier);
   const avg = categoryAvg(v.cat);
   const Icon = categoryIcon(v.cat);
 

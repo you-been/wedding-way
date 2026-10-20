@@ -1,0 +1,124 @@
+.layout { display: grid; grid-template-columns: 1fr 360px; gap: var(--ds-s-xl); align-items: start; }
+.layout > * { min-width: 0; }
+.card { margin-bottom: var(--ds-s-base); padding: 28px; }
+.card h3 { gap: 10px; font-size: 20px; }
+.card h3 small { font-size: 14px; font-weight: 400; }
+.num { display: inline-grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; background: var(--ds-brand); color: var(--ds-on-brand); font-size: 13px; font-weight: 700; }
+.muted { color: var(--ds-muted); }
+.over { font-weight: 700; color: var(--ds-ink); }
+.textBtn { font-size: 13px; font-weight: 500; color: var(--ds-ink); text-decoration: underline; text-underline-offset: 3px; }
+.mutedBtn { color: var(--ds-muted); }
+.textBtn:focus-visible { outline: 2px solid var(--ds-ink); outline-offset: 2px; }
+.hint, .estLine, .totalDiff { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 6px; font-size: 14px; color: var(--ds-muted); }
+.hint { margin: -4px 0 4px; }
+.estLine { margin: -4px 0 12px; }
+.totalDiff { margin-top: 8px; color: var(--ds-ink); }
+:is(.hint, .estLine, .totalDiff) svg { width: 14px; height: 14px; }
+input[type=checkbox] { accent-color: var(--ds-ink); }
+
+/* ① 기본 항목 */
+.bsRow { display: grid; grid-template-columns: 22px 1fr auto; align-items: center; gap: 12px; margin-bottom: var(--ds-s-sm); padding: 14px 16px; border: 1px solid var(--ds-control-border); border-radius: var(--ds-r-control); cursor: pointer; transition: border-color .15s, background-color .15s; }
+.bsRow:hover { border-color: var(--ds-ink); }
+.bsRow input { width: 18px; height: 18px; }
+.bsRow.on { border-color: var(--ds-ink); background: var(--ds-panel); }
+.bsMain { display: flex; flex-direction: column; min-width: 0; }
+.bsMain b { font-size: 16px; font-weight: 700; }
+.bsMain small, .bsOpt small { font-size: 13px; color: var(--ds-muted); }
+.bsPrice { font-size: 14px; font-weight: 500; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.bsReco { display: flex; flex-wrap: wrap; gap: 4px 12px; margin-top: 4px; }
+.shoot { grid-template-columns: 1fr; cursor: default; }
+.shoot:hover:not(.on) { border-color: var(--ds-control-border); }
+.bsOptions { display: flex; flex-wrap: wrap; gap: 6px; }
+.bsOpt { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; min-width: 90px; min-height: 52px; padding: 8px 10px; border: 1px solid var(--ds-control-border); border-radius: var(--ds-r-control); background: var(--ds-canvas); }
+.bsOpt b { font-size: 14px; }
+.bsOpt:hover { border-color: var(--ds-ink); }
+.bsOpt:focus-visible { outline: 2px solid var(--ds-ink); outline-offset: 2px; }
+.bsOpt.active { border-color: var(--ds-ink); background: var(--ds-ink); color: var(--ds-on-ink); }
+.bsOpt.active small { color: rgba(255, 255, 255, .75); }
+
+/* ② 위시리스트 */
+.wlSummary { margin: -4px 0 12px; font-size: 14px; }
+.wlGroup { margin-bottom: var(--ds-s-sm); overflow: hidden; border: 1px solid var(--ds-panel-border); border-radius: var(--ds-r-control); }
+.wlHead { display: flex; align-items: center; gap: 10px; width: 100%; padding: 14px 16px; background: var(--ds-panel); text-align: left; }
+.wlHead:focus-visible { outline: 2px solid var(--ds-ink); outline-offset: -2px; }
+.wlHead b { display: inline-flex; align-items: center; gap: 6px; font-size: 16px; font-weight: 700; }
+.wlHead b svg { width: 16px; height: 16px; }
+.wlCount { margin-left: auto; font-size: 13px; color: var(--ds-muted); }
+.wlCount.on { font-weight: 700; color: var(--ds-ink); }
+.wlCaret { width: 16px; height: 16px; transition: transform .2s; }
+.closed { transform: rotate(-90deg); }
+.wlItem { display: grid; grid-template-columns: 20px 1fr auto; align-items: center; gap: 10px; padding: 12px 16px; border-top: 1px solid var(--ds-hairline); cursor: pointer; }
+.wlItem:hover { background: var(--ds-panel); }
+.wlItem input { width: 16px; height: 16px; }
+.wlItem.on { background: var(--ds-brand-soft); }
+.wlName { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px; min-width: 0; }
+.wlName b { font-size: 14px; font-weight: 500; }
+.wlName small { font-size: 13px; color: var(--ds-muted); }
+.wlPrice { font-size: 14px; white-space: nowrap; font-variant-numeric: tabular-nums; }
+
+/* ③ 예산 항목 · 중요도 */
+.biRow { display: grid; grid-template-columns: 200px 1fr 48px 124px 28px; align-items: center; gap: 10px; padding: 12px 0; border-bottom: 1px solid var(--ds-hairline); }
+.biName { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; min-width: 0; font-size: 14px; font-weight: 700; }
+.biName i { flex: none; width: 10px; height: 10px; border-radius: 2px; }
+.sub { padding-left: 16px; }
+.sub .biName { font-weight: 500; color: var(--ds-muted); }
+.biNote { font-size: 12px; font-weight: 500; color: var(--ds-muted); }
+.biNote.over { font-weight: 700; color: var(--ds-ink); }
+.biToggle { display: inline-flex; align-items: center; gap: 2px; height: 24px; padding: 0 8px; border-radius: var(--ds-r-cta); background: var(--ds-hairline); font-size: 12px; font-weight: 500; }
+.biToggle svg { width: 12px; height: 12px; }
+.biRow input[type=range] { width: 100%; accent-color: var(--ds-ink); }
+.biRow output { font-size: 12px; color: var(--ds-muted); text-align: right; font-variant-numeric: tabular-nums; }
+.biAmount { font-size: 14px; font-weight: 700; text-align: right; font-variant-numeric: tabular-nums; }
+.low { text-decoration: underline wavy var(--ds-muted); text-underline-offset: 3px; }
+.biAmountWrap { display: flex; align-items: center; justify-content: flex-end; gap: 2px; }
+.biInput { width: 88px; height: 36px; padding: 0 8px; border: 1px solid var(--ds-control-border); border-radius: var(--ds-r-control); background: var(--ds-canvas); font-size: 14px; font-weight: 500; text-align: right; font-variant-numeric: tabular-nums; }
+.biInput:focus { border-color: var(--ds-ink); outline: 2px solid var(--ds-ink); outline-offset: 1px; }
+.biInput.pinned { border-color: var(--ds-ink); background: var(--ds-panel); font-weight: 700; }
+.biPin, .biDel { display: grid; place-items: center; width: 28px; height: 28px; border-radius: var(--ds-r-control); color: var(--ds-muted); }
+.biPin svg, .biDel svg { width: 14px; height: 14px; }
+.biPin { opacity: .45; color: var(--ds-ink); }
+.biPin:hover, .biDel:hover { opacity: 1; background: var(--ds-hairline); color: var(--ds-ink); }
+.biPin.on { opacity: 1; background: var(--ds-brand); color: var(--ds-on-brand); }
+:is(.biPin, .biDel, .biToggle):focus-visible { outline: 2px solid var(--ds-ink); outline-offset: 2px; opacity: 1; }
+.biSubs { margin: 6px 0; padding: 2px 12px 8px; border-radius: var(--ds-r-control); background: var(--ds-panel); }
+.biSubAdd { display: flex; flex-wrap: wrap; gap: 6px; padding-top: 8px; }
+.biAdd { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 14px; }
+.biAddLabel { margin-right: 4px; font-size: 14px; font-weight: 500; }
+.smallChip { height: 32px; padding: 0 12px; font-size: 13px; }
+.biCustom { display: flex; gap: 6px; margin-top: 10px; }
+.biCustom input { flex: 1; min-width: 0; height: 36px; padding: 0 12px; border: 1px solid var(--ds-control-border); border-radius: var(--ds-r-control); }
+.biCustom input:focus-visible { outline: 2px solid var(--ds-ink); outline-offset: 1px; }
+.biEmpty { padding: 8px 0; font-size: 14px; color: var(--ds-muted); }
+
+/* ④ 총 결혼 예산 */
+.money { display: flex; align-items: center; gap: 8px; max-width: 320px; padding: 4px 0; border-bottom: 2px solid var(--ds-ink); }
+.money input { width: 100%; min-width: 0; border: 0; background: transparent; font-size: 36px; font-weight: 700; font-variant-numeric: tabular-nums; outline: none; }
+.money:focus-within { border-bottom-color: var(--ds-ink); box-shadow: 0 2px 0 var(--ds-ink); }
+.money span { font-size: 20px; font-weight: 500; white-space: nowrap; }
+.tier { margin-top: 18px; }
+
+/* 오른쪽 실시간 미리보기: 스크롤을 따라옴 */
+.side { align-self: stretch; }
+.preview { position: sticky; top: calc(var(--ds-gnb-h) + 16px); max-height: calc(100vh - var(--ds-gnb-h) - 32px); overflow-y: auto; }
+.pvLabel { display: block; font-size: 14px; font-weight: 700; }
+.pvTotal { margin: 8px 0 16px; }
+.pvTotal small { display: block; font-size: 13px; color: var(--ds-muted); }
+.pvTotal strong { font-size: 36px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.pvTier { margin-top: 8px; font-size: 14px; color: var(--ds-muted); }
+.pvTier small { display: block; margin-top: 4px; font-size: 12px; }
+.pvCta { margin-top: 18px; }
+
+@media (max-width: 960px) {
+  .layout { grid-template-columns: 1fr; }
+  .preview { position: static; max-height: none; }
+}
+@media (max-width: 760px) {
+  .card { padding: 20px 16px; }
+  .card h3 { font-size: 18px; }
+  .biRow { grid-template-columns: 1fr 48px 118px 28px; row-gap: 4px; }
+  .biName { grid-column: 1 / -1; }
+  .money input { font-size: 30px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bsRow, .wlCaret { transition: none; }
+}

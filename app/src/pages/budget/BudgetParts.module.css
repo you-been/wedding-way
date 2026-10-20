@@ -1,0 +1,33 @@
+/* 가격대 판정 */
+.tier { padding: 18px 20px; border-radius: var(--ds-r-control); background: var(--ds-panel); }
+.tierLine { margin-bottom: 10px; font-size: 16px; }
+.tierName { padding: 2px 8px; border-radius: var(--ds-r-cta); font-weight: 700; }
+.tier0 { background: var(--ds-hairline); color: var(--ds-ink); }
+.tier1 { background: var(--ds-brand); color: var(--ds-on-brand); }
+.tier2 { background: var(--ds-ink); color: var(--ds-on-ink); }
+.scale { position: relative; display: grid; grid-template-columns: repeat(3, 1fr); gap: 3px; }
+.scale span { padding: 6px 0; background: var(--ds-hairline); color: var(--ds-muted); font-size: 12px; font-weight: 500; text-align: center; }
+.scale span:first-child { border-radius: var(--ds-r-cta) 0 0 var(--ds-r-cta); }
+.scale span:last-of-type { border-radius: 0 var(--ds-r-cta) var(--ds-r-cta) 0; }
+.scale span.on { background: var(--ds-brand); color: var(--ds-on-brand); font-weight: 700; }
+.marker { position: absolute; top: -5px; bottom: -5px; width: 3px; margin-left: -1.5px; border-radius: var(--ds-r-bar); background: var(--ds-ink); box-shadow: 0 0 0 2px var(--ds-panel); transition: left .25s; }
+.ticks { position: relative; height: 18px; font-size: 11px; color: var(--ds-muted); font-variant-numeric: tabular-nums; }
+.ticks span { position: absolute; top: 4px; transform: translateX(-50%); }
+.ticks span:first-child { left: 33.33%; }
+.ticks span:last-child { left: 66.66%; }
+.lowNote { margin-top: 8px; font-size: 13px; font-weight: 700; }
+.small { margin-top: 4px; font-size: 13px; color: var(--ds-muted); }
+
+/* 도넛 · 범례 */
+.pie { position: relative; width: 184px; height: 184px; margin: 0 auto var(--ds-s-base); border-radius: 50%; }
+.pie::after { content: ""; position: absolute; inset: 30%; border-radius: 50%; background: var(--ds-canvas); }
+.pieLg { flex: none; width: 220px; height: 220px; margin: 0; }
+.legend { display: grid; gap: var(--ds-s-sm); font-size: 14px; }
+.legend li { display: flex; align-items: center; gap: 8px; }
+.legend i { flex: none; width: 10px; height: 10px; border-radius: 2px; }
+.legend span { margin-left: auto; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.legendSub { padding-left: 18px; font-size: 13px; color: var(--ds-muted); }
+
+@media (prefers-reduced-motion: reduce) {
+  .marker { transition: none; }
+}

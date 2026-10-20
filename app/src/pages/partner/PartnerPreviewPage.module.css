@@ -1,0 +1,6 @@
+.bar { position: sticky; top: var(--ds-gnb-h); z-index: 20; background: var(--ds-ink); color: var(--ds-on-ink); }
+.inner { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 4px var(--ds-s-base); min-height: 44px; padding-top: 6px; padding-bottom: 6px; font-size: 14px; }
+.inner span, .inner a { display: inline-flex; align-items: center; gap: 6px; }
+.inner svg { width: 16px; height: 16px; }
+.inner a { font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+.inner a:focus-visible { outline: 2px solid var(--ds-on-ink); outline-offset: 2px; }

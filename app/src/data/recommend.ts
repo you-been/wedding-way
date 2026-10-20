@@ -19,12 +19,6 @@ export function recoReasons(v: Vendor, myMoods: string[], myTier: Tier): string[
   return reasons;
 }
 
-/** 취향 진단의 예산대 → 가격대 (예산 진단을 마치면 그 결과로 바꿔 쓴다) */
-export function tierFromPreset(preset: string): Tier {
-  if (preset.startsWith('3천')) return '가성비';
-  if (preset.startsWith('5,500')) return '프리미엄';
-  return '표준';
-}
 
 /** 가격 문자열의 첫 숫자(만 원) — 낮은 가격순 정렬용, 비공개는 맨 뒤 */
 export const priceNumber = (price: string | null) => (price ? Number(price.match(/\d+/)?.[0] ?? Infinity) : Infinity);

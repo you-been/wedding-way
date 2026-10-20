@@ -26,6 +26,7 @@ export const PATHS = {
   partner: '/partner',
   partnerJoin: '/partner/join',
   partnerDash: '/partner/dashboard',
+  partnerPreview: '/partner/dashboard/preview', // 내 업체 → 예비부부에게 보이는 업체 상세
   login: '/login',
   signup: '/signup',
   signupBiz: '/signup/biz',
@@ -49,6 +50,7 @@ export const SCREENS: ScreenDef[] = [
   { path: PATHS.partner, title: '우리 업체 알리기', group: '업체' },
   { path: PATHS.partnerJoin, title: '업체 소개 만들기', group: '업체', auth: 'biz' },
   { path: PATHS.partnerDash, title: '내 업체', group: '업체', auth: 'biz' },
+  { path: PATHS.partnerPreview, title: '내 업체 미리보기', group: '업체', auth: 'biz' },
   { path: PATHS.login, title: '로그인', group: '계정' },
   { path: PATHS.signup, title: '예비부부 회원가입', group: '계정' },
   { path: PATHS.signupBiz, title: '업체 회원가입', group: '계정' },

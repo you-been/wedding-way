@@ -1,0 +1,38 @@
+/* 짝꿍 초대 모달 · 초대 받기 화면 공통 */
+.avatars { display: flex; flex: none; }
+.avatars > i { display: grid; place-items: center; width: 34px; height: 34px; border: 2px solid var(--ds-canvas); border-radius: 50%; background: var(--ds-ink); color: var(--ds-on-ink); font-size: 13px; font-style: normal; font-weight: 700; }
+.avatars > i + i { margin-left: -8px; }
+.avatars > i.b { background: var(--ds-brand); color: var(--ds-on-brand); }
+.avatars > i.add { border: 1.5px dashed var(--ds-ink); background: var(--ds-canvas); color: var(--ds-ink); }
+.avatars > i.add svg { width: 16px; height: 16px; }
+.lg > i { width: 56px; height: 56px; border-width: 3px; font-size: 20px; }
+.lg > i + i { margin-left: -12px; }
+
+.lead { font-size: 15px; line-height: 1.6; color: var(--ds-muted); }
+.perks { display: grid; gap: var(--ds-s-sm); margin: var(--ds-s-lg) 0; text-align: left; }
+.perks li { display: grid; grid-template-columns: 40px 1fr; align-items: center; column-gap: var(--ds-s-md); padding: var(--ds-s-md); border-radius: var(--ds-r-control); background: var(--ds-panel); }
+.perks li > span { grid-row: span 2; display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; background: var(--ds-brand-soft); }
+.perks svg { width: 18px; height: 18px; }
+.perks b { font-size: 15px; font-weight: 700; }
+.perks small { font-size: 13px; color: var(--ds-muted); }
+
+/* 카카오톡 버튼: 카카오 브랜드 색 유지 */
+.kakao { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; height: 52px; border-radius: var(--ds-r-cta); background: var(--ds-kakao); color: rgba(0, 0, 0, .85); font-size: 16px; font-weight: 700; }
+.kakao svg { width: 20px; height: 20px; fill: rgba(0, 0, 0, .85); stroke: none; }
+.kakao:hover { filter: brightness(.97); }
+.linkRow { display: flex; gap: var(--ds-s-sm); margin-top: var(--ds-s-sm); }
+.linkRow input { flex: 1; min-width: 0; height: 44px; padding: 0 var(--ds-s-md); border: 1px solid var(--ds-control-border); border-radius: var(--ds-r-control); background: var(--ds-panel); font-size: 13px; color: var(--ds-muted); }
+.copy { display: inline-flex; align-items: center; gap: 6px; height: 44px; padding: 0 14px; border: 1px solid var(--ds-control-border); border-radius: var(--ds-r-control); background: var(--ds-canvas); font-size: 14px; font-weight: 500; }
+.copy svg { width: 16px; height: 16px; }
+.copy:hover { border-color: var(--ds-ink); }
+.note { margin-top: var(--ds-s-sm); font-size: 12px; color: var(--ds-subtle); }
+.demo { display: block; margin-top: var(--ds-s-base); padding-top: var(--ds-s-base); border-top: 1px solid var(--ds-hairline); font-size: 13px; color: var(--ds-muted); text-decoration: underline; text-underline-offset: 3px; }
+.demo:hover { color: var(--ds-ink); }
+.linked { display: flex; flex-direction: column; align-items: center; gap: 4px; padding-top: var(--ds-s-base); text-align: center; }
+.linked .avatars { margin-bottom: var(--ds-s-sm); }
+.linked b { font-size: 18px; font-weight: 700; }
+.linked small { font-size: 13px; color: var(--ds-muted); }
+.unlink { display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; height: 44px; border-radius: var(--ds-r-control); font-size: 14px; font-weight: 500; color: var(--ds-muted); }
+.unlink svg { width: 16px; height: 16px; }
+.unlink:hover { background: var(--ds-hairline); color: var(--ds-ink); }
+:is(.kakao, .copy, .unlink, .demo):focus-visible { outline: 2px solid var(--ds-ink); outline-offset: 2px; }

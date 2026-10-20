@@ -80,10 +80,10 @@ img { display: block; max-width: 100%; }
 [hidden] { display: none !important; }
 
 /* 콘텐츠 폭: 최대 1168px, 좌우 여백 24px (모바일 16px) */
-.wrap { max-width: calc(var(--ds-wrap) + 48px); margin: 0 auto; padding: 0 24px; }
+.wrap { max-width: calc(var(--ds-wrap) + 48px); margin: 0 auto; padding-left: 24px; padding-right: 24px; }
 .section { padding-top: var(--ds-section); }
 @media (max-width: 760px) {
-  .wrap { padding: 0 16px; }
+  .wrap { padding-left: 16px; padding-right: 16px; }
 }
 
 /* 숫자 정렬 */

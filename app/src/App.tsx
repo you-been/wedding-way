@@ -15,9 +15,25 @@ import VendorPage from './pages/vendor/VendorPage';
 import LoginPage from './pages/auth/LoginPage';
 import SignupUserPage from './pages/auth/SignupUserPage';
 import SignupBizPage from './pages/auth/SignupBizPage';
+import HomePage from './pages/home/HomePage';
+import BudgetPage from './pages/budget/BudgetPage';
+import BudgetResultPage from './pages/budget/BudgetResultPage';
+import MyPage from './pages/mypage/MyPage';
+import InvitePage from './pages/invite/InvitePage';
+import PartnerJoinPage from './pages/partner/PartnerJoinPage';
+import PartnerDashPage from './pages/partner/PartnerDashPage';
+import PartnerPreviewPage from './pages/partner/PartnerPreviewPage';
 
 // 옮긴 화면은 여기에 등록 (없으면 임시 화면)
 const PAGES: Record<string, React.ComponentType> = {
+  [PATHS.home]: HomePage,
+  [PATHS.budget]: BudgetPage,
+  [PATHS.budgetResult]: BudgetResultPage,
+  [PATHS.mypage]: MyPage,
+  [PATHS.invite]: InvitePage,
+  [PATHS.partnerJoin]: PartnerJoinPage,
+  [PATHS.partnerDash]: PartnerDashPage,
+  [PATHS.partnerPreview]: PartnerPreviewPage,
   [PATHS.flow]: FlowMapPage,
   [PATHS.welcome]: WelcomePage,
   [PATHS.guide]: GuidePage,

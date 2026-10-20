@@ -1,0 +1,41 @@
+/* 단계 표시: 원 + 연결선 (누르는 버튼처럼 보이지 않게), 양끝 단계는 모달 폭 끝에 붙임 */
+.progress { counter-reset: step; display: flex; margin: 20px 0 24px; }
+.progress li { counter-increment: step; position: relative; flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px; font-size: 13px; font-weight: 500; color: var(--ds-muted); }
+.progress li::before { content: counter(step); position: relative; z-index: 1; display: grid; place-items: center; width: 28px; height: 28px; border: 1.5px solid var(--ds-control-border); border-radius: 50%; background: var(--ds-canvas); color: var(--ds-muted); font-size: 13px; font-weight: 700; transition: background-color .2s, border-color .2s, color .2s; }
+.progress li::after { content: ""; position: absolute; top: 13px; left: calc(50% + 20px); right: calc(-50% + 20px); height: 1.5px; background: var(--ds-control-border); transition: background-color .2s; }
+.progress li:last-child::after { display: none; }
+.progress li:first-child { align-items: flex-start; }
+.progress li:last-child { align-items: flex-end; }
+.progress li:first-child::after { left: 36px; right: calc(-50% + 20px); }
+.progress li:nth-child(2)::after { left: calc(50% + 20px); right: calc(-100% + 36px); }
+.progress .on { color: var(--ds-ink); font-weight: 700; }
+.progress .on::before { border-color: var(--ds-ink); background: var(--ds-ink); color: var(--ds-on-ink); }
+.progress .done { color: var(--ds-ink); }
+.progress .done::before { content: "✓"; border-color: var(--ds-brand); background: var(--ds-brand); color: var(--ds-on-brand); }
+.progress .done::after { background: var(--ds-ink); }
+
+.options { display: grid; grid-template-columns: 1fr 1fr; gap: var(--ds-s-sm); }
+.opt { display: flex; flex-direction: column; gap: 2px; padding: var(--ds-s-base); border: 1px solid var(--ds-control-border); border-radius: var(--ds-r-control); background: var(--ds-canvas); text-align: left; }
+.opt b { font-size: 15px; }
+.opt small { font-size: 13px; color: var(--ds-muted); }
+.opt:hover { border-color: var(--ds-ink); }
+.opt:focus-visible { outline: 2px solid var(--ds-ink); outline-offset: 2px; }
+.active { border-color: var(--ds-ink); background: var(--ds-panel); }
+
+.guestInput { display: flex; align-items: center; gap: 8px; margin: var(--ds-s-md) 0 var(--ds-s-base); font-size: 14px; color: var(--ds-muted); }
+.guestInput input { width: 90px; height: 36px; padding: 0 10px; border: 1px solid var(--ds-control-border); border-radius: var(--ds-r-control); text-align: right; font-variant-numeric: tabular-nums; }
+.guestInput input:focus-visible { outline: 2px solid var(--ds-ink); outline-offset: 1px; }
+.result { padding: 18px; border-radius: var(--ds-r-control); background: var(--ds-panel); }
+.result small { font-size: 13px; color: var(--ds-muted); }
+.result strong { display: block; margin: 2px 0 10px; font-size: 28px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.result ul { margin-bottom: 10px; }
+.result li { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid var(--ds-hairline); font-size: 14px; font-variant-numeric: tabular-nums; }
+.result p { font-size: 13px; color: var(--ds-muted); }
+.actions { display: flex; justify-content: space-between; margin-top: var(--ds-s-lg); }
+
+@media (max-width: 760px) {
+  .options { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .progress li::before, .progress li::after { transition: none; }
+}

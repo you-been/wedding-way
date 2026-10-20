@@ -46,22 +46,22 @@ export const BASIC_ITEMS = [
 export const SHOOT_IDS = ['studio', 'outdoor']; // 둘 중 하나만
 
 /* ---------- 예산 항목 (결심 기준표 항목). 모두 뺄 수 있음 ---------- */
-// 차트 색은 항목 구분용 데이터 색 (UI 포인트 색과 별개)
+// 차트 색은 항목 구분용 데이터 색 (DESIGN.md color.chart-*, UI 포인트 색과 별개)
 export const BUDGET_CATALOG: { id: string; name: string; color: string; subs?: { id: string; name: string; share: number; optional?: boolean }[] }[] = [
-  { id: 'hall', name: '예식장 · 식대', color: '#ff7aa2' },
-  { id: 'sdm', name: '스드메', color: '#212224', subs: [
+  { id: 'hall', name: '예식장 · 식대', color: 'var(--ds-chart-hall)' },
+  { id: 'sdm', name: '스드메', color: 'var(--ds-ink)', subs: [
     { id: 'studio', name: '스튜디오', share: 0.40 },
     { id: 'outdoor', name: '야외스냅', share: 0.40, optional: true }, // 스튜디오 대신 고를 때만
     { id: 'dress', name: '드레스', share: 0.35 },
     { id: 'makeup', name: '메이크업', share: 0.25 },
   ] },
-  { id: 'jewelry', name: '예물', color: '#6c8cff' },
-  { id: 'suit', name: '예복', color: '#5fc4a0' },
-  { id: 'honeymoon', name: '신혼여행', color: '#f5b83d' },
-  { id: 'etc', name: '기타 준비 비용', color: '#c8cad2' },
+  { id: 'jewelry', name: '예물', color: 'var(--ds-chart-jewelry)' },
+  { id: 'suit', name: '예복', color: 'var(--ds-chart-suit)' },
+  { id: 'honeymoon', name: '신혼여행', color: 'var(--ds-chart-honeymoon)' },
+  { id: 'etc', name: '기타 준비 비용', color: 'var(--ds-control-border)' },
 ];
-const CUSTOM_COLORS = ['#9c8cf0', '#ffb38a', '#7fb8e6', '#d9a0e0', '#8fd18f'];
-const OVERFLOW_COLOR = '#c2453d';
+const CUSTOM_COLORS = [1, 2, 3, 4, 5].map((n) => `var(--ds-chart-custom-${n})`);
+const OVERFLOW_COLOR = 'var(--ds-chart-over)';
 
 /* 결심 기준표 — 항목별 [가성비형, 표준형, 고급형]의 [최소, 최대] */
 type Ranges = [number, number][];

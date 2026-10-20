@@ -4,7 +4,7 @@
 
 /* 데스크톱: 왼쪽 사진 · 탭, 오른쪽 정보 카드 / 모바일: 사진 → 정보 카드 → 탭 */
 .layout { display: grid; grid-template-columns: 1fr 360px; grid-template-areas: "gallery side" "main side"; gap: 0 var(--ds-s-xxl); align-items: start; }
-.gallery { grid-area: gallery; display: grid; grid-template-columns: 2fr 1fr 1fr; grid-template-rows: 180px 180px; gap: var(--ds-s-sm); margin-bottom: var(--ds-s-xl); }
+.gallery { grid-area: gallery; display: grid; grid-template-columns: 2fr 1fr 1fr; grid-template-rows: 180px 180px; gap: var(--ds-s-sm); margin-bottom: var(--ds-s-sm); }
 .side { grid-area: side; position: sticky; top: calc(var(--ds-gnb-h) + var(--ds-s-base)); }
 .main { grid-area: main; min-width: 0; }
 

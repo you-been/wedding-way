@@ -37,8 +37,6 @@
 .proofBanner { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-top: var(--ds-s-base); }
 .proofBanner p { margin-top: 2px; font-size: 14px; color: var(--ds-muted); }
 
-.tabs { margin: var(--ds-s-xl) 0; overflow-x: auto; scrollbar-width: none; }
-.tabs::-webkit-scrollbar { display: none; }
 .count { display: inline-grid; place-items: center; min-width: 20px; height: 20px; margin-left: 4px; padding: 0 6px; border-radius: var(--ds-r-chip); background: var(--ds-brand); color: var(--ds-on-brand); font-size: 12px; font-weight: 700; }
 .more { display: inline-flex; align-items: center; gap: 4px; font-size: 14px; font-weight: 500; white-space: nowrap; }
 .more svg { width: 16px; height: 16px; }
@@ -49,7 +47,7 @@
 .grid > * { min-width: 0; }
 .inqList li + li { border-top: 1px solid var(--ds-hairline); }
 .inqList button { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: var(--ds-s-sm); width: 100%; padding: var(--ds-s-md) 0; font-size: 14px; text-align: left; }
-.inqList span { overflow: hidden; color: var(--ds-muted); white-space: nowrap; text-overflow: ellipsis; }
+.inqText { overflow: hidden; color: var(--ds-muted); white-space: nowrap; text-overflow: ellipsis; }
 .inqList button:hover b { text-decoration: underline; text-underline-offset: 3px; }
 
 /* ② 업체 정보: 왼쪽 폼, 오른쪽 미리보기 */
@@ -129,9 +127,11 @@
   .stat strong { font-size: 18px; }
   .sideCard { padding: var(--ds-s-lg); box-shadow: 4px 4px 0 var(--ds-ink); }
   .proofBanner { flex-direction: column; align-items: stretch; }
-  .tabs { margin: var(--ds-s-lg) -16px; padding: 0 16px; }
   .row { grid-template-columns: 1fr; gap: 0; }
   .inq { padding: var(--ds-s-base); }
+  .inqList button { grid-template-columns: 1fr auto; row-gap: 4px; }
+  .inqText { grid-column: 1 / -1; grid-row: 2; }
+  .inqList button > :last-child { grid-column: 2; grid-row: 1; justify-self: end; }
   .schedHead p { width: 100%; margin-left: 0; }
   .acc > div { grid-template-columns: 1fr; gap: 4px; }
 }

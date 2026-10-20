@@ -174,6 +174,7 @@ button.weddingMark:hover { background: var(--ds-brand-hover); }
   .ddayCard { padding: var(--ds-s-lg); box-shadow: 4px 4px 0 var(--ds-ink); }
   .dday { font-size: 44px; }
   .couple { flex-wrap: wrap; }
+  .coupleBtn { justify-content: center; width: 100%; margin-left: 0; }
   .tlTitle h2, .sectionHead h2 { font-size: 20px; }
   .cell { min-height: 58px; padding: 4px; }
   .calChip, .weddingMark { padding: 2px 4px; font-size: 10px; }

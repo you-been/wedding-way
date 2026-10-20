@@ -13,11 +13,12 @@ interface Props<T extends string> {
   onChange: (v: T) => void;
   label: string;
   stretch?: boolean; // 모바일에서 탭을 같은 폭으로
+  fill?: boolean; // 모든 화면에서 탭을 같은 폭으로 (로그인 계정 유형)
 }
 
-export default function Tabs<T extends string>({ items, value, onChange, label, stretch }: Props<T>) {
+export default function Tabs<T extends string>({ items, value, onChange, label, stretch, fill }: Props<T>) {
   return (
-    <div className={`${styles.tabs} ${stretch ? styles.stretch : ''}`} role="tablist" aria-label={label}>
+    <div className={`${styles.tabs} ${stretch ? styles.stretch : ''} ${fill ? styles.fill : ''}`} role="tablist" aria-label={label}>
       {items.map((it) => (
         <button
           key={it.value}

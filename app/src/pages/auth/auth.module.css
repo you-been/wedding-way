@@ -1,5 +1,5 @@
 /* 로그인 · 회원가입 공통 */
-.wrap { max-width: calc(440px + 48px); }
+.wrap { max-width: 620px; } /* 원본과 같은 폭 (안쪽 572px) */
 .head { padding: 56px 0 var(--ds-s-xxl); text-align: center; }
 .headLeft { padding-top: var(--ds-s-base); text-align: left; }
 .logo { justify-content: center; margin-bottom: var(--ds-s-xl); font-size: 22px; }
@@ -11,10 +11,11 @@
 .back:hover { color: var(--ds-ink); }
 
 .panel { margin-bottom: var(--ds-s-base); }
-.lead { margin-bottom: var(--ds-s-base); font-size: 16px; font-weight: 700; }
+.lead { margin-bottom: var(--ds-s-base); font-size: 16px; font-weight: 700; text-align: center; }
+.center { text-align: center; }
 .current { margin-bottom: var(--ds-s-base); padding: var(--ds-s-base); border-radius: var(--ds-r-control); background: var(--ds-panel); font-size: 14px; }
 .note { margin-top: var(--ds-s-base); font-size: 13px; color: var(--ds-muted); }
-.demo { display: inline-block; margin-top: var(--ds-s-md); font-size: 14px; text-decoration: underline; text-underline-offset: 3px; }
+.demo { display: block; margin: var(--ds-s-md) auto 0; font-size: 14px; text-decoration: underline; text-underline-offset: 3px; }
 .links { display: flex; justify-content: space-between; margin-top: var(--ds-s-lg); font-size: 14px; color: var(--ds-muted); }
 .links button:hover { color: var(--ds-ink); }
 .links a { color: var(--ds-ink); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
@@ -26,8 +27,8 @@
 .snsBtn { position: relative; display: flex; align-items: center; justify-content: center; height: 52px; border-radius: var(--ds-r-cta); font-size: 16px; font-weight: 500; }
 .snsBtn b { position: absolute; left: var(--ds-s-lg); font-weight: 800; }
 .snsBtn:focus-visible { outline: 2px solid var(--ds-ink); outline-offset: 2px; }
-.kakao { background: var(--ds-kakao); color: #191919; }
-.naver { background: #03c75a; color: #fff; }
+.kakao { background: var(--ds-kakao); color: var(--ds-on-kakao); }
+.naver { background: var(--ds-naver); color: #fff; }
 .google { border: 1px solid var(--ds-control-border); background: var(--ds-canvas); }
 .kakao:hover, .naver:hover { filter: brightness(.96); }
 .google:hover { border-color: var(--ds-ink); }

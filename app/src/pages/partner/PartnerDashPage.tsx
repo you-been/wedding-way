@@ -166,15 +166,13 @@ export default function PartnerDashPage() {
           </Panel>
         )}
 
-        <div className={styles.tabs}>
-          <Tabs label="내 업체" value={tab} onChange={go} items={[
+        <Tabs label="내 업체" value={tab} onChange={go} items={[
             { value: 'home', label: '대시보드' },
             { value: 'profile', label: '업체 정보' },
             { value: 'inquiry', label: <>문의 {newCount > 0 && <span className={styles.count}>{newCount}</span>}</> },
             { value: 'schedule', label: '일정' },
             { value: 'account', label: '계정' },
           ]} />
-        </div>
 
         {tab === 'home' && (
           <div className={styles.grid}>
@@ -182,7 +180,7 @@ export default function PartnerDashPage() {
               <ul className={styles.inqList}>
                 {inquiries.map((q) => (
                   <li key={q.id}><button type="button" onClick={() => openInquiry(q.id, q.status === 'new')}>
-                    <b>{q.who}</b><span>{q.text}</span><Tag tone={q.status === 'new' ? 'brand' : 'default'}>{q.status === 'new' ? 'NEW' : '답변 완료'}</Tag>
+                    <b>{q.who}</b><span className={styles.inqText}>{q.text}</span><Tag tone={q.status === 'new' ? 'brand' : 'default'}>{q.status === 'new' ? 'NEW' : '답변 완료'}</Tag>
                   </button></li>
                 ))}
               </ul>

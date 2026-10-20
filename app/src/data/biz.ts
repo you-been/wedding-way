@@ -63,5 +63,5 @@ export const bizPriceText = (p: BizProfile) => (p.priceMode === 'range' && p.pri
 export const profileToVendor = (p: BizProfile, name: string): Vendor => ({
   ...VENDORS[0], id: 0, photo: p.photos[0], name, cat: p.cat,
   region: p.region || '지역 미입력', type: p.type || '유형 미입력', price: bizPriceText(p), moods: p.moods,
-  insta: !!p.insta, intro: p.intro.trim().length >= 10,
+  insta: !!p.insta, handle: p.insta || undefined, intro: p.intro.trim().length >= 10,
 });

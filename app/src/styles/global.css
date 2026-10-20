@@ -18,8 +18,26 @@
   --ds-brand-soft: #fff1f5;
   --ds-on-brand: #212224;
   --ds-on-ink: #ffffff;
-  --ds-kakao: #fee500;
   --ds-placeholder: #9a9ba7; /* 입력칸 안내 글씨 (크몽 값) */
+  /* SNS 브랜드 색 (각 플랫폼 가이드 유지) */
+  --ds-kakao: #fee500;
+  --ds-on-kakao: #191919;
+  --ds-naver: #03c75a;
+  /* 첫 방문 갈림길 배경 */
+  --ds-splash-blush: #f6e1e6;
+  --ds-splash-lilac: #ece6f5;
+  --ds-splash-base: #faf7f4;
+  /* 예산 차트 데이터 색 (버튼 · 글자 · 강조에는 쓰지 않음) */
+  --ds-chart-hall: #ff7aa2;
+  --ds-chart-jewelry: #6c8cff;
+  --ds-chart-suit: #5fc4a0;
+  --ds-chart-honeymoon: #f5b83d;
+  --ds-chart-over: #c2453d;
+  --ds-chart-custom-1: #9c8cf0;
+  --ds-chart-custom-2: #ffb38a;
+  --ds-chart-custom-3: #7fb8e6;
+  --ds-chart-custom-4: #d9a0e0;
+  --ds-chart-custom-5: #8fd18f;
   /* 그림 카드 배경 (예비부부 화면) */
   --ds-illust-pink: #ffe1ea;
   --ds-illust-lilac: #e9e2ff;

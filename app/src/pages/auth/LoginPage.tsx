@@ -57,7 +57,7 @@ export default function LoginPage() {
           </p>
         )}
 
-        <Tabs label="계정 유형" stretch value={type} onChange={(t) => { setType(t); setError(''); }} items={[
+        <Tabs label="계정 유형" fill value={type} onChange={(t) => { setType(t); setError(''); }} items={[
           { value: 'user', label: <><Heart />예비부부</> },
           { value: 'biz', label: <><Store />웨딩 업체</> },
         ]} />
@@ -72,7 +72,7 @@ export default function LoginPage() {
                 </button>
               ))}
             </div>
-            <p className={styles.note}>처음이면 간단한 추가 정보 입력 후 가입이 완료돼요.</p>
+            <p className={`${styles.note} ${styles.center}`}>처음이면 간단한 추가 정보 입력 후 가입이 완료돼요.</p>
             <button type="button" className={styles.demo} onClick={() => finish(DEMO_USER, `${DEMO_USER.nick} 님, 다시 만나 반가워요`, PATHS.mypage)}>
               프로토타입: 가입된 회원(민지)으로 바로 로그인 →
             </button>

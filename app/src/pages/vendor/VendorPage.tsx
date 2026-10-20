@@ -83,7 +83,7 @@ function VendorDetail({ v }: { v: Vendor }) {
                 </Button>
                 <Button variant="ghost" onClick={() => toast('예산 진단에 추가했어요')}><Plus />예산에 담기</Button>
               </div>
-              {v.insta && <button className={styles.insta} onClick={() => toast('인스타그램으로 이동 (프로토타입)')}><AtSign />{v.name.replace(/\s/g, '').toLowerCase()}</button>}
+              {v.insta && <button className={styles.insta} onClick={() => toast('인스타그램으로 이동 (프로토타입)')}><AtSign />{v.handle ?? 'instagram'}</button>}
               {reasons.length > 0 && (
                 <div className={styles.why}>
                   <small>이 업체를 추천한 이유</small>

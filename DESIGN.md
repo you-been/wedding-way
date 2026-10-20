@@ -64,6 +64,16 @@
 - **color.brand-hover**: `#ff8fb1` — 결심 디테일 — 핑크 버튼 hover
 - **color.brand-soft**: `#fff1f5` — 결심 디테일 — 옅은 핑크 면: 마지막 CTA 띠 · 추천 이유 칩
 - **color.canvas**: `#ffffff` — 크몽 값 — 페이지 · 카드 배경
+- **color.chart-custom-1**: `#9c8cf0` — 결심 디테일 — 예산 차트 데이터 색: 직접 추가 항목 1
+- **color.chart-custom-2**: `#ffb38a` — 결심 디테일 — 예산 차트 데이터 색: 직접 추가 항목 2
+- **color.chart-custom-3**: `#7fb8e6` — 결심 디테일 — 예산 차트 데이터 색: 직접 추가 항목 3
+- **color.chart-custom-4**: `#d9a0e0` — 결심 디테일 — 예산 차트 데이터 색: 직접 추가 항목 4
+- **color.chart-custom-5**: `#8fd18f` — 결심 디테일 — 예산 차트 데이터 색: 직접 추가 항목 5
+- **color.chart-hall**: `#ff7aa2` — 결심 디테일 — 예산 차트 데이터 색: 예식장 · 식대
+- **color.chart-honeymoon**: `#f5b83d` — 결심 디테일 — 예산 차트 데이터 색: 신혼여행
+- **color.chart-jewelry**: `#6c8cff` — 결심 디테일 — 예산 차트 데이터 색: 예물
+- **color.chart-over**: `#c2453d` — 결심 디테일 — 예산 차트 데이터 색: 위시리스트 부족분
+- **color.chart-suit**: `#5fc4a0` — 결심 디테일 — 예산 차트 데이터 색: 예복
 - **color.control-border**: `#c8cad2` — 크몽 값 — 입력칸 · 선택 컨트롤 테두리
 - **color.hairline**: `#f2f3f7` — 크몽 값 — 구분선 · 회색 칩 배경 · 태그 배경
 - **color.illust-lilac**: `#e9e2ff` — 결심 디테일 — 그림 카드 배경 (예비부부 화면)
@@ -73,11 +83,17 @@
 - **color.ink-hover**: `#000000` — 결심 디테일 — 잉크 버튼 hover
 - **color.kakao**: `#fee500` — 외부 브랜드 색 — 카카오 로그인 · 카카오톡 공유 버튼 배경 (브랜드 가이드 유지)
 - **color.muted**: `#555969` — 크몽 값 — 보조 설명 텍스트
+- **color.naver**: `#03c75a` — 외부 브랜드 색 — 네이버 로그인 버튼 배경, 글씨는 흰색 (브랜드 가이드 유지)
 - **color.on-biz-brand**: `#ffffff` — 결심 디테일 — 업체 포인트 색 위 글씨 (흰색)
 - **color.on-brand**: `#212224` — 크몽 값 — 핑크 위 텍스트
 - **color.on-ink**: `#ffffff` — 크몽 값 — 잉크 위 텍스트
+- **color.on-kakao**: `#191919` — 외부 브랜드 색 — 카카오 버튼 위 글씨 (브랜드 가이드 유지)
 - **color.panel**: `#fafafc` — 크몽 값 — 카테고리 아이콘 타일 · 푸터 · 읽기 전용 입력 배경
 - **color.panel-border**: `#e4e5ed` — 크몽 값 — 패널 · 카드 · 헤더 테두리
+- **color.placeholder**: `#9a9ba7` — 크몽 값 (gray-500 · 페이지네이션 글씨) — 입력칸 안내 글씨. 본문 글씨로는 쓰지 않음
+- **color.splash-base**: `#faf7f4` — 결심 디테일 — 첫 방문 갈림길 배경 바탕
+- **color.splash-blush**: `#f6e1e6` — 결심 디테일 — 첫 방문 갈림길 배경 그라데이션 (왼쪽 위)
+- **color.splash-lilac**: `#ece6f5` — 결심 디테일 — 첫 방문 갈림길 배경 그라데이션 (오른쪽 아래)
 - **color.subtle**: `#6b6e7d` — 결심 디테일 (크몽 푸터 링크 #727585와 다른 값) — 푸터 링크 · 보조 아이콘
 - **radius.bar**: `2px` — 결심 디테일 — 6px 높이 진행률 · 금액 막대 (홈 예산 예시, 타임라인 진행률, 예산 사용 현황)
 - **radius.chip**: `9999px` — 크몽 값 — 칩 · 원형 버튼
@@ -109,6 +125,7 @@
 - color.on-ink on color.ink: minimum 4.5:1
 - color.ink on color.hairline: minimum 4.5:1
 - color.on-biz-brand on color.biz-brand: minimum 4.5:1
+- color.on-kakao on color.kakao: minimum 4.5:1
 
 ### Reduced motion
 
@@ -133,6 +150,10 @@ Required.
 - 그림 카드 배경은 예비부부 화면은 illust-pink · lilac · mint, 업체 화면은 biz-illust-rose · apricot · sage · sand를 쓴다
 
 - SNS 로그인 · 공유 버튼(카카오 · 네이버 · 구글)은 각 플랫폼 브랜드 색을 그대로 쓴다
+
+- 예산 차트(도넛 · 범례)는 항목 구분용 color.chart-* 데이터 색을 쓰고, 스드메는 color.ink, 기타 준비 비용은 color.control-border를 쓴다. 차트 색은 버튼 · 글자 · 강조 표현에 쓰지 않는다
+
+- 첫 방문 갈림길 배경만 color.splash-* 세 가지로 만든 옅은 그라데이션을 쓴다 (사진 없음 플레이스홀더에는 쓰지 않음)
 <!-- design-md:claim-end -->
 
 <!-- design-md:section typography-assets -->
@@ -156,7 +177,7 @@ Required.
 | Asset | Kind | Source status | License status | Source | Notes |
 |---|---|---|---|---|---|
 | pretendard | font | licensed-sourced | verified | jsDelivr orioncactus/pretendard@v1.3.9 (SIL Open Font License 1.1) |  |
-| lucide | icon | licensed-sourced | verified | unpkg lucide@0.468.0 (ISC License) | data-lucide 속성으로 렌더하고, 동적으로 그린 뒤에는 drawIcons()를 호출한다 |
+| lucide | icon | licensed-sourced | verified | npm lucide-react@1.59.0 (앱) · unpkg lucide@0.468.0 (원본 프로토타입) (ISC License) | React 앱은 lucide-react 컴포넌트로 렌더한다 (1.x에는 Instagram 같은 브랜드 아이콘이 없어 AtSign으로 대신). 원본 프로토타입은 data-lucide 속성 + drawIcons() |
 
 ### Rules
 
@@ -346,8 +367,9 @@ Required.
 
 ### Platform: web
 
-- 정적 HTML · CSS · JS 프로토타입이며 빌드 단계가 없다
-- 해시 라우팅(#home, #directory 등)으로 화면을 전환한다
+- 서비스 앱은 app/ 폴더의 React 19 + TypeScript (Vite 빌드 · CSS Modules · Zustand 상태 관리)다
+- 일반 주소(/directory, /vendors/:id, /partner/dashboard 등)로 화면을 전환하고, 회원 전용 화면은 계정 유형이 맞지 않으면 로그인으로 보낸다
+- 저장소 루트의 정적 HTML · CSS · JS 프로토타입(해시 라우팅)은 비교용 원본으로 남겨 둔다
 
 <!-- design-md:section content-locales -->
 ## 6. Content & Locales
@@ -418,7 +440,7 @@ Record, review, and validate changes before adoption.
 
 - 크몽 값과 다르게 쓰려면 이 문서의 해당 값 설명에 '결심 디테일'과 이유를 함께 적는다
 
-- 토큰 값을 바꾸면 css/style.css의 :root --ds-* 변수와 이 문서를 함께 바꾼다
+- 토큰 값을 바꾸면 app/src/styles/global.css의 :root --ds-* 변수(업체 화면은 .biz-theme), 원본 프로토타입의 css/style.css, 이 문서를 함께 바꾼다
 
 - 예전 스타일 화면(새내기 가이드 · 온보딩 · 진단 리포트 · 업체 상세 · 실후기 · 내 웨딩 · 업체 가입 · 업체 대시보드)은 순차적으로 --ds-* 토큰으로 전환한다
 

@@ -249,9 +249,140 @@
       ],
       "path": "/typography_assets/roles/3",
       "source_class": "prompt-fact"
+    },
+    {
+      "evidence": [
+        "app/src/styles/global.css",
+        ".claude/data/references/kmong/DESIGN.md"
+      ],
+      "path": "foundations.tokens.color.placeholder",
+      "source_class": "repository-fact"
+    },
+    {
+      "evidence": [
+        "app/src/pages/auth/auth.module.css"
+      ],
+      "path": "foundations.tokens.color.on-kakao",
+      "source_class": "repository-fact"
+    },
+    {
+      "evidence": [
+        "app/src/pages/auth/auth.module.css"
+      ],
+      "path": "foundations.tokens.color.naver",
+      "source_class": "repository-fact"
+    },
+    {
+      "evidence": [
+        "app/src/pages/welcome/WelcomePage.module.css"
+      ],
+      "path": "foundations.tokens.color.splash-blush",
+      "source_class": "repository-fact"
+    },
+    {
+      "evidence": [
+        "app/src/pages/welcome/WelcomePage.module.css"
+      ],
+      "path": "foundations.tokens.color.splash-lilac",
+      "source_class": "repository-fact"
+    },
+    {
+      "evidence": [
+        "app/src/pages/welcome/WelcomePage.module.css"
+      ],
+      "path": "foundations.tokens.color.splash-base",
+      "source_class": "repository-fact"
+    },
+    {
+      "evidence": [
+        "app/src/data/budget.ts",
+        "js/app.js"
+      ],
+      "path": "foundations.tokens.color.chart-hall",
+      "source_class": "repository-fact"
+    },
+    {
+      "evidence": [
+        "app/src/data/budget.ts",
+        "js/app.js"
+      ],
+      "path": "foundations.tokens.color.chart-jewelry",
+      "source_class": "repository-fact"
+    },
+    {
+      "evidence": [
+        "app/src/data/budget.ts",
+        "js/app.js"
+      ],
+      "path": "foundations.tokens.color.chart-suit",
+      "source_class": "repository-fact"
+    },
+    {
+      "evidence": [
+        "app/src/data/budget.ts",
+        "js/app.js"
+      ],
+      "path": "foundations.tokens.color.chart-honeymoon",
+      "source_class": "repository-fact"
+    },
+    {
+      "evidence": [
+        "app/src/data/budget.ts",
+        "js/app.js"
+      ],
+      "path": "foundations.tokens.color.chart-over",
+      "source_class": "repository-fact"
+    },
+    {
+      "evidence": [
+        "app/src/data/budget.ts",
+        "js/app.js"
+      ],
+      "path": "foundations.tokens.color.chart-custom-1",
+      "source_class": "repository-fact"
+    },
+    {
+      "evidence": [
+        "app/src/data/budget.ts",
+        "js/app.js"
+      ],
+      "path": "foundations.tokens.color.chart-custom-2",
+      "source_class": "repository-fact"
+    },
+    {
+      "evidence": [
+        "app/src/data/budget.ts",
+        "js/app.js"
+      ],
+      "path": "foundations.tokens.color.chart-custom-3",
+      "source_class": "repository-fact"
+    },
+    {
+      "evidence": [
+        "app/src/data/budget.ts",
+        "js/app.js"
+      ],
+      "path": "foundations.tokens.color.chart-custom-4",
+      "source_class": "repository-fact"
+    },
+    {
+      "evidence": [
+        "app/src/data/budget.ts",
+        "js/app.js"
+      ],
+      "path": "foundations.tokens.color.chart-custom-5",
+      "source_class": "repository-fact"
+    },
+    {
+      "evidence": [
+        "app/package.json",
+        "app/src/routes.ts"
+      ],
+      "path": "/layout_platforms/platforms/0/rules",
+      "source_class": "repository-fact"
     }
   ],
-  "design_md_sha256": "b0c3b28af985a5455bd29bea79860406b766e26a1856b7da0d8e3c0aaf14471c",
-  "graph_sha256": "c811589ac96d19eb7758002dfe981e7dba3e44abf9883475304b0fca62364e7e",
+  "design_md_sha256": "0759be04d697d46f44c0f523e2f4c90bdcf2d60eb8cab1fb7a8f08df1239858b",
+  "graph_sha256": "07b93ca2fdf7f80781b5a7b60077c5be16145575005a7d99f31bd41cc4230c3a",
   "schema_version": "2.0.0"
 }

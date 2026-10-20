@@ -8,8 +8,9 @@ import VendorCard from '../../components/vendor/VendorCard';
 import { ALL_CATEGORY, CATEGORIES } from '../../data/categories';
 import { getVendors } from '../../data/api';
 import { priceNumber, vendorScore } from '../../data/recommend';
-import type { Tier, Vendor } from '../../data/vendors';
+import { TIER_ORDER, type Tier, type Vendor } from '../../data/vendors';
 import { useColumns } from '../../hooks/useColumns';
+import { useMyTier } from '../../stores/budgetStore';
 import { usePrefStore } from '../../stores/prefStore';
 import styles from './DirectoryPage.module.css';
 
@@ -32,7 +33,9 @@ export default function DirectoryPage() {
   const moods = usePrefStore((s) => s.moods);
   const [query, setQuery] = useState('');
   const [submitted, setSubmitted] = useState('');
-  const [tiers, setTiers] = useState<Tier[]>(['가성비', '표준']);
+  const myTier = useMyTier();
+  // 처음엔 예산 진단 결과의 '예산 범위 안' 가격대만 (표준이면 가성비 · 표준)
+  const [tiers, setTiers] = useState<Tier[]>(() => TIER_ORDER.slice(0, TIER_ORDER.indexOf(myTier) + 1));
   const [regions, setRegions] = useState<string[]>([]);
   const [options, setOptions] = useState<string[]>([]);
   const [sort, setSort] = useState<Sort>('취향 맞춤순');

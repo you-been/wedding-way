@@ -1,0 +1,9 @@
+.wrap { max-width: calc(820px + 48px); }
+.filters { margin-bottom: var(--ds-s-xl); }
+.list { display: grid; gap: var(--ds-s-base); }
+.empty { padding: 48px 0; text-align: center; font-size: 14px; color: var(--ds-muted); }
+
+@media (max-width: 760px) {
+  .write { width: 100%; }
+  .filters { margin-bottom: var(--ds-s-lg); }
+}

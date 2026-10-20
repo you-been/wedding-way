@@ -1,0 +1,52 @@
+.top { display: flex; justify-content: space-between; align-items: center; padding: var(--ds-s-xxl) 0 var(--ds-s-lg); }
+.dots { display: flex; gap: 6px; }
+.dots i { width: 8px; height: 6px; border-radius: var(--ds-r-bar); background: var(--ds-control-border); transition: width .25s, background-color .25s; }
+.dots i.on { width: 24px; background: var(--ds-ink); }
+.skip { font-size: 14px; color: var(--ds-muted); text-decoration: underline; text-underline-offset: 3px; }
+.skip:hover { color: var(--ds-ink); }
+
+.card { min-height: 440px; padding: var(--ds-s-xxl) var(--ds-s-xl); border: 1px solid var(--ds-panel-border); border-radius: var(--ds-r-panel); }
+.kicker { display: inline-flex; align-items: center; height: 28px; margin-bottom: var(--ds-s-md); padding: 0 10px; border-radius: var(--ds-r-cta); background: var(--ds-brand); color: var(--ds-on-brand); font-size: 13px; font-weight: 700; }
+.card h2 { margin-bottom: var(--ds-s-sm); font-size: 28px; font-weight: 700; line-height: 1.3; letter-spacing: -.02em; }
+.lead { margin-bottom: var(--ds-s-xl); font-size: 16px; color: var(--ds-muted); }
+
+/* 1: 6단계 */
+.phases { position: relative; padding-left: 36px; }
+.phases::before { content: ""; position: absolute; top: 12px; bottom: 12px; left: 13px; width: 2px; background: var(--ds-panel-border); }
+.phases li { position: relative; display: flex; flex-direction: column; padding: 9px 0; }
+.phases li span { position: absolute; top: 10px; left: -36px; display: grid; place-items: center; width: 28px; height: 28px; border: 1.5px solid var(--ds-ink); border-radius: 50%; background: var(--ds-canvas); font-size: 13px; font-weight: 700; }
+.phases li span.now { background: var(--ds-brand); }
+.phases em { font-size: 13px; font-style: normal; color: var(--ds-muted); font-variant-numeric: tabular-nums; }
+.phases b { font-size: 16px; }
+
+/* 2: 첫 할 일 */
+.first { display: grid; gap: var(--ds-s-sm); }
+.first > div { display: grid; grid-template-columns: 40px 1fr; column-gap: 14px; padding: var(--ds-s-base); border-radius: var(--ds-r-control); background: var(--ds-panel); }
+.first span { grid-row: span 2; display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; background: var(--ds-ink); color: var(--ds-on-ink); font-weight: 700; }
+.first b { font-size: 16px; }
+.first p { font-size: 14px; color: var(--ds-muted); }
+
+/* 3: 준비 방식 */
+.methods { display: grid; grid-template-columns: 1fr 1fr; gap: var(--ds-s-sm); }
+.methods > div { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; padding: var(--ds-s-base); border: 1px solid var(--ds-panel-border); border-radius: var(--ds-r-control); }
+.methods b { font-size: 16px; }
+.methods p { flex: 1; font-size: 14px; color: var(--ds-muted); }
+.methods > div > span { margin-top: 6px; }
+
+/* 4: 마지막 */
+.final { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; min-height: 376px; text-align: center; }
+.finalIco { display: grid; place-items: center; width: 64px; height: 64px; margin-bottom: var(--ds-s-md); border-radius: 50%; background: var(--ds-brand); color: var(--ds-on-brand); }
+.finalIco svg { width: 30px; height: 30px; }
+.final .lead { max-width: 380px; }
+.finalBtn { width: 100%; max-width: 360px; }
+.later { margin-top: var(--ds-s-md); font-size: 14px; color: var(--ds-muted); text-decoration: underline; text-underline-offset: 3px; }
+
+@media (max-width: 760px) {
+  .top { padding: var(--ds-s-lg) 0 var(--ds-s-base); }
+  .card { min-height: 0; padding: var(--ds-s-xl) var(--ds-s-lg); }
+  .card h2 { font-size: 22px; }
+  .methods { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dots i { transition: none; }
+}

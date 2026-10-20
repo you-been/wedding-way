@@ -5,10 +5,30 @@ import { PATHS, SCREENS } from './routes';
 import FlowMapPage from './pages/FlowMapPage';
 import PlaceholderPage from './pages/PlaceholderPage';
 import UiKitPage from './pages/UiKitPage';
+import WelcomePage from './pages/welcome/WelcomePage';
+import GuidePage from './pages/guide/GuidePage';
+import OnboardingPage from './pages/onboarding/OnboardingPage';
+import ReviewsPage from './pages/reviews/ReviewsPage';
+import ReviewWritePage from './pages/reviews/ReviewWritePage';
+import DirectoryPage from './pages/directory/DirectoryPage';
+import VendorPage from './pages/vendor/VendorPage';
+import LoginPage from './pages/auth/LoginPage';
+import SignupUserPage from './pages/auth/SignupUserPage';
+import SignupBizPage from './pages/auth/SignupBizPage';
 
 // 옮긴 화면은 여기에 등록 (없으면 임시 화면)
 const PAGES: Record<string, React.ComponentType> = {
   [PATHS.flow]: FlowMapPage,
+  [PATHS.welcome]: WelcomePage,
+  [PATHS.guide]: GuidePage,
+  [PATHS.onboarding]: OnboardingPage,
+  [PATHS.reviews]: ReviewsPage,
+  [PATHS.reviewWrite]: ReviewWritePage,
+  [PATHS.directory]: DirectoryPage,
+  [PATHS.vendor]: VendorPage,
+  [PATHS.login]: LoginPage,
+  [PATHS.signup]: SignupUserPage,
+  [PATHS.signupBiz]: SignupBizPage,
 };
 
 const router = createBrowserRouter([

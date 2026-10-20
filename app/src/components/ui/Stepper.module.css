@@ -1,0 +1,8 @@
+.stepper { display: flex; align-items: center; gap: var(--ds-s-md); }
+.bar { flex: 1; height: 6px; overflow: hidden; border-radius: var(--ds-r-bar); background: var(--ds-hairline); }
+.bar i { display: block; height: 100%; border-radius: var(--ds-r-bar); background: var(--ds-ink); transition: width .3s; }
+.label { font-size: 14px; color: var(--ds-muted); font-variant-numeric: tabular-nums; }
+.label b { color: var(--ds-ink); }
+@media (prefers-reduced-motion: reduce) {
+  .bar i { transition: none; }
+}

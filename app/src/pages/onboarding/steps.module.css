@@ -1,0 +1,47 @@
+/* 단계형 화면 공통 (새내기 가이드 · 취향 진단 · 업체 소개 만들기) */
+.wrap { max-width: calc(620px + 48px); }
+.top { padding: var(--ds-s-xxl) 0 var(--ds-s-xl); }
+.stepTitle { margin-bottom: var(--ds-s-sm); font-size: 28px; font-weight: 700; line-height: 1.3; letter-spacing: -.02em; }
+.stepDesc { margin-bottom: var(--ds-s-xl); font-size: 16px; color: var(--ds-muted); }
+.actions { display: flex; gap: var(--ds-s-sm); margin-top: var(--ds-s-xxl); }
+.actions > :first-child { flex: 1; }
+.actions > :last-child { flex: 2; }
+.field { display: block; margin-bottom: var(--ds-s-lg); }
+.field > span { display: block; margin-bottom: var(--ds-s-sm); font-size: 14px; font-weight: 700; }
+.input { width: 100%; height: 52px; padding: 0 var(--ds-s-base); border: 1px solid var(--ds-control-border); border-radius: var(--ds-r-control); background: var(--ds-canvas); font-size: 16px; }
+.input:focus { outline: 2px solid var(--ds-ink); outline-offset: -1px; border-color: var(--ds-ink); }
+.hint { display: flex; align-items: flex-start; gap: var(--ds-s-sm); margin-top: var(--ds-s-base); padding: var(--ds-s-base); border-radius: var(--ds-r-control); background: var(--ds-panel); font-size: 14px; line-height: 1.6; }
+.hint svg { flex: none; width: 18px; height: 18px; margin-top: 2px; }
+.textLink { display: inline-flex; align-items: center; gap: 4px; margin-top: var(--ds-s-base); font-size: 14px; font-weight: 500; text-decoration: underline; text-underline-offset: 3px; }
+.textLink svg { width: 16px; height: 16px; }
+.step { animation: step-in .25s ease; }
+@keyframes step-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+/* 선택 카드 (준비 방식) */
+.options { display: grid; gap: var(--ds-s-sm); }
+.option { display: flex; flex-direction: column; gap: 2px; padding: var(--ds-s-base) var(--ds-s-lg); border: 1px solid var(--ds-control-border); border-radius: var(--ds-r-control); background: var(--ds-canvas); text-align: left; }
+.option:hover { border-color: var(--ds-ink); }
+.option b { font-size: 16px; }
+.option small { font-size: 14px; color: var(--ds-muted); }
+.optionOn { border-color: var(--ds-ink); background: var(--ds-panel); box-shadow: inset 0 0 0 1px var(--ds-ink); }
+.option:focus-visible { outline: 2px solid var(--ds-ink); outline-offset: 2px; }
+
+/* 무드 사진 카드 */
+.moods { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--ds-s-sm); }
+.mood { position: relative; display: flex; flex-direction: column; gap: var(--ds-s-sm); padding-bottom: var(--ds-s-sm); font-size: 14px; font-weight: 500; text-align: left; }
+.mood img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: var(--ds-r-control); outline: 2px solid transparent; outline-offset: -2px; transition: outline-color .15s; }
+.mood:hover img { outline-color: var(--ds-control-border); }
+.moodOn { font-weight: 700; }
+.moodOn img, .moodOn:hover img { outline: 3px solid var(--ds-ink); outline-offset: -3px; }
+.moodOn::after { content: ""; position: absolute; top: 8px; right: 8px; width: 24px; height: 24px; border-radius: 50%; background: var(--ds-ink) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' fill='none' stroke='%23fff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 7.5 6 10.5 11 4'/%3E%3C/svg%3E") no-repeat center; }
+.mood:focus-visible { outline: 2px solid var(--ds-ink); outline-offset: 2px; border-radius: var(--ds-r-control); }
+
+@media (max-width: 760px) {
+  .top { padding: var(--ds-s-lg) 0 var(--ds-s-base); }
+  .stepTitle { font-size: 22px; }
+  .moods { grid-template-columns: repeat(2, 1fr); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .step { animation: none; }
+  .mood img { transition: none; }
+}

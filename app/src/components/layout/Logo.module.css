@@ -1,0 +1,2 @@
+.logo { display: inline-flex; align-items: center; font-size: 20px; font-weight: 800; letter-spacing: -.02em; color: var(--ds-ink); white-space: nowrap; }
+.logo::before { content: ""; display: inline-block; width: 10px; height: 10px; margin-right: 6px; border-radius: 2px; background: #ffa3bf; } /* 로고 색은 화면과 상관없이 결심 핑크 */

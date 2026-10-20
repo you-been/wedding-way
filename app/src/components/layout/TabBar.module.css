@@ -1,0 +1,9 @@
+.tabbar { display: none; }
+
+@media (max-width: 760px) {
+  .tabbar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 55; display: flex; padding: 6px 0 calc(6px + env(safe-area-inset-bottom)); background: var(--ds-canvas); border-top: 1px solid var(--ds-panel-border); }
+  .tabbar a { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; color: var(--ds-subtle); }
+  .tabbar svg { width: 20px; height: 20px; }
+  .tabbar span { font-size: 11px; }
+  .tabbar a.active { color: var(--ds-ink); font-weight: 700; }
+}

@@ -1,0 +1,100 @@
+/* =========================================================
+   결심 디자인 토큰 (DESIGN.md 기준) · 전역 기본 스타일
+   컴포넌트 스타일은 각 컴포넌트의 *.module.css에 둔다
+   ========================================================= */
+:root {
+  /* 색 */
+  --ds-canvas: #ffffff;
+  --ds-ink: #212224;
+  --ds-ink-hover: #000000;
+  --ds-muted: #555969;
+  --ds-subtle: #6b6e7d;
+  --ds-hairline: #f2f3f7;
+  --ds-control-border: #c8cad2;
+  --ds-panel-border: #e4e5ed;
+  --ds-panel: #fafafc;
+  --ds-brand: #ffa3bf;
+  --ds-brand-hover: #ff8fb1;
+  --ds-brand-soft: #fff1f5;
+  --ds-on-brand: #212224;
+  --ds-on-ink: #ffffff;
+  --ds-kakao: #fee500;
+  /* 그림 카드 배경 (예비부부 화면) */
+  --ds-illust-pink: #ffe1ea;
+  --ds-illust-lilac: #e9e2ff;
+  --ds-illust-mint: #d9f3e6;
+  --ds-illust-sand: #fafafc;
+  /* 둥글기 */
+  --ds-r-bar: 2px;
+  --ds-r-cta: 4px;
+  --ds-r-control: 8px;
+  --ds-r-panel: 12px;
+  --ds-r-search: 24px;
+  --ds-r-chip: 9999px;
+  /* 크기 · 간격 */
+  --ds-wrap: 1168px;
+  --ds-gnb-h: 64px;
+  --ds-s-sm: 8px;
+  --ds-s-md: 12px;
+  --ds-s-base: 16px;
+  --ds-s-lg: 20px;
+  --ds-s-xl: 24px;
+  --ds-s-xxl: 32px;
+  --ds-section: 95px;
+  /* 그림자: 검색창과 강조 카드에만 */
+  --ds-shadow-search: rgba(0, 0, 0, .06) 0 0 8px 0;
+}
+
+/* 업체 화면: 포인트 색을 웜톤 로즈 브라운으로 (DESIGN.md color.biz-*) */
+.biz-theme {
+  --ds-brand: #b45a5e;
+  --ds-brand-hover: #a04e52;
+  --ds-brand-soft: #f8e9e7;
+  --ds-on-brand: #ffffff;
+  --ds-illust-pink: #f6e3e1;
+  --ds-illust-lilac: #f8e6d6;
+  --ds-illust-mint: #e7e9da;
+  --ds-illust-sand: #efe6dc;
+}
+
+@media (max-width: 760px) {
+  :root { --ds-section: 63px; }
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: "Pretendard", -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  background: var(--ds-canvas);
+  color: var(--ds-ink);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  word-break: keep-all;
+}
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+input, select, textarea { font: inherit; color: inherit; }
+ul, ol { list-style: none; }
+img { display: block; max-width: 100%; }
+[hidden] { display: none !important; }
+
+/* 콘텐츠 폭: 최대 1168px, 좌우 여백 24px (모바일 16px) */
+.wrap { max-width: calc(var(--ds-wrap) + 48px); margin: 0 auto; padding: 0 24px; }
+.section { padding-top: var(--ds-section); }
+@media (max-width: 760px) {
+  .wrap { padding: 0 16px; }
+}
+
+/* 숫자 정렬 */
+.num { font-variant-numeric: tabular-nums; }
+
+/* 화면 전환 */
+.page { animation: page-in .25s ease; padding-bottom: 80px; }
+@keyframes page-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+@media (max-width: 760px) {
+  .page { padding-bottom: var(--ds-s-xxl); }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .page { animation: none; }
+}

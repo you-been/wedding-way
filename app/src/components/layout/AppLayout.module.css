@@ -1,0 +1,7 @@
+/* 프로토타입 안내용: 화면 구성 · 플로우 보기 버튼 */
+.protoFab { position: fixed; right: 20px; bottom: 20px; z-index: 60; padding: 12px 18px; border-radius: var(--ds-r-chip); background: var(--ds-ink); color: var(--ds-on-ink); font-size: 13px; font-weight: 700; box-shadow: 0 12px 32px rgba(0, 0, 0, .12); }
+.protoFab:focus-visible { outline: 2px solid var(--ds-ink); outline-offset: 3px; }
+
+@media (max-width: 760px) {
+  .protoFab { right: 12px; bottom: 76px; padding: 9px 14px; }
+}

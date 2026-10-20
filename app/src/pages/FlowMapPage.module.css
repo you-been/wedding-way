@@ -1,0 +1,34 @@
+.head { padding: 48px 0 8px; }
+.head h1 { font-size: 36px; font-weight: 700; line-height: 1.22; letter-spacing: -.02em; }
+.head p { margin-top: 10px; font-size: 16px; color: var(--ds-muted); }
+
+.flowSec { margin-top: var(--ds-s-xxl); }
+.flowSec h2 { display: flex; align-items: center; gap: var(--ds-s-sm); margin-bottom: var(--ds-s-md); font-size: 18px; font-weight: 700; }
+.flowSec h2 span { display: grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; background: var(--ds-brand); color: var(--ds-on-brand); font-size: 13px; }
+
+.flow { display: flex; flex-wrap: wrap; align-items: center; gap: var(--ds-s-sm); margin-bottom: var(--ds-s-md); }
+.step { display: inline-flex; align-items: center; gap: var(--ds-s-sm); }
+.arrow { color: var(--ds-subtle); font-size: 14px; }
+.node { display: flex; flex-direction: column; min-width: 120px; padding: var(--ds-s-md) var(--ds-s-base); border: 1px solid var(--ds-panel-border); border-radius: var(--ds-r-control); background: var(--ds-canvas); transition: border-color .15s; }
+a.node:hover { border-color: var(--ds-ink); }
+a.node:focus-visible { outline: 2px solid var(--ds-ink); outline-offset: 2px; }
+.node b { font-size: 14px; }
+.node small { font-size: 12px; color: var(--ds-muted); }
+.hl { background: var(--ds-brand-soft); }
+.biz { background: #f8e9e7; } /* 업체 화면 옅은 면 (color.biz-brand-soft) */
+.ghost { background: transparent; border-style: dashed; }
+
+.list { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: var(--ds-s-sm); }
+.list a { display: grid; grid-template-columns: 28px 1fr auto; align-items: center; column-gap: var(--ds-s-sm); padding: var(--ds-s-md) var(--ds-s-base); border-radius: var(--ds-r-control); background: var(--ds-panel); }
+.list a:hover b { text-decoration: underline; text-underline-offset: 3px; }
+.list a:focus-visible { outline: 2px solid var(--ds-ink); outline-offset: 2px; }
+.list em { font-style: normal; font-size: 13px; color: var(--ds-subtle); }
+.list b { font-size: 14px; }
+.list code { grid-column: 2; font-size: 12px; color: var(--ds-muted); }
+.auth { grid-column: 3; grid-row: 1 / span 2; display: inline-flex; align-items: center; gap: 3px; height: 22px; padding: 0 8px; border-radius: var(--ds-r-cta); background: var(--ds-hairline); font-size: 11px; font-weight: 500; }
+.auth svg { width: 11px; height: 11px; }
+
+@media (max-width: 760px) {
+  .head { padding-top: var(--ds-s-xxl); }
+  .head h1 { font-size: 28px; }
+}

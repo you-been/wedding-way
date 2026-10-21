@@ -234,6 +234,12 @@ button.weddingMark:hover { background: var(--ds-brand-hover); }
   .dashGrid { grid-template-columns: 1fr; }
   .progress { min-width: 0; flex: 1 1 100%; }
 }
+/* 아주 좁은 화면(~400px): 요약 수치 3칸이 잘리지 않게 2칸 + 예산 사용은 아래 한 줄 */
+@media (max-width: 400px) {
+  .stats { grid-template-columns: 1fr 1fr; row-gap: var(--ds-s-md); }
+  .stat:nth-child(3) { grid-column: 1 / -1; flex-direction: row; flex-wrap: wrap; align-items: baseline; column-gap: 6px; padding: var(--ds-s-md) 0 0; border-top: 1px solid rgba(33, 34, 36, .18); border-left: 0; }
+  .stat:nth-child(3) small { flex-basis: 100%; }
+}
 @media (prefers-reduced-motion: reduce) {
   .statBar i, .progressBar i, .miniBar i, .tlItem, .arrows, .coupleBtn { transition: none; }
   .panelIn { animation: none; }

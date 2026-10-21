@@ -23,7 +23,7 @@ export const usePrefStore = create<PrefState>()(
       guests: '100~200명',
       venue: '웨딩홀',
       budgetPreset: '4~5천만 원대',
-      moods: ['#야외스냅', '#빈티지'],
+      moods: ['#감성적', '#빈티지'],
       set: (patch) => set(patch),
       toggleMood: (m) => set((s) => ({ moods: s.moods.includes(m) ? s.moods.filter((x) => x !== m) : [...s.moods, m] })),
     }),

@@ -40,5 +40,5 @@ export const categoryIcon = (name: string): LucideIcon => CATEGORIES.find((c) =>
 export const categoryAvg = (name: string) => CATEGORIES.find((c) => c.name === name)?.avg;
 
 /** 무드 태그 (취향 진단 · 업체 정보 · 추천) */
-export const MOODS = ['#야외스냅', '#클래식', '#빈티지', '#미니멀', '#내추럴', '#하우스웨딩', '#필름감성', '#유니크헤어'] as const;
+export const MOODS = ['#클래식', '#빈티지', '#미니멀', '#내추럴', '#러블리', '#유니크', '#모던', '#로맨틱', '#감성적', '#고급스러움', '#따뜻함', '#전통적', '#경건함'] as const;
 export type Mood = (typeof MOODS)[number];

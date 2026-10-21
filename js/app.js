@@ -63,26 +63,26 @@ const CATEGORY_AVG = {
 
 // price: null → 가격 비공개('상담 후 안내'), schedule: false → 일정 미공개('일정 문의')
 const VENDORS = [
-  { id: 1, name: '필름하루 스냅', cat: '아이폰스냅', region: '서울 · 제주', type: '1인 작가', price: '35~75만 원', tier: '표준', insta: true, intro: true, moods: ['#야외스냅', '#필름감성', '#내추럴'], verified: 30, rating: 4.9, reviews: 38, ph: 1, h: 220 },
-  { id: 2, name: '오월의 헤어', cat: '헤어변형', region: '서울 강남', type: '1인 숍', price: '40~60만 원', tier: '표준', insta: true, intro: false, moods: ['#유니크헤어', '#빈티지'], verified: 41, rating: 4.8, reviews: 52, ph: 5, h: 260 },
+  { id: 1, name: '필름하루 스냅', cat: '아이폰스냅', region: '서울 · 제주', type: '1인 작가', price: '35~75만 원', tier: '표준', insta: true, intro: true, moods: ['#감성적', '#빈티지', '#내추럴'], verified: 30, rating: 4.9, reviews: 38, ph: 1, h: 220 },
+  { id: 2, name: '오월의 헤어', cat: '헤어변형', region: '서울 강남', type: '1인 숍', price: '40~60만 원', tier: '표준', insta: true, intro: false, moods: ['#유니크', '#빈티지'], verified: 41, rating: 4.8, reviews: 52, ph: 5, h: 260 },
   { id: 3, name: '플랜비 웨딩', cat: '플래너', region: '서울 · 경기', type: '프리랜서 플래너', price: '상담 무료 · 동행 120만 원', tier: '표준', schedule: false, insta: false, intro: true, moods: ['#클래식', '#미니멀'], verified: 15, rating: 4.7, reviews: 21, ph: 2, h: 180 },
   { id: 4, name: '라메르 빈티지', cat: '드레스', region: '서울 성수', type: '빈티지 숍', price: '180~320만 원', tier: '가성비', insta: true, intro: true, moods: ['#빈티지', '#클래식'], verified: 33, rating: 4.9, reviews: 44, ph: 3, h: 280 },
-  { id: 5, name: '하우스 오브 린넨', cat: '웨딩홀', region: '경기 양평', type: '하우스 웨딩', price: null, tier: '표준', insta: true, intro: false, moods: ['#하우스웨딩', '#내추럴'], verified: 9, rating: 4.6, reviews: 17, ph: 4, h: 200 },
-  { id: 6, name: '모먼트 본식스냅', cat: '본식스냅', region: '전국', type: '2인 팀', price: '90~150만 원', tier: '프리미엄', insta: true, intro: true, moods: ['#클래식', '#필름감성'], verified: 50, rating: 4.8, reviews: 63, ph: 6, h: 240 },
+  { id: 5, name: '하우스 오브 린넨', cat: '웨딩홀', region: '경기 양평', type: '하우스 웨딩', price: null, tier: '표준', insta: true, intro: false, moods: ['#고급스러움', '#내추럴'], verified: 9, rating: 4.6, reviews: 17, ph: 4, h: 200 },
+  { id: 6, name: '모먼트 본식스냅', cat: '본식스냅', region: '전국', type: '2인 팀', price: '90~150만 원', tier: '프리미엄', insta: true, intro: true, moods: ['#클래식', '#빈티지'], verified: 50, rating: 4.8, reviews: 63, ph: 6, h: 240 },
   { id: 7, name: '오늘의 청첩', cat: '모바일청첩장', region: '온라인', type: '미니게임 청첩장', price: '3~8만 원', tier: '가성비', insta: false, intro: true, moods: ['#미니멀'], verified: 90, rating: 4.9, reviews: 120, ph: 2, h: 190 },
-  { id: 8, name: '들꽃 아틀리에', cat: '웨딩플라워', region: '서울 연남', type: '1인 플로리스트', price: '부케 15~35만 원', tier: '표준', insta: true, intro: false, moods: ['#내추럴', '#빈티지', '#야외스냅'], verified: 18, rating: 4.7, reviews: 29, ph: 1, h: 250 },
+  { id: 8, name: '들꽃 아틀리에', cat: '웨딩플라워', region: '서울 연남', type: '1인 플로리스트', price: '부케 15~35만 원', tier: '표준', insta: true, intro: false, moods: ['#내추럴', '#빈티지', '#감성적'], verified: 18, rating: 4.7, reviews: 29, ph: 1, h: 250 },
   { id: 9, name: '스튜디오 무드', cat: '스튜디오', region: '서울 청담', type: '스튜디오', price: null, tier: '프리미엄', insta: true, intro: true, moods: ['#클래식', '#미니멀'], verified: 30, rating: 4.6, reviews: 48, ph: 6, h: 210 },
   { id: 10, name: '결 메이크업', cat: '메이크업', region: '서울 압구정', type: '원장 1:1', price: '40~70만 원', tier: '표준', insta: false, intro: false, moods: ['#클래식', '#내추럴'], verified: 22, rating: 4.8, reviews: 36, ph: 5, h: 230 },
-  { id: 11, name: '프레임 필름', cat: '식전영상', region: '온라인', type: '1인 제작', price: '15~40만 원', tier: '가성비', insta: false, intro: false, moods: ['#필름감성'], verified: 20, rating: 4.7, reviews: 27, ph: 3, h: 180 },
+  { id: 11, name: '프레임 필름', cat: '식전영상', region: '온라인', type: '1인 제작', price: '15~40만 원', tier: '가성비', insta: false, intro: false, moods: ['#빈티지'], verified: 20, rating: 4.7, reviews: 27, ph: 3, h: 180 },
   { id: 12, name: '목소리 좋은 MC 지훈', cat: '본식사회자', region: '서울 · 경기', type: '전문 사회자', price: '30~50만 원', tier: '표준', schedule: false, insta: false, intro: true, moods: ['#클래식'], verified: 28, rating: 4.9, reviews: 41, ph: 4, h: 200 },
   { id: 13, name: '굿모먼트 축의대', cat: '축의대', region: '서울 · 경기', type: '대행 서비스', price: '15~25만 원', tier: '가성비', insta: false, intro: false, moods: ['#미니멀'], verified: 5, rating: 4.5, reviews: 12, ph: 2, h: 170 },
-  { id: 14, name: '소소한 소품', cat: '웨딩소품', region: '온라인', type: '핸드메이드', price: '1~20만 원', tier: '가성비', insta: true, intro: true, moods: ['#빈티지', '#하우스웨딩'], verified: 60, rating: 4.8, reviews: 88, ph: 1, h: 210 },
+  { id: 14, name: '소소한 소품', cat: '웨딩소품', region: '온라인', type: '핸드메이드', price: '1~20만 원', tier: '가성비', insta: true, intro: true, moods: ['#빈티지', '#고급스러움'], verified: 60, rating: 4.8, reviews: 88, ph: 1, h: 210 },
   { id: 15, name: '테일러 정', cat: '예복·한복', region: '서울 종로', type: '맞춤 예복', price: null, schedule: false, tier: '표준', insta: false, intro: false, moods: ['#클래식'], verified: 10, rating: 4.7, reviews: 19, ph: 6, h: 240 },
-  { id: 16, name: '제주 바람스냅', cat: '아이폰스냅', region: '제주', type: '1인 작가', price: '45~90만 원', tier: '표준', insta: true, intro: true, moods: ['#야외스냅', '#내추럴'], verified: 45, rating: 4.9, reviews: 57, ph: 4, h: 270 },
+  { id: 16, name: '제주 바람스냅', cat: '아이폰스냅', region: '제주', type: '1인 작가', price: '45~90만 원', tier: '표준', insta: true, intro: true, moods: ['#감성적', '#내추럴'], verified: 45, rating: 4.9, reviews: 57, ph: 4, h: 270 },
   { id: 17, name: '손길 웨딩헬퍼', cat: '헬퍼', region: '서울 · 경기', type: '1인 헬퍼', price: '본식 15~25만 원', tier: '가성비', insta: false, intro: true, moods: ['#클래식'], verified: 25, rating: 4.9, reviews: 34, ph: 5, h: 200 },
   { id: 18, name: '하루 헬퍼팀', cat: '헬퍼', region: '전국', type: '2인 팀', price: '본식+2부 20~35만 원', tier: '표준', insta: false, intro: false, moods: ['#내추럴'], verified: 8, rating: 4.7, reviews: 15, ph: 3, h: 230 },
-  { id: 19, name: '블룸 플라워랩', cat: '웨딩플라워', region: '서울 한남', type: '플라워 스튜디오', price: '부케 20~45만 원', tier: '표준', insta: true, intro: true, moods: ['#클래식', '#하우스웨딩'], verified: 24, rating: 4.8, reviews: 31, ph: 5, h: 240 },
-  { id: 20, name: '화이트룸 스튜디오', cat: '스튜디오', region: '서울 성수', type: '실내 스튜디오', price: '180~260만 원', tier: '표준', insta: true, intro: true, moods: ['#미니멀', '#클래식'], verified: 27, rating: 4.8, reviews: 39, ph: 2, h: 260 },
+  { id: 19, name: '블룸 플라워랩', cat: '웨딩플라워', region: '서울 한남', type: '플라워 스튜디오', price: '부케 20~45만 원', tier: '표준', insta: true, intro: true, moods: ['#클래식', '#고급스러움'], verified: 24, rating: 4.8, reviews: 31, ph: 5, h: 240 },
+  { id: 20, name: '화이트룸 스튜디오', cat: '스튜디오', region: '서울 성수', type: '실내 스튜디오', price: '180~260만 원', tier: '표준', insta:  true, intro: true, moods: ['#미니멀', '#클래식'], verified: 27, rating: 4.8, reviews: 39, ph: 2, h: 260 },
   { id: 21, name: '단아 한복', cat: '예복·한복', region: '서울 종로', type: '한복 대여 · 맞춤', price: '대여 25~45만 원', tier: '가성비', insta: true, intro: true, moods: ['#클래식', '#빈티지'], verified: 35, rating: 4.9, reviews: 46, ph: 6, h: 250 },
   { id: 22, name: '플레이풀 스튜디오', cat: '스튜디오', region: '서울 망원', type: '캐주얼 웨딩 스튜디오', price: '120~190만 원', tier: '가성비', insta: true, intro: false, moods: ['#내추럴', '#빈티지'], verified: 19, rating: 4.7, reviews: 26, ph: 4, h: 230 },
   { id: 23, name: '메종 드 리본', cat: '드레스', region: '서울 청담', type: '수입 드레스 숍', price: null, tier: '프리미엄', insta: true, intro: true, moods: ['#클래식', '#미니멀'], verified: 21, rating: 4.8, reviews: 30, ph: 1, h: 280 },
@@ -767,7 +767,7 @@ function slideFeed(dir) {
 // 금액 단위: 만 원. rows 순서는 카드의 항목 순서와 같음 (예식장 · 스드메 · 본식스냅 · 예복 · 기타)
 const HERO_SCENARIOS = [
   { cond: '서울 웨딩홀 · 하객 150명', badge: '평균 범위 안', rows: [1350, 620, 120, 110, 740] },
-  { cond: '경기 하우스웨딩 · 하객 80명', badge: '평균보다 낮은 편', rows: [900, 540, 150, 90, 520] },
+  { cond: '경기 고급스러움 · 하객 80명', badge: '평균보다 낮은 편', rows: [900, 540, 150, 90, 520] },
   { cond: '서울 호텔 · 하객 250명', badge: '평균보다 높은 편', rows: [3100, 880, 180, 160, 980] },
   { cond: '제주 스몰웨딩 · 하객 40명', badge: '평균보다 낮은 편', rows: [380, 450, 90, 70, 410] },
 ];
@@ -1892,10 +1892,10 @@ function renderVendor() {
 const BIZ_KEY = 'ww-biz-profile';
 const BIZ_DEFAULT = {
   photos: ['biz_07', 'biz_03'], cat: '아이폰스냅', region: '서울 · 제주', type: '1인 작가',
-  priceMode: 'range', priceMin: '35만 원', priceMax: '75만 원', moods: ['#야외스냅', '#필름감성', '#내추럴'],
+  priceMode: 'range', priceMin: '35만 원', priceMax: '75만 원', moods: ['#클래식', '#빈티지', '#미니멀'],
   intro: '자연광과 필름 감성을 담는 1인 아이폰스냅 작가입니다. 제주 · 서울 야외 촬영 위주로 진행해요.', insta: '',
 };
-const BIZ_MOODS = ['#야외스냅', '#클래식', '#빈티지', '#미니멀', '#내추럴', '#하우스웨딩', '#필름감성', '#유니크헤어'];
+const BIZ_MOODS = ['#클래식', '#빈티지', '#미니멀', '#내추럴', '#러블리', '#유니크', '#모던', '#로맨틱', '#감성적', '#고급스러움', '#따뜻함', '#도시적인' ];
 let bizProfile = { ...BIZ_DEFAULT };
 try { bizProfile = { ...BIZ_DEFAULT, ...JSON.parse(localStorage.getItem(BIZ_KEY) || '{}') }; } catch { /* 저장 불가 환경 무시 */ }
 let bzDraftPhotos = [...bizProfile.photos];

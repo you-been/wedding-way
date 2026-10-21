@@ -142,7 +142,7 @@ export default function PartnerFlow() {
                   <div className={styles.a1Photos}><i className={`${styles.p1} ${on(1)}`} /><i className={`${styles.p2} ${on(2)}`} /><i className={styles.add} /></div>
                   <span className={`${styles.a1Chip} ${on(3)}`}>아이폰스냅</span>
                   <div className={styles.a1Name}><span ref={nameRef} className={on(4)}>필름하루 스냅</span></div>
-                  <div className={styles.a1Moods}><em className={on(5)}>#야외스냅</em><em className={on(6)}>#필름감성</em></div>
+                  <div className={styles.a1Moods}><em className={on(5)}>#클래식</em><em className={on(6)}>#빈티지</em></div>
                 </div>
               )} />
             <Step index={1} active={isActive(1)} reduced={reduced} last={4} artClass={styles.artA2} small="Step 2"

@@ -18,7 +18,7 @@ import styles from './UiKitPage.module.css';
 // 프로토타입 확인용: 공통 컴포넌트 모음 (DESIGN.md 컴포넌트 · 상태를 한 화면에서 비교)
 export default function UiKitPage() {
   const [tab, setTab] = useState<'a' | 'b' | 'c'>('a');
-  const [moods, setMoods] = useState<string[]>(['#야외스냅']);
+  const [moods, setMoods] = useState<string[]>(['#클래식']);
   const [cat, setCat] = useState('아이폰스냅');
   const [open, setOpen] = useState(false);
   const [marks, setMarks] = useState<Record<number, DayStatus>>({});
@@ -77,7 +77,7 @@ export default function UiKitPage() {
 
         <h2 className={styles.h}>업체 카드</h2>
         <div className={styles.grid4}>
-          {getVendorsByIds([1, 4, 3, 5]).map((v) => <VendorCard key={v.id} vendor={v} reasons={v.id === 1 ? ['#야외스냅 일치', '예산 범위 안'] : undefined} />)}
+          {getVendorsByIds([1, 4, 3, 5]).map((v) => <VendorCard key={v.id} vendor={v} reasons={v.id === 1 ? ['#클래식 일치', '예산 범위 안'] : undefined} />)}
         </div>
 
         <h2 className={styles.h}>후기 카드</h2>

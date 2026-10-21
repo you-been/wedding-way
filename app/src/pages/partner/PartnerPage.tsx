@@ -78,7 +78,7 @@ export default function PartnerPage() {
                 <span className={styles.tag}>아이폰스냅</span>
                 <b>필름하루 스냅</b>
                 <small>서울 · 제주 | 1인 작가 · 35~75만 원</small>
-                <div className={styles.moods}><span>#야외스냅</span><span>#필름감성</span><span>#내추럴</span></div>
+                <div className={styles.moods}><span>#클래식</span><span>#빈티지</span><span>#내추럴</span></div>
               </div>
               <div className={styles.cardFoot}><BadgeCheck /> 취향이 맞는 예비부부에게 추천돼요</div>
             </div>
@@ -128,7 +128,7 @@ export default function PartnerPage() {
           </article>
           <article className={styles.gCard}>
             <div className={`${styles.art} ${styles.artMint}`} aria-hidden="true">
-              <div className={styles.artMatch}><span>#필름감성</span><HeartHandshake /><span>#야외스냅</span></div>
+              <div className={styles.artMatch}><span>#클래식</span><HeartHandshake /><span>#빈티지</span></div>
             </div>
             <h3>취향 매칭</h3>
             <p>광고 없이, 무드와 예산이 맞는 <br />예비부부에게 추천돼요.</p>

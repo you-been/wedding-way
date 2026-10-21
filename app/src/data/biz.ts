@@ -17,7 +17,7 @@ export interface BizProfile {
 
 export const BIZ_DEFAULT: BizProfile = {
   photos: ['biz_07', 'biz_03'], cat: '아이폰스냅', region: '서울 · 제주', type: '1인 작가',
-  priceMode: 'range', priceMin: '35만 원', priceMax: '75만 원', moods: ['#야외스냅', '#필름감성', '#내추럴'],
+  priceMode: 'range', priceMin: '35만 원', priceMax: '75만 원', moods: ['#클래식', '#빈티지', '#내추럴'],
   intro: '자연광과 필름 감성을 담는 1인 아이폰스냅 작가입니다. 제주 · 서울 야외 촬영 위주로 진행해요.', insta: '',
 };
 

@@ -929,7 +929,7 @@ button.upload { display: block; width: 100%; }
 }
 
 /* 버튼: 52px(주요) · 36px(헤더) */
-.ds-btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; height: 52px; padding: 0 24px; border-radius: var(--ds-r-cta); font-size: 16px; font-weight: 500; line-height: 1.5; white-space: nowrap; transition: background-color .15s, border-color .15s; }
+.ds-btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; height: 52px; padding: 0 24px; border-radius: var(--ds-r-control); font-size: 16px; font-weight: 500; line-height: 1.5; white-space: nowrap; transition: background-color .15s, border-color .15s; }
 .ds-btn svg { width: 18px; height: 18px; }
 .ds-btn:focus-visible, .hm-cat:focus-visible, .hp-link:focus-visible, .hp-save:focus-visible, .hv-col:focus-visible { outline: 2px solid var(--ds-ink); outline-offset: 2px; }
 .ds-btn-ink { background: var(--ds-ink); color: var(--ds-on-ink); }
@@ -1219,7 +1219,7 @@ body.is-splash .site-footer { display: none; }
 #hallModal .drawer-close { border-radius: var(--ds-r-control); background: var(--ds-hairline); color: var(--ds-ink); }
 
 /* 이 화면들 안의 기존 버튼도 디자인 시스템 버튼으로 */
-#screen-budget .btn, #hallModal .btn { height: 52px; padding: 0 24px; border-radius: var(--ds-r-cta); font-size: 16px; font-weight: 500; }
+#screen-budget .btn, #hallModal .btn { height: 52px; padding: 0 24px; border-radius: var(--ds-r-control); font-size: 16px; font-weight: 500; }
 #screen-budget .btn-sm { height: 36px; padding: 0 14px; border-radius: var(--ds-r-control); font-size: 14px; }
 #screen-budget .btn-primary, #hallModal .btn-primary { background: var(--ds-ink); color: var(--ds-on-ink); }
 #screen-budget .btn-primary:hover, #hallModal .btn-primary:hover { background: #000; }
@@ -1366,7 +1366,7 @@ body.is-splash .site-footer { display: none; }
 
 /* SNS 버튼: 52px · 4px 라운드 (각 플랫폼 브랜드 색 유지) */
 .sns-btns { gap: var(--ds-s-sm); }
-.sns-btns .btn { height: 52px; padding: 0 var(--ds-s-xl); border-radius: var(--ds-r-cta); font-size: 16px; font-weight: 500; }
+.sns-btns .btn { height: 52px; padding: 0 var(--ds-s-xl); border-radius: var(--ds-r-control); font-size: 16px; font-weight: 500; }
 .sns-btns .btn b { left: var(--ds-s-lg); }
 .sns-google { border: 1px solid var(--ds-control-border); color: var(--ds-ink); }
 
@@ -1684,7 +1684,7 @@ body.is-splash .site-footer { display: none; }
 
 /* 세 화면 공통: 패널 · 버튼 · 칩 · 태그 · 입력 · 텍스트 버튼 */
 :is(#screen-reviews, #screen-review-write, #screen-mypage) .card { border: 1px solid var(--ds-panel-border); border-radius: var(--ds-r-panel); box-shadow: none; padding: var(--ds-s-xl); margin-bottom: var(--ds-s-base); }
-:is(#screen-reviews, #screen-review-write, #screen-mypage, #tlDrawer) .btn { height: 52px; padding: 0 24px; border-radius: var(--ds-r-cta); font-size: 16px; font-weight: 500; }
+:is(#screen-reviews, #screen-review-write, #screen-mypage, #tlDrawer) .btn { height: 52px; padding: 0 24px; border-radius: var(--ds-r-control); font-size: 16px; font-weight: 500; }
 :is(#screen-reviews, #screen-review-write, #screen-mypage, #tlDrawer) .btn-sm { height: 36px; padding: 0 14px; border-radius: var(--ds-r-control); font-size: 14px; }
 :is(#screen-reviews, #screen-review-write, #screen-mypage, #tlDrawer) .btn-primary { background: var(--ds-ink); color: var(--ds-on-ink); }
 :is(#screen-reviews, #screen-review-write, #screen-mypage, #tlDrawer) .btn-primary:hover { background: #000; }
@@ -1940,7 +1940,7 @@ button.mc-wedding:hover { background: var(--ds-brand-hover); }
 #screen-vendor .review-list { margin: 0 0 var(--ds-s-base); }
 
 /* 버튼 */
-#screen-vendor .btn { height: 52px; padding: 0 24px; border-radius: var(--ds-r-cta); font-size: 16px; font-weight: 500; }
+#screen-vendor .btn { height: 52px; padding: 0 24px; border-radius: var(--ds-r-control); font-size: 16px; font-weight: 500; }
 #screen-vendor .btn-primary { background: var(--ds-ink); color: var(--ds-on-ink); }
 #screen-vendor .btn-primary:hover { background: #000; }
 #screen-vendor .btn-ghost { gap: 6px; background: var(--ds-canvas); border: 1px solid var(--ds-control-border); border-radius: var(--ds-r-control); color: var(--ds-ink); }
@@ -2011,7 +2011,7 @@ button.mc-wedding:hover { background: var(--ds-brand-hover); }
 
 /* 다섯 화면 공통: 패널 · 버튼 · 칩 · 태그 · 입력 · 선택 카드 · 안내 상자 */
 :is(#screen-guide, #screen-onboarding, #screen-budget-result, #screen-partner-join, #screen-partner-dash) .card { border: 1px solid var(--ds-panel-border); border-radius: var(--ds-r-panel); box-shadow: none; padding: var(--ds-s-xl); margin-bottom: var(--ds-s-base); }
-:is(#screen-guide, #screen-onboarding, #screen-budget-result, #screen-partner-join, #screen-partner-dash) .btn { height: 52px; padding: 0 24px; border-radius: var(--ds-r-cta); font-size: 16px; font-weight: 500; }
+:is(#screen-guide, #screen-onboarding, #screen-budget-result, #screen-partner-join, #screen-partner-dash) .btn { height: 52px; padding: 0 24px; border-radius: var(--ds-r-control); font-size: 16px; font-weight: 500; }
 :is(#screen-guide, #screen-onboarding, #screen-budget-result, #screen-partner-join, #screen-partner-dash) .btn svg { width: 18px; height: 18px; }
 :is(#screen-guide, #screen-onboarding, #screen-budget-result, #screen-partner-join, #screen-partner-dash) .btn-primary { background: var(--ds-ink); color: var(--ds-on-ink); }
 :is(#screen-guide, #screen-onboarding, #screen-budget-result, #screen-partner-join, #screen-partner-dash) .btn-primary:hover { background: #000; }
@@ -2386,7 +2386,7 @@ body:has(#screen-partner.active) .proto-fab { bottom: 88px; }
 .iv-perks b { font-size: 15px; font-weight: 700; }
 .iv-perks small { font-size: 13px; color: var(--ds-muted); }
 /* 카카오 버튼은 카카오 브랜드 색 유지 (로그인 SNS 버튼과 같은 규칙) */
-.iv-kakao { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; height: 52px; border-radius: var(--ds-r-cta); background: #fee500; color: rgba(0, 0, 0, .85); font-size: 16px; font-weight: 700; }
+.iv-kakao { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; height: 52px; border-radius: var(--ds-r-control); background: #fee500; color: rgba(0, 0, 0, .85); font-size: 16px; font-weight: 700; }
 .iv-kakao svg { width: 20px; height: 20px; fill: rgba(0, 0, 0, .85); stroke: none; }
 .iv-kakao:hover { background: #fada0a; }
 .iv-link { display: flex; gap: var(--ds-s-sm); margin-top: var(--ds-s-sm); }
@@ -2641,3 +2641,8 @@ body.is-biz .gnb .ds-btn-ink { color: #b2ffe9; }
 [data-authpanel="biz"] .ds-btn-ink { color: #b2ffe9; }
 /* 업체 회원에게는 찜 버튼(업체 카드 · 사진 피드 · 상세) 숨김 */
 body.is-biz-user :is(.like, .hp-save, [data-action="like"]) { display: none !important; }
+/* 홈 · 우리 업체 알리기 상단 비주얼 높이 맞춤 (두 칸으로 놓이는 961px 이상) */
+@media (min-width: 961px) {
+  .hm-hero, .pt-hero { display: flex; align-items: center; min-height: 568px; }
+  :is(.hm-hero, .pt-hero) > .hm-wrap { width: 100%; }
+}

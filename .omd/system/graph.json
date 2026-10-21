@@ -38,7 +38,7 @@
             }
           }
         },
-        "semantics": "button 또는 a 요소. 52px 높이 · 4px 둥글기 · 16px/500, 작은 버튼은 36px · 8px 둥글기 · 14px",
+        "semantics": "button 또는 a 요소. 52px 높이 · 8px 둥글기 · 16px/500, 작은 버튼은 36px · 8px 둥글기 · 14px (52px 버튼 둥글기는 결심 디테일: 크몽 4px 대신 8px로 테두리 버튼과 맞춤)",
         "states": [
           "default",
           "hover",
@@ -51,7 +51,6 @@
           "color.brand",
           "color.brand-hover",
           "color.on-brand",
-          "radius.cta",
           "radius.control",
           "size.button-primary",
           "size.button-small",
@@ -714,12 +713,12 @@
         "$value": "9999px"
       },
       "radius.control": {
-        "$description": "크몽 값 — 입력칸 · 36px 버튼 · 사진 썸네일",
+        "$description": "크몽 값 — 입력칸 · 버튼(36px · 52px) · 사진 썸네일. 52px 주요 버튼은 결심 디테일: 크몽 4px 대신 8px로 테두리 버튼과 둥글기를 맞춤 (사용자 요청)",
         "$type": "dimension",
         "$value": "8px"
       },
       "radius.cta": {
-        "$description": "크몽 값 — 52px 주요 버튼 · 태그",
+        "$description": "크몽 값 — 태그 · 라벨 (52px 주요 버튼은 결심 디테일로 radius.control 사용)",
         "$type": "dimension",
         "$value": "4px"
       },
@@ -760,6 +759,11 @@
           "category": "36px",
           "filter": "36px"
         }
+      },
+      "size.hero": {
+        "$description": "결심 디테일 — 홈 · 우리 업체 알리기 상단 비주얼 최소 높이 (두 칸으로 놓이는 961px 이상, 사용자 요청으로 두 히어로 높이를 맞춤). 960px 이하는 내용 높이",
+        "$type": "dimension",
+        "$value": "568px"
       },
       "size.search": {
         "$description": "크몽 값 — 검색창 셸 크기",
@@ -914,7 +918,7 @@
   "projection": {
     "locale": "en",
     "path": "DESIGN.md",
-    "sha256": "d42dea5f169ed1eafa8f97acbd99c836a1bea1f3d86311bfee8e593caf1673c8"
+    "sha256": "f28236e3d3546f847b64af13e51572405af64967b714a1f22bcc6a59e4b09348"
   },
   "schema_version": "2.0.0",
   "typography_assets": {

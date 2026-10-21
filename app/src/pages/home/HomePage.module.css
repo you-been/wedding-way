@@ -1,7 +1,8 @@
 /* 히어로: 핑크 단색 면 */
-.hero { padding: 56px 0; background: var(--ds-brand); color: var(--ds-on-brand); }
+.hero { display: flex; align-items: center; min-height: var(--ds-hero-h); padding: 56px 0; background: var(--ds-brand); color: var(--ds-on-brand); } /* 우리 업체 알리기 히어로와 같은 높이 */
+.hero > :global(.wrap) { width: 100%; }
 .heroInner { display: grid; grid-template-columns: 1.2fr 1fr; gap: 56px; align-items: center; }
-.hero h1 { font-size: 56px; font-weight: 700; line-height: 1.22; letter-spacing: -.03em; }
+.hero h1 { font-size: 64px; font-weight: 700; line-height: 1.1; letter-spacing: -.03em; }
 .lead { max-width: 460px; margin-top: var(--ds-s-base); font-size: 16px; font-weight: 700; line-height: 1.5; }
 .cta { display: flex; flex-wrap: wrap; gap: var(--ds-s-sm); margin-top: var(--ds-s-xl); }
 .note { margin-top: var(--ds-s-md); font-size: 13px; }
@@ -115,6 +116,7 @@
 .tiles svg { width: 24px; height: 24px; stroke-width: 1.75; }
 
 @media (max-width: 960px) {
+  .hero { min-height: 0; }
   .heroInner { grid-template-columns: 1fr; gap: var(--ds-s-xxl); }
 }
 @media (max-width: 760px) {

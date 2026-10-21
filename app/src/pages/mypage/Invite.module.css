@@ -17,7 +17,7 @@
 .perks small { font-size: 13px; color: var(--ds-muted); }
 
 /* 카카오톡 버튼: 카카오 브랜드 색 유지 */
-.kakao { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; height: 52px; border-radius: var(--ds-r-cta); background: var(--ds-kakao); color: rgba(0, 0, 0, .85); font-size: 16px; font-weight: 700; }
+.kakao { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; height: 52px; border-radius: var(--ds-r-control); background: var(--ds-kakao); color: rgba(0, 0, 0, .85); font-size: 16px; font-weight: 700; }
 .kakao svg { width: 20px; height: 20px; fill: rgba(0, 0, 0, .85); stroke: none; }
 .kakao:hover { filter: brightness(.97); }
 .linkRow { display: flex; gap: var(--ds-s-sm); margin-top: var(--ds-s-sm); }

@@ -403,9 +403,17 @@
       ],
       "path": "/foundations/rules",
       "source_class": "prompt-fact"
+    },
+    {
+      "evidence": [
+        "app/src/styles/global.css",
+        "css/style.css"
+      ],
+      "path": "foundations.tokens.size.hero",
+      "source_class": "prompt-fact"
     }
   ],
-  "design_md_sha256": "d42dea5f169ed1eafa8f97acbd99c836a1bea1f3d86311bfee8e593caf1673c8",
-  "graph_sha256": "1cb1ee10a0823f72e91c16730b99c993e83954f851a042f0c8d21703c513579d",
+  "design_md_sha256": "f28236e3d3546f847b64af13e51572405af64967b714a1f22bcc6a59e4b09348",
+  "graph_sha256": "1d1a88fcb378c5ff7d458235497bf673dfbf34b37d171eb4e98302d2f16feb97",
   "schema_version": "2.0.0"
 }

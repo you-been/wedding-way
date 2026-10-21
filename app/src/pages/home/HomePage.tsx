@@ -166,7 +166,7 @@ export default function HomePage() {
       <div className={styles.hero}>
         <div className={`wrap ${styles.heroInner}`}>
           <div>
-            <h1>패키지 말고,<br />우리다운 결혼식.</h1>
+            <h1>결심했다면,<br/>우리답게.</h1>
             <p className={styles.lead}>플래너부터 아이폰스냅 · 헤어변형 같은 인디 업체까지,<br />내 예산과 취향으로 비교하고 계획하세요.</p>
             <div className={styles.cta}>
               <Button to={PATHS.budget}>무료 예산 진단하기 <ArrowRight /></Button>

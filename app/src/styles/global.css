@@ -62,6 +62,7 @@
   --ds-s-xl: 24px;
   --ds-s-xxl: 32px;
   --ds-section: 95px;
+  --ds-hero-h: 568px; /* 홈 · 우리 업체 알리기 상단 비주얼 높이 (두 칸으로 놓이는 961px 이상) */
   /* 그림자: 검색창과 강조 카드에만 */
   --ds-shadow-search: rgba(0, 0, 0, .06) 0 0 8px 0;
 }

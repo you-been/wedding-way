@@ -25,7 +25,7 @@
 
 /* SNS 버튼: 52px · 4px 둥글기, 각 플랫폼 브랜드 색 유지 (DESIGN.md 규칙) */
 .sns { display: grid; gap: var(--ds-s-sm); }
-.snsBtn { position: relative; display: flex; align-items: center; justify-content: center; height: 52px; border-radius: var(--ds-r-cta); font-size: 16px; font-weight: 500; }
+.snsBtn { position: relative; display: flex; align-items: center; justify-content: center; height: 52px; border-radius: var(--ds-r-control); font-size: 16px; font-weight: 500; }
 .snsBtn b { position: absolute; left: var(--ds-s-lg); font-weight: 800; }
 .snsBtn:focus-visible { outline: 2px solid var(--ds-ink); outline-offset: 2px; }
 .kakao { background: var(--ds-kakao); color: var(--ds-on-kakao); }

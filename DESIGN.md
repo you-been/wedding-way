@@ -98,8 +98,8 @@
 - **color.subtle**: `#6b6e7d` — 결심 디테일 (크몽 푸터 링크 #727585와 다른 값) — 푸터 링크 · 보조 아이콘
 - **radius.bar**: `2px` — 결심 디테일 — 6px 높이 진행률 · 금액 막대 (홈 예산 예시, 타임라인 진행률, 예산 사용 현황)
 - **radius.chip**: `9999px` — 크몽 값 — 칩 · 원형 버튼
-- **radius.control**: `8px` — 크몽 값 — 입력칸 · 36px 버튼 · 사진 썸네일
-- **radius.cta**: `4px` — 크몽 값 — 52px 주요 버튼 · 태그
+- **radius.control**: `8px` — 크몽 값 — 입력칸 · 버튼(36px · 52px) · 사진 썸네일. 52px 주요 버튼은 결심 디테일: 크몽 4px 대신 8px로 테두리 버튼과 둥글기를 맞춤 (사용자 요청)
+- **radius.cta**: `4px` — 크몽 값 — 태그 · 라벨 (52px 주요 버튼은 결심 디테일로 radius.control 사용)
 - **radius.panel**: `12px` — 크몽 값 — 패널 · 카드 · 모달
 - **radius.search**: `24px` — 크몽 값 — 검색창 셸
 - **shadow.accent**: `6px 6px 0 #ffaaba` — 결심 디테일 — 강조 카드 · 미리보기 카드의 핑크 단색 오프셋 그림자
@@ -107,6 +107,7 @@
 - **size.button-primary**: `52px` — 크몽 값 — 주요 버튼 · 검색 입력 높이
 - **size.button-small**: `36px` — 크몽 값 — 헤더 버튼 · 정렬 셀렉트 높이
 - **size.chip**: `{"category":"36px","filter":"36px"}` — 크몽 값 — 칩 높이 (카테고리 필터 칩 · 키워드 칩)
+- **size.hero**: `568px` — 결심 디테일 — 홈 · 우리 업체 알리기 상단 비주얼 최소 높이 (두 칸으로 놓이는 961px 이상, 사용자 요청으로 두 히어로 높이를 맞춤). 960px 이하는 내용 높이
 - **size.search**: `{"height":"50px","max-width":"500px"}` — 크몽 값 — 검색창 셸 크기
 - **size.wrap**: `1168px` — 크몽 값 — 콘텐츠 최대 폭 (좌우 여백 데스크톱 24px · 모바일 16px 별도)
 - **space.base**: `16px` — 크몽 값
@@ -199,12 +200,12 @@ Required.
 
 ### Component: button
 
-**Semantics:** button 또는 a 요소. 52px 높이 · 4px 둥글기 · 16px/500, 작은 버튼은 36px · 8px 둥글기 · 14px
+**Semantics:** button 또는 a 요소. 52px 높이 · 8px 둥글기 · 16px/500, 작은 버튼은 36px · 8px 둥글기 · 14px (52px 버튼 둥글기는 결심 디테일: 크몽 4px 대신 8px로 테두리 버튼과 맞춤)
 
 - Anatomy: 배경 면, 레이블, 선택적 Lucide 아이콘(18px)
 - Variants: ink 52px (크몽 primary CTA 크기 · 결심 잉크 바탕 + 포인트 색 글자), brand 핑크 52px (크몽 primary CTA 크기 · 결심 핑크), outline 40px (크몽 outline-link-button: 둥글기 8px · 테두리 #c8cad2 · 14px/700), line 52px 잉크 테두리 (결심 디테일: 핑크 히어로 위에서만, 회색 테두리는 핑크 위 대비 부족), small 36px (크몽 header action)
 - States: default, hover, focus-visible, disabled
-- Token references: color.ink, color.on-ink, color.brand, color.brand-hover, color.on-brand, radius.cta, radius.control, size.button-primary, size.button-small, color.ink-hover
+- Token references: color.ink, color.on-ink, color.brand, color.brand-hover, color.on-brand, radius.control, size.button-primary, size.button-small, color.ink-hover
 
 - Interaction kind: interactive
 

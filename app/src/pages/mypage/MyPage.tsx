@@ -12,7 +12,7 @@ import { useAuthStore } from '../../stores/authStore';
 import { useCoupleStore } from '../../stores/coupleStore';
 import { useFavoriteStore } from '../../stores/favoriteStore';
 import { toast } from '../../stores/toastStore';
-import { useTimelineStore } from '../../stores/timelineStore';
+import { usePhaseTitle, useTimelineStore } from '../../stores/timelineStore';
 import InviteModal from './InviteModal';
 import ItemDrawer from './ItemDrawer';
 import MyCalendar from './MyCalendar';
@@ -40,6 +40,7 @@ export default function MyPage() {
   const favIds = useFavoriteStore((s) => s.ids);
   const { wedding, items, setWedding, update, reset } = useTimelineStore();
   const { days, nowIdx } = weddingInfo(wedding);
+  const phaseTitle = usePhaseTitle();
   const [openId, setOpenId] = useState<string | null>(null);
   const [inviteOpen, setInviteOpen] = useState(false);
   const [showHidden, setShowHidden] = useState(false);
@@ -52,7 +53,7 @@ export default function MyPage() {
   const openItem = items.find((it) => it.id === openId);
 
   const onReset = () => {
-    if (!confirm('타임라인을 처음 상태로 되돌릴까요?\n순서 · 숨긴 항목 · 직접 추가한 항목 · 날짜 · 메모가 모두 초기화돼요.')) return;
+    if (!confirm('타임라인을 처음 상태로 되돌릴까요?\n순서 · 숨긴 항목 · 직접 추가한 항목 · 날짜 · 메모 · 단계 이름이 모두 초기화돼요.')) return;
     reset();
     setShowHidden(false);
     toast('기본 타임라인으로 되돌렸어요');
@@ -93,7 +94,7 @@ export default function MyPage() {
               </div>
               <div className={styles.stat}>
                 <small>지금 단계</small>
-                <strong>{TL_PHASES[nowIdx].title}</strong>
+                <strong>{phaseTitle(nowIdx)}</strong>
                 <span className={styles.statNote}>Phase {nowIdx + 1} / {TL_PHASES.length}</span>
               </div>
               <div className={styles.stat}>

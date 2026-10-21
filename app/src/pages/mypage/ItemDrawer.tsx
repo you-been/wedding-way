@@ -4,7 +4,7 @@ import { Calendar, EyeOff, NotebookPen, X } from 'lucide-react';
 import Button from '../../components/ui/Button';
 import { TL_PHASES, WEDDING_ITEM, fmtMD, suggestDate, type TlItem } from '../../data/timeline';
 import { toast } from '../../stores/toastStore';
-import { useTimelineStore } from '../../stores/timelineStore';
+import { usePhaseTitle, useTimelineStore } from '../../stores/timelineStore';
 import styles from './ItemDrawer.module.css';
 
 /** 타임라인 항목 상세: 단계 · 완료 · 일정 · 메모 (직접 추가한 항목은 이름 · 설명도 수정) */
@@ -14,6 +14,7 @@ export default function ItemDrawer({ item, wedding, onClose, onDated }: { item: 
   const [date, setDate] = useState(item.date ?? suggestDate(wedding, item.phase));
   const [memoSaved, setMemoSaved] = useState(false);
   const p = TL_PHASES[item.phase];
+  const phaseTitle = usePhaseTitle();
 
   // 단계가 바뀌면 (날짜를 아직 안 정했을 때) 추천 날짜도 다시
   useEffect(() => { if (!item.date) setDate(suggestDate(wedding, item.phase)); }, [item.phase, item.date, wedding]);
@@ -36,7 +37,7 @@ export default function ItemDrawer({ item, wedding, onClose, onDated }: { item: 
       <div className={styles.backdrop} onClick={onClose} />
       <aside className={styles.drawer} role="dialog" aria-modal="true" aria-labelledby="dwTitle">
         <div className={styles.head}>
-          <span className={styles.eyebrow}>Phase {item.phase + 1}. {p.title} · D-{p.from}~{p.to}개월</span>
+          <span className={styles.eyebrow}>Phase {item.phase + 1}. {phaseTitle(item.phase)} · D-{p.from}~{p.to}개월</span>
           <button type="button" className={styles.close} onClick={onClose} aria-label="닫기"><X /></button>
         </div>
         <h2 id="dwTitle">{item.t}</h2>
@@ -53,7 +54,7 @@ export default function ItemDrawer({ item, wedding, onClose, onDated }: { item: 
         )}
         <label className={styles.field}><span>단계</span>
           <select value={item.phase} onChange={(e) => { const to = +e.target.value; move(item.id, to); toast(`Phase ${to + 1}(으)로 옮겼어요`); }}>
-            {TL_PHASES.map((ph, i) => <option key={ph.title} value={i}>Phase {i + 1}. {ph.title} (D-{ph.from}~{ph.to}개월)</option>)}
+            {TL_PHASES.map((ph, i) => <option key={ph.title} value={i}>Phase {i + 1}. {phaseTitle(i)} (D-{ph.from}~{ph.to}개월)</option>)}
           </select>
         </label>
         <label className={styles.done}><input type="checkbox" checked={item.done} onChange={(e) => update(item.id, { done: e.target.checked })} /> 완료했어요</label>

@@ -2462,17 +2462,19 @@ body:has(#screen-partner.active) .proto-fab { bottom: 88px; }
 #screen-partner-dash > .hm-wrap { padding-top: var(--ds-s-xxl); }
 
 /* 상단 배너: 업체 포인트 색 면 · 흰 글씨, 오른쪽 프로필 완성도 카드 */
-.bz-head { display: grid; grid-template-columns: 1fr 300px; gap: var(--ds-s-xxl); align-items: center; padding: 40px; border-radius: var(--ds-r-panel); background: var(--ds-brand); color: var(--ds-on-brand); }
+.bz-head { display: grid; grid-template-columns: 1fr 300px; gap: var(--ds-s-xxl); align-items: center; padding: 40px; border-radius: var(--ds-r-panel); background: var(--ds-ink); color: var(--ds-on-ink); } /* 잉크 면 · 밝은 글씨 */
+.bz-head .my-kicker { background: var(--ds-brand); color: var(--ds-on-brand); }
+.bz-head .my-stat small, .bz-head .my-stat-note { color: rgba(255, 255, 255, .75); }
 .bz-head h1 { font-size: 36px; font-weight: 700; line-height: 1.22; letter-spacing: -.02em; }
 .bz-head .my-kicker svg { fill: none; color: var(--ds-ink); }
-.bz-head .my-meta li { background: rgba(255, 255, 255, .55); }
-.bz-status i { width: 8px; height: 8px; border-radius: 50%; background: var(--ds-ink); box-shadow: 0 0 0 3px rgba(33, 34, 36, .15); }
-.bz-status.off i { background: transparent; border: 1.5px solid var(--ds-ink); box-shadow: none; }
-.bz-head .my-stats, .bz-head .my-stat { border-color: rgba(33, 34, 36, .18); }
+.bz-head .my-meta li { background: rgba(255, 255, 255, .12); }
+.bz-status i { width: 8px; height: 8px; border-radius: 50%; background: var(--ds-brand); box-shadow: 0 0 0 3px rgba(206, 207, 255, .3); }
+.bz-status.off i { background: transparent; border: 1.5px solid #fff; box-shadow: none; }
+.bz-head .my-stats, .bz-head .my-stat { border-color: rgba(255, 255, 255, .2); }
 .bz-stats { grid-template-columns: repeat(4, 1fr); }
-.bz-head .my-stat-note { display: inline-flex; align-items: center; gap: 3px; opacity: .85; }
+.bz-head .my-stat-note { display: inline-flex; align-items: center; gap: 3px; }
 .bz-head .my-stat-note svg { width: 13px; height: 13px; }
-.bz-side-card { display: flex; flex-direction: column; gap: 4px; padding: var(--ds-s-xl); border: 1.5px solid var(--ds-ink); border-radius: var(--ds-r-panel); background: var(--ds-canvas); color: var(--ds-ink); box-shadow: 6px 6px 0 var(--ds-ink); }
+.bz-side-card { display: flex; flex-direction: column; gap: 4px; padding: var(--ds-s-xl); border: 1.5px solid var(--ds-ink); border-radius: var(--ds-r-panel); background: var(--ds-canvas); color: var(--ds-ink); box-shadow: 6px 6px 0 var(--ds-brand); }
 .bz-side-card > small { font-size: 14px; font-weight: 500; color: var(--ds-muted); }
 .bz-side-card > strong { font-size: 40px; font-weight: 700; line-height: 1.15; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
 .bz-side-card .my-stat-bar { background: var(--ds-hairline); }
@@ -2598,7 +2600,7 @@ body:has(#screen-partner.active) .proto-fab { bottom: 88px; }
   .bz-head h1 { font-size: 26px; }
   .bz-stats { grid-template-columns: 1fr 1fr; row-gap: var(--ds-s-base); }
   .bz-stats .my-stat:nth-child(3) { padding-left: 0; border-left: 0; }
-  .bz-side-card { padding: var(--ds-s-lg); box-shadow: 4px 4px 0 var(--ds-ink); }
+  .bz-side-card { padding: var(--ds-s-lg); box-shadow: 4px 4px 0 var(--ds-brand); }
   .bz-tabs { margin: var(--ds-s-lg) -16px; padding: 0 16px; }
   .bz-tab { padding: 0 var(--ds-s-md); font-size: 15px; }
   .bz-row { grid-template-columns: 1fr; gap: 0; }

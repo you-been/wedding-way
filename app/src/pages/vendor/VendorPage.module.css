@@ -14,8 +14,14 @@
 .empty { display: grid; place-items: center; border: 1px solid var(--ds-panel-border); color: var(--ds-control-border); }
 .empty svg { width: 40px; height: 40px; stroke-width: 1.5; }
 .shot { position: relative; }
-.more::after { content: ""; position: absolute; inset: 0; background: rgba(33, 34, 36, .45); }
-.more b { position: absolute; inset: 0; z-index: 1; display: grid; place-items: center; color: var(--ds-on-ink); font-size: 20px; font-weight: 700; }
+.moreShot::after { content: ""; position: absolute; inset: 0; background: rgba(33, 34, 36, .45); }
+.moreShot b { position: absolute; inset: 0; z-index: 1; display: grid; place-items: center; color: var(--ds-on-ink); font-size: 20px; font-weight: 700; }
+
+/* 텍스트 링크 (전체 후기 보기) */
+.moreLink { display: inline-flex; align-items: center; gap: 4px; font-size: 14px; font-weight: 500; }
+.moreLink svg { width: 16px; height: 16px; }
+.moreLink:hover { text-decoration: underline; text-underline-offset: 3px; }
+.moreLink:focus-visible { outline: 2px solid var(--ds-ink); outline-offset: 2px; }
 
 /* 정보 카드 */
 .card { padding: var(--ds-s-xl); border: 1px solid var(--ds-panel-border); border-radius: var(--ds-r-panel); }
@@ -63,9 +69,6 @@
 .closed p { color: var(--ds-muted); }
 .closed .hint { margin: 4px 0 var(--ds-s-sm); }
 .reviews { display: grid; gap: var(--ds-s-base); margin-bottom: var(--ds-s-base); }
-.more { display: inline-flex; align-items: center; gap: 4px; font-size: 14px; font-weight: 500; }
-.more svg { width: 16px; height: 16px; }
-.more:hover { text-decoration: underline; text-underline-offset: 3px; }
 
 @media (max-width: 960px) {
   .layout { grid-template-columns: 1fr; grid-template-areas: "gallery" "side" "main"; }

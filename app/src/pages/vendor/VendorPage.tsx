@@ -58,7 +58,7 @@ function VendorDetail({ v }: { v: Vendor }) {
           <div className={styles.gallery}>
             {v.photo ? <img className={styles.big} src={imageUrl(v.photo)!} alt={`${v.name} 대표 사진`} /> : <span className={`${styles.big} ${styles.empty}`} aria-hidden="true"><Icon /></span>}
             {shots.map((p, i) => (
-              <span key={p + i} className={`${styles.shot} ${i === 3 ? styles.more : ''}`}>
+              <span key={p + i} className={`${styles.shot} ${i === 3 ? styles.moreShot : ''}`}>
                 <img src={imageUrl(p)!} alt="" loading="lazy" />{i === 3 && <b>+24</b>}
               </span>
             ))}
@@ -144,7 +144,7 @@ function VendorDetail({ v }: { v: Vendor }) {
             {tab === 'review' && (
               <section className={styles.panel}>
                 <div className={styles.reviews}>{getReviews().slice(0, 2).map((r) => <ReviewCard key={r.id} review={r} />)}</div>
-                <Link to={PATHS.reviews} className={styles.more}>전체 후기 보기 <ArrowRight /></Link>
+                <Link to={PATHS.reviews} className={styles.moreLink}>전체 후기 보기 <ArrowRight /></Link>
               </section>
             )}
 

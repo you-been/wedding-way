@@ -1895,7 +1895,7 @@ const BIZ_DEFAULT = {
   priceMode: 'range', priceMin: '35만 원', priceMax: '75만 원', moods: ['#클래식', '#빈티지', '#미니멀'],
   intro: '자연광과 필름 감성을 담는 1인 아이폰스냅 작가입니다. 제주 · 서울 야외 촬영 위주로 진행해요.', insta: '',
 };
-const BIZ_MOODS = ['#클래식', '#빈티지', '#미니멀', '#내추럴', '#러블리', '#유니크', '#모던', '#로맨틱', '#감성적', '#고급스러움', '#따뜻함', '#도시적인' ];
+const BIZ_MOODS = ['#클래식', '#빈티지', '#미니멀', '#내추럴', '#러블리', '#유니크', '#모던', '#로맨틱', '#감성적', '#고급스러움', '#따뜻함', '#전통적', '#경건함'];
 let bizProfile = { ...BIZ_DEFAULT };
 try { bizProfile = { ...BIZ_DEFAULT, ...JSON.parse(localStorage.getItem(BIZ_KEY) || '{}') }; } catch { /* 저장 불가 환경 무시 */ }
 let bzDraftPhotos = [...bizProfile.photos];

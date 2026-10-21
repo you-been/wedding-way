@@ -77,7 +77,7 @@ export default function DirectoryPage() {
         <PageHead title="업체 디렉토리" desc="제휴 수수료와 무관하게, 같은 기준으로 비교해요.">
           <form className={styles.search} role="search" onSubmit={(e) => { e.preventDefault(); setSubmitted(query); }}>
             <Search aria-hidden="true" />
-            <input type="search" value={query} onChange={(e) => { setQuery(e.target.value); if (!e.target.value) setSubmitted(''); }} placeholder="업체명, 지역, #태그로 검색 (예: #제주스냅)" aria-label="업체 검색" />
+            <input type="search" value={query} onChange={(e) => { setQuery(e.target.value); if (!e.target.value) setSubmitted(''); }} placeholder="업체명, 지역, #태그로 검색 (예: #클래식)" aria-label="업체 검색" />
             <Button type="submit" size="sm" className={styles.searchBtn}>검색</Button>
           </form>
         </PageHead>

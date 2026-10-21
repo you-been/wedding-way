@@ -139,7 +139,7 @@ Required.
 
 - 새 컴포넌트는 먼저 크몽 레퍼런스(.claude/data/references/kmong/DESIGN.md)에서 같은 역할의 크기 · 여백 · 둥글기를 찾아 쓰고, 색과 선택 · 강조 표현만 결심 토큰으로 바꾼다. 크몽에 없는 요소만 결심 디테일로 새로 정한다
 
-- 새 화면과 전환하는 화면은 --ds-* CSS 변수만 쓴다. 예전 --primary(#b5546a) 계열 변수는 아직 전환하지 않은 화면에만 남아 있다
+- 모든 화면은 src/styles/global.css의 --ds-* CSS 변수만 쓴다
 
 - 주요 행동 버튼은 잉크 배경(color.ink)에 포인트 색 글자(예비부부 화면 color.brand, 업체 화면 · 로그인 화면 웨딩 업체 탭 · 업체 모드의 헤더 color.biz-brand), 핑크 배경 버튼은 히어로 같은 핑크 면이 아닌 곳에서 한 화면에 하나까지만 쓴다
 
@@ -183,7 +183,7 @@ Required.
 | Asset | Kind | Source status | License status | Source | Notes |
 |---|---|---|---|---|---|
 | pretendard | font | licensed-sourced | verified | jsDelivr orioncactus/pretendard@v1.3.9 (SIL Open Font License 1.1) |  |
-| lucide | icon | licensed-sourced | verified | npm lucide-react@1.59.0 (앱) · unpkg lucide@0.468.0 (원본 프로토타입) (ISC License) | React 앱은 lucide-react 컴포넌트로 렌더한다 (1.x에는 Instagram 같은 브랜드 아이콘이 없어 AtSign으로 대신). 원본 프로토타입은 data-lucide 속성 + drawIcons() |
+| lucide | icon | licensed-sourced | verified | npm lucide-react@1.59.0 (ISC License) | lucide-react 컴포넌트로 렌더한다 (1.x에는 Instagram 같은 브랜드 아이콘이 없어 AtSign으로 대신) |
 
 ### Rules
 
@@ -193,7 +193,7 @@ Required.
 
 - 큰 제목일수록 자간을 좁힌다 (56px −0.03em, 36px −0.02em, 22px −0.01em)
 
-- images/biz_*.jpg · images/icon_*.webp는 사용자가 넣은 프로토타입용 이미지다. 실서비스에 쓰기 전 사용 권리를 확인한다
+- public/images/biz_*.jpg · icon_*.webp는 사용자가 넣은 프로토타입용 이미지다. 실서비스에 쓰기 전 사용 권리를 확인한다
 
 <!-- design-md:section components-states -->
 ## 4. Components & States
@@ -373,9 +373,9 @@ Required.
 
 ### Platform: web
 
-- 서비스 앱은 app/ 폴더의 React 19 + TypeScript (Vite 빌드 · CSS Modules · Zustand 상태 관리)다
+- 서비스 앱은 저장소 루트의 React 19 + TypeScript (src/ · Vite 빌드 · CSS Modules · Zustand 상태 관리)다
 - 일반 주소(/directory, /vendors/:id, /partner/dashboard 등)로 화면을 전환하고, 회원 전용 화면은 계정 유형이 맞지 않으면 로그인으로 보낸다
-- 저장소 루트의 정적 HTML · CSS · JS 프로토타입(해시 라우팅)은 비교용 원본으로 남겨 둔다
+- 예전 정적 HTML · CSS · JS 프로토타입은 prototype 브랜치에만 보관한다
 
 <!-- design-md:section content-locales -->
 ## 6. Content & Locales
@@ -438,22 +438,18 @@ Record, review, and validate changes before adoption.
 
 1. 이 DESIGN.md의 --ds-* 토큰과 규칙
 
-2. css/style.css의 '디자인 시스템' 블록에 이미 구현된 화면(홈 · 예산 진단 · 로그인 · 업체 알리기 · 업체 디렉토리)
-
-3. 아직 전환하지 않은 화면의 예전 스타일
+2. src/styles/global.css와 이미 구현된 React 화면의 스타일
 
 ### Additional change rules
 
 - 크몽 값과 다르게 쓰려면 이 문서의 해당 값 설명에 '결심 디테일'과 이유를 함께 적는다
 
-- 토큰 값을 바꾸면 app/src/styles/global.css의 :root --ds-* 변수(업체 화면은 .biz-theme), 원본 프로토타입의 css/style.css, 이 문서를 함께 바꾼다
-
-- 예전 스타일 화면(새내기 가이드 · 온보딩 · 진단 리포트 · 업체 상세 · 실후기 · 내 웨딩 · 업체 가입 · 업체 대시보드)은 순차적으로 --ds-* 토큰으로 전환한다
+- 토큰 값을 바꾸면 src/styles/global.css의 :root --ds-* 변수(업체 화면은 .biz-theme)와 이 문서를 함께 바꾼다
 
 ### Decision provenance
 
-- foundations.tokens.color.brand — repository-fact; value: {"$description":"결심 디테일 (크몽 초록 #92fa72 대체, 사용자 지정 #FFAABA) — 포인트 핑크: 히어로 면 · 번호 배지 · 강조 태그","$type":"color","$value":"#ffaaba"}; evidence: app/src/styles/global.css, css/style.css
-- /typography_assets/roles/0/size — prompt-fact; value: "56px (모바일 36px)"; evidence: css/style.css
-- /typography_assets/assets/2 — unresolved; evidence: images/biz_01.jpg
-- foundations.tokens.color.biz-brand — prompt-fact; value: {"$description":"결심 디테일 — 업체 화면 포인트 색 (민트, 사용자 지정 #B2FFE9). 예비부부 핑크처럼 위 글씨는 잉크. 우리 업체 알리기 · 업체 가입 · 내 업체 · 업체 회원가입에서 color.brand 대신 사용","$type":"color","$value":"#b2ffe9"}; evidence: app/src/styles/global.css, css/style.css
-- foundations.tokens.space.section — prompt-fact; value: {"$description":"결심 디테일 — 섹션 사이 간격 (사용자 조정: 80 → 95px)","$type":"dimension","$value":{"desktop":"95px","mobile":"63px"}}; evidence: css/style.css
+- foundations.tokens.color.brand — repository-fact; value: {"$description":"결심 디테일 (크몽 초록 #92fa72 대체, 사용자 지정 #FFAABA) — 포인트 핑크: 히어로 면 · 번호 배지 · 강조 태그","$type":"color","$value":"#ffaaba"}; evidence: src/styles/global.css
+- /typography_assets/roles/0/size — prompt-fact; value: "56px (모바일 36px)"; evidence: src/styles/global.css
+- /typography_assets/assets/2 — unresolved; evidence: public/images/biz_01.jpg
+- foundations.tokens.color.biz-brand — prompt-fact; value: {"$description":"결심 디테일 — 업체 화면 포인트 색 (민트, 사용자 지정 #B2FFE9). 예비부부 핑크처럼 위 글씨는 잉크. 우리 업체 알리기 · 업체 가입 · 내 업체 · 업체 회원가입에서 color.brand 대신 사용","$type":"color","$value":"#b2ffe9"}; evidence: src/styles/global.css
+- foundations.tokens.space.section — prompt-fact; value: {"$description":"결심 디테일 — 섹션 사이 간격 (사용자 조정: 80 → 95px)","$type":"dimension","$value":{"desktop":"95px","mobile":"63px"}}; evidence: src/styles/global.css

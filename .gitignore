@@ -1,2 +1,6 @@
 # Oh My Design 등 로컬 Claude Code 도구 (저장소에 올리지 않음)
 .claude/
+node_modules/
+dist/
+*.local
+*.tsbuildinfo

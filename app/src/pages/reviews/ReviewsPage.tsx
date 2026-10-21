@@ -7,6 +7,7 @@ import ReviewCard from '../../components/vendor/ReviewCard';
 import { getReviews } from '../../data/api';
 import type { Review } from '../../data/reviews';
 import { PATHS } from '../../routes';
+import { useAuthStore } from '../../stores/authStore';
 import styles from './ReviewsPage.module.css';
 
 // 필터: 전체 · 인증 후기만 · 업종 (후기의 '업체명 · 업종'에서 업종으로 거름)
@@ -21,13 +22,14 @@ const FILTERS: { label: string; test: (r: Review) => boolean }[] = [
 
 export default function ReviewsPage() {
   const [filter, setFilter] = useState(FILTERS[0].label);
+  const isBiz = useAuthStore((s) => s.user?.type === 'biz'); // 후기는 예비부부만 써요
   const list = getReviews().filter(FILTERS.find((f) => f.label === filter)!.test);
 
   return (
     <div className="page">
       <div className={`wrap ${styles.wrap}`}>
         <PageHead title="인증 실후기" desc="견적서 · 결제 내역으로 실제 계약이 확인된 후기만 인증 배지가 붙어요.">
-          <Button to={PATHS.reviewWrite} className={styles.write}><PenLine />후기 쓰기</Button>
+          {!isBiz && <Button to={PATHS.reviewWrite} className={styles.write}><PenLine />후기 쓰기</Button>}
         </PageHead>
         <ChipGroup label="후기 필터" scroll className={styles.filters}>
           {FILTERS.map((f) => <Chip key={f.label} active={filter === f.label} onClick={() => setFilter(f.label)}>{f.label}</Chip>)}

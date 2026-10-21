@@ -25,7 +25,7 @@
 
 - 뼈대(버튼 높이 · 여백 · 둥글기 · 간격 · 글자 크기 · 회색 계열 색)는 크몽(Kmong) 마켓플레이스 디자인 시스템 값을 가져오고, 포인트 색 · 선택 상태 · 강조 표현 같은 색과 디테일은 결심 것으로 입힌다
 
-- 흰 캔버스 위 잉크(#212224) 텍스트와 핑크(#ffa3bf) 포인트 한 가지로 구성한 마켓플레이스형 화면
+- 흰 캔버스 위 잉크(#212224) 텍스트와 핑크(#ffaaba) 포인트 한 가지로 구성한 마켓플레이스형 화면
 
 - 카드는 테두리 · 그림자 대신 여백과 사진으로 구분하고, 패널이 필요할 때만 얇은 테두리(#e4e5ed)를 쓴다
 
@@ -53,15 +53,16 @@
 <!-- design-md:claim foundations kind=rules-or-constraints lang=en -->
 ### Semantic tokens
 
-- **color.biz-brand**: `#cecfff` — 결심 디테일 — 업체 화면 포인트 색 (연한 페리윙클, 사용자 지정 #CECFFF). 예비부부 핑크처럼 위 글씨는 잉크. 우리 업체 알리기 · 업체 가입 · 내 업체 · 업체 회원가입에서 color.brand 대신 사용
-- **color.biz-brand-hover**: `#b8b9ff` — 결심 디테일 — 업체 포인트 버튼 hover
-- **color.biz-brand-soft**: `#f0f0ff` — 결심 디테일 — 업체 화면 옅은 면
-- **color.biz-illust-lilac**: `#eee7f9` — 결심 디테일 — 업체 화면 그림 카드 배경
-- **color.biz-illust-mist**: `#f0eef6` — 결심 디테일 — 업체 화면 그림 카드 배경
-- **color.biz-illust-periwinkle**: `#e5e5fa` — 결심 디테일 — 업체 화면 그림 카드 배경
-- **color.biz-illust-sky**: `#e7eef9` — 결심 디테일 — 업체 화면 그림 카드 배경
-- **color.brand**: `#ffa3bf` — 결심 디테일 (크몽 초록 #92fa72 대체) — 포인트 핑크: 히어로 면 · 번호 배지 · 강조 태그
-- **color.brand-hover**: `#ff8fb1` — 결심 디테일 — 핑크 버튼 hover
+- **color.biz-brand**: `#b2ffe9` — 결심 디테일 — 업체 화면 포인트 색 (민트, 사용자 지정 #B2FFE9). 예비부부 핑크처럼 위 글씨는 잉크. 우리 업체 알리기 · 업체 가입 · 내 업체 · 업체 회원가입에서 color.brand 대신 사용
+- **color.biz-brand-hover**: `#94f9dd` — 결심 디테일 — 업체 포인트 버튼 hover
+- **color.biz-brand-soft**: `#ebfff9` — 결심 디테일 — 업체 화면 옅은 면
+- **color.biz-illust-aqua**: `#e0f3f5` — 결심 디테일 — 업체 화면 그림 카드 배경
+- **color.biz-illust-mint**: `#def7f0` — 결심 디테일 — 업체 화면 그림 카드 배경
+- **color.biz-illust-sage**: `#e7f3ea` — 결심 디테일 — 업체 화면 그림 카드 배경
+- **color.biz-illust-sky**: `#e4f0f6` — 결심 디테일 — 업체 화면 그림 카드 배경
+- **color.biz-switch**: `#78ad9e` — 결심 디테일 — 헤더 결심 Biz 스위치 켜짐 바탕 (사용자 지정 #78AD9E). 흰 손잡이 대비 약 2.5:1로 비텍스트 3:1에 못 미치지만 손잡이 위치로 상태를 구분
+- **color.brand**: `#ffaaba` — 결심 디테일 (크몽 초록 #92fa72 대체, 사용자 지정 #FFAABA) — 포인트 핑크: 히어로 면 · 번호 배지 · 강조 태그
+- **color.brand-hover**: `#ff94a8` — 결심 디테일 — 핑크 버튼 hover
 - **color.brand-soft**: `#fff1f5` — 결심 디테일 — 옅은 핑크 면: 마지막 CTA 띠 · 추천 이유 칩
 - **color.canvas**: `#ffffff` — 크몽 값 — 페이지 · 카드 배경
 - **color.chart-custom-1**: `#9c8cf0` — 결심 디테일 — 예산 차트 데이터 색: 직접 추가 항목 1
@@ -101,7 +102,7 @@
 - **radius.cta**: `4px` — 크몽 값 — 52px 주요 버튼 · 태그
 - **radius.panel**: `12px` — 크몽 값 — 패널 · 카드 · 모달
 - **radius.search**: `24px` — 크몽 값 — 검색창 셸
-- **shadow.accent**: `6px 6px 0 #ffa3bf` — 결심 디테일 — 강조 카드 · 미리보기 카드의 핑크 단색 오프셋 그림자
+- **shadow.accent**: `6px 6px 0 #ffaaba` — 결심 디테일 — 강조 카드 · 미리보기 카드의 핑크 단색 오프셋 그림자
 - **shadow.search**: `rgba(0,0,0,0.06) 0px 0px 8px 0px` — 크몽 값 — 검색창 셸 그림자 (이 외에는 그림자를 쓰지 않음)
 - **size.button-primary**: `52px` — 크몽 값 — 주요 버튼 · 검색 입력 높이
 - **size.button-small**: `36px` — 크몽 값 — 헤더 버튼 · 정렬 셀렉트 높이
@@ -126,6 +127,8 @@
 - color.ink on color.hairline: minimum 4.5:1
 - color.on-biz-brand on color.biz-brand: minimum 4.5:1
 - color.on-kakao on color.kakao: minimum 4.5:1
+- color.brand on color.ink: minimum 4.5:1
+- color.biz-brand on color.ink: minimum 4.5:1
 
 ### Reduced motion
 
@@ -137,7 +140,7 @@ Required.
 
 - 새 화면과 전환하는 화면은 --ds-* CSS 변수만 쓴다. 예전 --primary(#b5546a) 계열 변수는 아직 전환하지 않은 화면에만 남아 있다
 
-- 주요 행동 버튼은 잉크 배경(color.ink)에 흰 글자, 핑크 배경 버튼은 히어로 같은 핑크 면이 아닌 곳에서 한 화면에 하나까지만 쓴다
+- 주요 행동 버튼은 잉크 배경(color.ink)에 포인트 색 글자(예비부부 화면 color.brand, 업체 화면 · 로그인 화면 웨딩 업체 탭 · 업체 모드의 헤더 color.biz-brand), 핑크 배경 버튼은 히어로 같은 핑크 면이 아닌 곳에서 한 화면에 하나까지만 쓴다
 
 - 선택 상태(칩 · 탭 · 카테고리)는 잉크로 채우고, 미선택 칩은 color.hairline 면 또는 color.panel-border 테두리로 표시한다
 
@@ -147,13 +150,15 @@ Required.
 
 - 업체 화면(우리 업체 알리기 · 업체 가입 · 내 업체 · 업체 회원가입)은 color.brand 대신 color.biz-brand 계열을 쓰고, 포인트 면 위 글씨는 잉크(color.on-biz-brand)이고, 연한 포인트 색은 흰 바탕 위 글자색으로 쓰지 않는다
 
-- 그림 카드 배경은 예비부부 화면은 illust-pink · lilac · mint, 업체 화면은 biz-illust-periwinkle · lilac · sky · mist를 쓴다
+- 그림 카드 배경은 예비부부 화면은 illust-pink · lilac · mint, 업체 화면은 biz-illust-mint · aqua · sage · sky를 쓴다
 
 - SNS 로그인 · 공유 버튼(카카오 · 네이버 · 구글)은 각 플랫폼 브랜드 색을 그대로 쓴다
 
 - 예산 차트(도넛 · 범례)는 항목 구분용 color.chart-* 데이터 색을 쓰고, 스드메는 color.ink, 기타 준비 비용은 color.control-border를 쓴다. 차트 색은 버튼 · 글자 · 강조 표현에 쓰지 않는다
 
 - 첫 방문 갈림길 배경만 color.splash-* 세 가지로 만든 옅은 그라데이션을 쓴다 (사진 없음 플레이스홀더에는 쓰지 않음)
+
+- 로고 옆 사각형은 예비부부 모드 color.brand, 업체 모드(결심 Biz) color.biz-brand이고, 헤더 결심 Biz 스위치 켜짐은 color.biz-switch다
 <!-- design-md:claim-end -->
 
 <!-- design-md:section typography-assets -->
@@ -197,7 +202,7 @@ Required.
 **Semantics:** button 또는 a 요소. 52px 높이 · 4px 둥글기 · 16px/500, 작은 버튼은 36px · 8px 둥글기 · 14px
 
 - Anatomy: 배경 면, 레이블, 선택적 Lucide 아이콘(18px)
-- Variants: ink 52px (크몽 primary CTA 크기 · 결심 잉크 색), brand 핑크 52px (크몽 primary CTA 크기 · 결심 핑크), outline 40px (크몽 outline-link-button: 둥글기 8px · 테두리 #c8cad2 · 14px/700), line 52px 잉크 테두리 (결심 디테일: 핑크 히어로 위에서만, 회색 테두리는 핑크 위 대비 부족), small 36px (크몽 header action)
+- Variants: ink 52px (크몽 primary CTA 크기 · 결심 잉크 바탕 + 포인트 색 글자), brand 핑크 52px (크몽 primary CTA 크기 · 결심 핑크), outline 40px (크몽 outline-link-button: 둥글기 8px · 테두리 #c8cad2 · 14px/700), line 52px 잉크 테두리 (결심 디테일: 핑크 히어로 위에서만, 회색 테두리는 핑크 위 대비 부족), small 36px (크몽 header action)
 - States: default, hover, focus-visible, disabled
 - Token references: color.ink, color.on-ink, color.brand, color.brand-hover, color.on-brand, radius.cta, radius.control, size.button-primary, size.button-small, color.ink-hover
 
@@ -446,8 +451,8 @@ Record, review, and validate changes before adoption.
 
 ### Decision provenance
 
-- foundations.tokens.color.brand — repository-fact; value: {"$description":"결심 디테일 (크몽 초록 #92fa72 대체) — 포인트 핑크: 히어로 면 · 번호 배지 · 강조 태그","$type":"color","$value":"#ffa3bf"}; evidence: css/style.css
+- foundations.tokens.color.brand — repository-fact; value: {"$description":"결심 디테일 (크몽 초록 #92fa72 대체, 사용자 지정 #FFAABA) — 포인트 핑크: 히어로 면 · 번호 배지 · 강조 태그","$type":"color","$value":"#ffaaba"}; evidence: app/src/styles/global.css, css/style.css
 - /typography_assets/roles/0/size — prompt-fact; value: "56px (모바일 36px)"; evidence: css/style.css
 - /typography_assets/assets/2 — unresolved; evidence: images/biz_01.jpg
-- foundations.tokens.color.biz-brand — prompt-fact; value: {"$description":"결심 디테일 — 업체 화면 포인트 색 (연한 페리윙클, 사용자 지정 #CECFFF). 예비부부 핑크처럼 위 글씨는 잉크. 우리 업체 알리기 · 업체 가입 · 내 업체 · 업체 회원가입에서 color.brand 대신 사용","$type":"color","$value":"#cecfff"}; evidence: app/src/styles/global.css, css/style.css
+- foundations.tokens.color.biz-brand — prompt-fact; value: {"$description":"결심 디테일 — 업체 화면 포인트 색 (민트, 사용자 지정 #B2FFE9). 예비부부 핑크처럼 위 글씨는 잉크. 우리 업체 알리기 · 업체 가입 · 내 업체 · 업체 회원가입에서 color.brand 대신 사용","$type":"color","$value":"#b2ffe9"}; evidence: app/src/styles/global.css, css/style.css
 - foundations.tokens.space.section — prompt-fact; value: {"$description":"결심 디테일 — 섹션 사이 간격 (사용자 조정: 80 → 95px)","$type":"dimension","$value":{"desktop":"95px","mobile":"63px"}}; evidence: css/style.css

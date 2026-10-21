@@ -8,6 +8,7 @@ import { imageUrl } from '../../data/vendors';
 import { useMemberAction } from '../../hooks/useMemberAction';
 import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion';
 import { PATHS, vendorPath } from '../../routes';
+import { useAuthStore } from '../../stores/authStore';
 import { useFavoriteStore } from '../../stores/favoriteStore';
 import { toast } from '../../stores/toastStore';
 import styles from './HomePage.module.css';
@@ -112,6 +113,7 @@ function PhotoFeed() {
   const favorites = useFavoriteStore((s) => s.ids);
   const toggle = useFavoriteStore((s) => s.toggle);
   const member = useMemberAction('user');
+  const isBiz = useAuthStore((s) => s.user?.type === 'biz'); // 찜은 예비부부만
 
   // 양끝에서는 이전 · 다음 버튼을 숨김
   const update = () => {
@@ -144,10 +146,10 @@ function PhotoFeed() {
                 <img src={imageUrl(v.photo) ?? ''} alt={`${v.name} · ${v.cat}`} loading="lazy" />
                 <span className={styles.photoMeta}><span className={styles.avatar}>{v.name[0]}</span><b>{v.name}</b><small>{v.cat}</small></span>
               </Link>
-              <button type="button" className={`${styles.save} ${saved ? styles.saveOn : ''}`} aria-pressed={saved} aria-label={`${v.name} 찜하기`}
+              {!isBiz && <button type="button" className={`${styles.save} ${saved ? styles.saveOn : ''}`} aria-pressed={saved} aria-label={`${v.name} 찜하기`}
                 onClick={() => member(() => toast(toggle(v.id) ? '찜 목록에 담았어요' : '찜을 해제했어요'))}>
                 <Bookmark />
-              </button>
+              </button>}
             </div>
           );
         })}

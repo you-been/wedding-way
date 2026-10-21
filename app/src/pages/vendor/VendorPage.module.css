@@ -34,7 +34,6 @@
 .priceBox { position: relative; display: flex; flex-direction: column; margin-bottom: var(--ds-s-base); padding: var(--ds-s-base); border-radius: var(--ds-r-control); background: var(--ds-panel); }
 .priceBox small { font-size: 13px; color: var(--ds-muted); }
 .priceBox strong { font-size: 22px; font-weight: 700; font-variant-numeric: tabular-nums; }
-.tier { position: absolute; top: var(--ds-s-base); right: var(--ds-s-base); }
 .sideBtns { display: grid; grid-template-columns: 1fr 1fr; gap: var(--ds-s-sm); margin: var(--ds-s-sm) 0 var(--ds-s-md); }
 .sideBtns > * { height: 44px; padding: 0 var(--ds-s-md); font-size: 14px; }
 .liked { border-color: var(--ds-ink); background: var(--ds-panel); }

@@ -216,7 +216,7 @@
         "app/src/styles/global.css",
         "css/style.css"
       ],
-      "path": "foundations.tokens.color.biz-illust-periwinkle",
+      "path": "foundations.tokens.color.biz-illust-mint",
       "source_class": "prompt-fact"
     },
     {
@@ -224,7 +224,15 @@
         "app/src/styles/global.css",
         "css/style.css"
       ],
-      "path": "foundations.tokens.color.biz-illust-lilac",
+      "path": "foundations.tokens.color.biz-illust-aqua",
+      "source_class": "prompt-fact"
+    },
+    {
+      "evidence": [
+        "app/src/styles/global.css",
+        "css/style.css"
+      ],
+      "path": "foundations.tokens.color.biz-illust-sage",
       "source_class": "prompt-fact"
     },
     {
@@ -233,14 +241,6 @@
         "css/style.css"
       ],
       "path": "foundations.tokens.color.biz-illust-sky",
-      "source_class": "prompt-fact"
-    },
-    {
-      "evidence": [
-        "app/src/styles/global.css",
-        "css/style.css"
-      ],
-      "path": "foundations.tokens.color.biz-illust-mist",
       "source_class": "prompt-fact"
     },
     {
@@ -387,9 +387,25 @@
       ],
       "path": "/layout_platforms/platforms/0/rules",
       "source_class": "repository-fact"
+    },
+    {
+      "evidence": [
+        "app/src/components/layout/Header.module.css",
+        "css/style.css"
+      ],
+      "path": "foundations.tokens.color.biz-switch",
+      "source_class": "prompt-fact"
+    },
+    {
+      "evidence": [
+        "app/src/components/ui/Button.module.css",
+        "app/src/styles/global.css"
+      ],
+      "path": "/foundations/rules",
+      "source_class": "prompt-fact"
     }
   ],
-  "design_md_sha256": "78ea5dc14413dbb4c8606523d0fa2921d84f2ea325e3ea7a76cf3fa1bccf4068",
-  "graph_sha256": "c8e20edf24b2a55da44b14ca1251a97160ea6465b92da1fd48b179c73418e7fc",
+  "design_md_sha256": "d42dea5f169ed1eafa8f97acbd99c836a1bea1f3d86311bfee8e593caf1673c8",
+  "graph_sha256": "1cb1ee10a0823f72e91c16730b99c993e83954f851a042f0c8d21703c513579d",
   "schema_version": "2.0.0"
 }

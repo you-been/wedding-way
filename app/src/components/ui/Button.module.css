@@ -6,7 +6,7 @@
 .sm svg { width: 16px; height: 16px; }
 .block { width: 100%; }
 
-.ink { background: var(--ds-ink); color: var(--ds-on-ink); }
+.ink { background: var(--ds-ink); color: var(--ds-ink-btn-text); } /* 잉크 버튼 글씨 = 모드 포인트 색 (예비부부 핑크 · 업체 민트) */
 .ink:hover:not(:disabled) { background: var(--ds-ink-hover); }
 .brand { background: var(--ds-brand); color: var(--ds-on-brand); }
 .brand:hover:not(:disabled) { background: var(--ds-brand-hover); }

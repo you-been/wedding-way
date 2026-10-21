@@ -11,7 +11,6 @@ interface TimelineState {
   setWedding: (date: string) => void;
   update: (id: string, patch: Partial<TlItem>) => void;
   move: (id: string, toPhase: number, beforeId?: string | null) => void;
-  nudge: (id: string, dir: -1 | 1) => void;
   add: (phase: number, title: string) => void;
   renamePhase: (phase: number, name: string) => void; // 빈 이름이면 기본 이름으로
   reset: () => void;
@@ -38,15 +37,6 @@ export const useTimelineStore = create<TimelineState>()(
       },
       update: (id, patch) => set({ items: get().items.map((it) => (it.id === id ? { ...it, ...patch } : it)) }),
       move: (id, toPhase, beforeId = null) => set({ items: moveItem(get().items, id, toPhase, beforeId) }),
-      nudge: (id, dir) => {
-        const items = get().items;
-        const item = items.find((it) => it.id === id);
-        if (!item) return;
-        const siblings = items.filter((it) => it.phase === item.phase && !it.hidden);
-        const target = siblings[siblings.indexOf(item) + dir];
-        if (!target) return;
-        set({ items: dir < 0 ? moveItem(items, id, item.phase, target.id) : moveItem(items, target.id, item.phase, id) });
-      },
       add: (phase, title) => {
         const id = `c${Date.now()}`;
         const item: TlItem = { id, phase, t: title, d: '', link: null, tag: '직접 추가', done: false, hidden: false, custom: true, date: null, memo: '' };

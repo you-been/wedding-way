@@ -443,6 +443,8 @@ function applyAuthUI() {
   applyMode();
   $$('[data-guest]').forEach((el) => { el.hidden = !!authUser; });
   $$('[data-member]').forEach((el) => { el.hidden = !authUser; });
+  $$('[data-not-biz]').forEach((el) => { el.hidden = type === 'biz'; }); // 업체 회원에게는 후기 쓰기 · 예산에 담기 숨김
+  document.body.classList.toggle('is-biz-user', type === 'biz'); // 업체 회원: 찜 버튼 숨김 (CSS)
   $('#gnbName').textContent = authUser ? `${authLabel(authUser)} 님` : '';
   if (type === 'user') renderCouple();
   if (type === 'biz') {
@@ -1875,7 +1877,6 @@ function renderVendor() {
   $('#vdAvgRange').textContent = avg || '-';
   $('#vdSchedOpen').hidden = v.schedule === false;
   $('#vdSchedClosed').hidden = v.schedule !== false;
-  $('.tier-badge').textContent = v.tier;
   const reasons = recoReasons(v);
   $('#vdWhy').hidden = !reasons.length;
   $('#vdWhyChips').innerHTML = reasons.map((r) => `<span>${r}</span>`).join('');

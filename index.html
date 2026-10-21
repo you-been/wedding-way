@@ -676,12 +676,11 @@
             <small id="vdPriceLabel">평균 견적</small>
             <strong id="vdPrice">35~75만 원</strong>
             <small class="avg-note" id="vdPriceAvg" hidden></small>
-            <span class="tier-badge">표준</span>
           </div>
           <button class="btn btn-primary btn-block" data-auth="user" data-toast="문의 요청을 보냈어요 (프로토타입)">상담 · 예약 문의</button>
           <div class="side-btns">
             <button class="btn btn-ghost" data-action="like" data-auth="user" aria-pressed="false"><i data-lucide="bookmark"></i><span>찜하기</span></button>
-            <button class="btn btn-ghost" data-toast="예산 진단에 추가했어요"><i data-lucide="plus"></i>예산에 담기</button>
+            <button class="btn btn-ghost" data-toast="예산 진단에 추가했어요" data-not-biz><i data-lucide="plus"></i>예산에 담기</button>
           </div>
           <a class="insta-link" href="#vendor" data-toast="인스타그램으로 이동 (프로토타입)"><i data-lucide="at-sign"></i>filmharu.snap</a>
           <div class="why-box" id="vdWhy" hidden>
@@ -703,7 +702,7 @@
         <h1>인증 실후기</h1>
         <p>견적서 · 결제 내역으로 실제 계약이 확인된 후기만 인증 배지가 붙어요.</p>
       </div>
-      <a href="#review-write" class="ds-btn ds-btn-ink"><i data-lucide="pen-line"></i>후기 쓰기</a>
+      <a href="#review-write" class="ds-btn ds-btn-ink" data-not-biz><i data-lucide="pen-line"></i>후기 쓰기</a>
     </div>
     <div class="chip-group rv-filters" data-single>
       <button class="chip active">전체</button><button class="chip">인증 후기만</button>

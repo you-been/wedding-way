@@ -22,7 +22,7 @@
 .coupleText b { font-size: 14px; font-weight: 700; }
 .coupleText small { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; color: var(--ds-muted); }
 .coupleText small svg { width: 12px; height: 12px; }
-.coupleBtn { display: inline-flex; align-items: center; gap: 6px; flex: none; height: 36px; margin-left: auto; padding: 0 14px; border-radius: var(--ds-r-control); background: var(--ds-ink); color: var(--ds-on-ink); font-size: 14px; font-weight: 500; white-space: nowrap; transition: background-color .15s; }
+.coupleBtn { display: inline-flex; align-items: center; gap: 6px; flex: none; height: 36px; margin-left: auto; padding: 0 14px; border-radius: var(--ds-r-control); background: var(--ds-ink); color: var(--ds-ink-btn-text); font-size: 14px; font-weight: 500; white-space: nowrap; transition: background-color .15s; }
 .coupleBtn svg { width: 16px; height: 16px; }
 .coupleBtn:hover { background: var(--ds-ink-hover); }
 .coupleBtn.ghost { border: 1px solid var(--ds-ink); background: transparent; color: var(--ds-ink); }
@@ -50,7 +50,7 @@
 @keyframes fade { from { opacity: 0; } }
 
 /* 캘린더 */
-.calPanel { margin-bottom: var(--ds-s-xl); }
+.calPanel { margin-bottom: var(--ds-s-xl); border-color: transparent; background: var(--ds-brand-soft); } /* 캘린더 상자: 옅은 핑크 바탕으로 포인트 */
 .calHead { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
 .calHead h3 { min-width: 120px; font-size: 18px; font-weight: 700; text-align: center; font-variant-numeric: tabular-nums; }
 .calNav { display: grid; place-items: center; width: 36px; height: 36px; border: 1px solid var(--ds-panel-border); border-radius: 50%; background: var(--ds-canvas); }
@@ -60,11 +60,11 @@
 .calToday { margin-left: auto; }
 .calGrid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
 .dow { padding: 4px 0; font-size: 13px; color: var(--ds-muted); text-align: center; }
-.cell { display: flex; flex-direction: column; gap: 3px; min-width: 0; min-height: 84px; padding: 6px; border-radius: var(--ds-r-control); background: var(--ds-panel); }
-.day { font-size: 13px; font-weight: 500; font-variant-numeric: tabular-nums; }
+.cell { display: flex; flex-direction: column; gap: 3px; min-width: 0; min-height: 84px; padding: 6px; border-radius: var(--ds-r-control); background: var(--ds-canvas); }
+.day { display: grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; font-size: 13px; font-weight: 500; font-variant-numeric: tabular-nums; }
 .sun .day { color: var(--ds-muted); }
-.today { box-shadow: inset 0 0 0 2px var(--ds-ink); }
-.weddingDay { background: var(--ds-brand-soft); }
+.today .day { background: var(--ds-brand); color: var(--ds-on-brand); font-weight: 700; }
+.weddingDay { box-shadow: inset 0 0 0 1.5px var(--ds-brand); }
 .calChip, .weddingMark { display: flex; align-items: center; gap: 3px; width: 100%; padding: 3px 6px; overflow: hidden; border-radius: var(--ds-r-cta); font-size: 11px; font-weight: 500; text-align: left; white-space: nowrap; text-overflow: ellipsis; }
 .calChip { display: block; background: var(--ds-ink); color: var(--ds-on-ink); }
 .calChip.done { background: var(--ds-hairline); color: var(--ds-muted); text-decoration: line-through; }
@@ -142,13 +142,6 @@ button.weddingMark:hover { background: var(--ds-brand-hover); }
 /* 키보드로 항목 상세를 열 수 있게: 초점이 갈 때만 보임 */
 .openBtn { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .openBtn:focus-visible { position: static; width: auto; height: 24px; padding: 0 8px; clip: auto; border-radius: var(--ds-r-cta); background: var(--ds-canvas); font-size: 12px; outline: 2px solid var(--ds-ink); }
-.arrows { display: flex; gap: 2px; opacity: 0; transition: opacity .15s; }
-.tlItem:hover .arrows, .tlItem:focus-within .arrows { opacity: 1; }
-.arrows button { display: grid; place-items: center; width: 28px; height: 28px; border: 1px solid var(--ds-panel-border); border-radius: var(--ds-r-control); background: var(--ds-canvas); }
-.arrows svg { width: 16px; height: 16px; }
-.arrows button:hover:not(:disabled) { border-color: var(--ds-ink); }
-.arrows button:disabled { opacity: .35; cursor: default; }
-.arrows button:focus-visible { outline: 2px solid var(--ds-ink); outline-offset: 1px; }
 .add { padding-top: 2px; }
 .addForm { display: flex; align-items: center; gap: 6px; }
 .addForm input { flex: 1; min-width: 0; height: 36px; padding: 0 var(--ds-s-md); border: 1px solid var(--ds-control-border); border-radius: var(--ds-r-control); font-size: 14px; }
@@ -192,11 +185,10 @@ button.weddingMark:hover { background: var(--ds-brand-hover); }
   .phaseCard { padding: var(--ds-s-lg) var(--ds-s-base); }
   .phaseHead { flex-wrap: wrap; row-gap: 4px; }
   .phaseEdit { font-size: 16px; }
-  /* 모바일: 화살표 없이 손잡이로만 옮김 (손가락으로 잡기 쉽게 넓힘) */
+  /* 모바일: 손가락으로 잡기 쉽게 손잡이를 넓힘 */
   .tlItem { grid-template-columns: 20px 22px 1fr auto; gap: 8px; padding-left: 6px; }
   .handle { display: grid; place-items: center; width: 28px; height: 32px; margin: -4px 0 0 -4px; }
   .handle svg { width: 18px; height: 18px; }
-  .arrows { display: none; }
   /* 모바일: 왼쪽 단계 선 · 점을 빼서 카드 폭을 넓힘 (지금 단계는 카드 테두리 · 그림자 · 태그로 구분) */
   .timeline { padding-left: 0; }
   .timeline::before, .phase::before { display: none; }
@@ -204,21 +196,20 @@ button.weddingMark:hover { background: var(--ds-brand-hover); }
   .calGrid { gap: 2px 0; }
   .cell { align-items: center; gap: 3px; min-height: 48px; padding: 4px 0; background: none; }
   .day { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; font-size: 14px; }
-  .today { box-shadow: none; }
   .today .day { background: var(--ds-brand); color: var(--ds-on-brand); font-weight: 700; }
-  .weddingDay { background: none; }
+  .weddingDay { box-shadow: none; }
   .weddingDay .day { background: var(--ds-ink); color: var(--ds-on-ink); font-weight: 700; }
   .calChip, .calMore, .weddingMark { display: none; }
   .dots { display: flex; gap: 3px; }
   .dots i { width: 5px; height: 5px; border-radius: 50%; background: var(--ds-ink); }
   .dots i.dotDone { background: var(--ds-control-border); }
   .calHint { display: none; }
-  .monthList { display: block; margin-top: var(--ds-s-md); padding-top: var(--ds-s-md); border-top: 1px solid var(--ds-hairline); }
+  .monthList { display: block; margin-top: var(--ds-s-md); padding-top: var(--ds-s-md); border-top: 1px solid rgba(33, 34, 36, .08); }
   .monthList > b { display: flex; align-items: center; gap: 6px; margin-bottom: var(--ds-s-sm); font-size: 14px; }
   .monthList > b small { display: inline-grid; place-items: center; min-width: 20px; height: 20px; padding: 0 6px; border-radius: var(--ds-r-chip); background: var(--ds-brand); color: var(--ds-on-brand); font-size: 12px; }
   .monthList > p { font-size: 13px; color: var(--ds-muted); }
   .monthList ul { display: grid; gap: 6px; }
-  .monthList li button { display: grid; grid-template-columns: 44px 1fr 16px; align-items: center; gap: var(--ds-s-md); width: 100%; padding: 6px var(--ds-s-sm) 6px 6px; border-radius: var(--ds-r-control); background: var(--ds-panel); text-align: left; }
+  .monthList li button { display: grid; grid-template-columns: 44px 1fr 16px; align-items: center; gap: var(--ds-s-md); width: 100%; padding: 6px var(--ds-s-sm) 6px 6px; border-radius: var(--ds-r-control); background: var(--ds-canvas); text-align: left; }
   .monthList li button > svg { width: 16px; height: 16px; color: var(--ds-muted); }
   .monthList li button:focus-visible { outline: 2px solid var(--ds-ink); outline-offset: 2px; }
   .mlDate { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 44px; border-radius: var(--ds-r-control); background: var(--ds-brand-soft); line-height: 1.1; }
@@ -229,7 +220,6 @@ button.weddingMark:hover { background: var(--ds-brand-hover); }
   .monthList .done .mlTitle { color: var(--ds-muted); text-decoration: line-through; }
   .monthList .isWedding .mlDate { background: var(--ds-ink); color: var(--ds-on-ink); }
   .monthList .isWedding .mlDate small { color: rgba(255, 255, 255, .75); }
-  .arrows { opacity: 1; }
   .linkMore { display: none; }
   .dashGrid { grid-template-columns: 1fr; }
   .progress { min-width: 0; flex: 1 1 100%; }
@@ -241,6 +231,6 @@ button.weddingMark:hover { background: var(--ds-brand-hover); }
   .stat:nth-child(3) small { flex-basis: 100%; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .statBar i, .progressBar i, .miniBar i, .tlItem, .arrows, .coupleBtn { transition: none; }
+  .statBar i, .progressBar i, .miniBar i, .tlItem, .coupleBtn { transition: none; }
   .panelIn { animation: none; }
 }

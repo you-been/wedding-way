@@ -10,7 +10,7 @@
 .meta { display: flex; flex-wrap: wrap; gap: var(--ds-s-sm); margin-top: var(--ds-s-md); }
 .meta li { display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 var(--ds-s-md); border-radius: var(--ds-r-chip); background: rgba(255, 255, 255, .12); font-size: 14px; font-weight: 500; }
 .meta svg { width: 16px; height: 16px; }
-.status i { width: 8px; height: 8px; border-radius: 50%; background: var(--ds-brand); box-shadow: 0 0 0 3px rgba(206, 207, 255, .3); }
+.status i { width: 8px; height: 8px; border-radius: 50%; background: var(--ds-brand); box-shadow: 0 0 0 3px rgba(178, 255, 233, .3); }
 .status.off i { border: 1.5px solid var(--ds-on-ink); background: transparent; box-shadow: none; }
 .stats { display: grid; grid-template-columns: repeat(4, 1fr); margin-top: var(--ds-s-xl); padding-top: var(--ds-s-lg); border-top: 1px solid rgba(255, 255, 255, .2); }
 .stat { display: flex; flex-direction: column; gap: 2px; min-width: 0; padding: 0 var(--ds-s-lg); border-left: 1px solid rgba(255, 255, 255, .2); }

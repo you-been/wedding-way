@@ -13,11 +13,13 @@
   --ds-control-border: #c8cad2;
   --ds-panel-border: #e4e5ed;
   --ds-panel: #fafafc;
-  --ds-brand: #ffa3bf;
-  --ds-brand-hover: #ff8fb1;
+  --ds-brand: #ffaaba;
+  --ds-brand-hover: #ff94a8;
   --ds-brand-soft: #fff1f5;
   --ds-on-brand: #212224;
   --ds-on-ink: #ffffff;
+  --ds-ink-btn-text: #ffaaba; /* 잉크 버튼 글씨: 예비부부 모드 = 메인 핑크 */
+  --ds-biz-switch: #78ad9e; /* 헤더 결심 Biz 스위치 켜짐 (DESIGN.md color.biz-switch) */
   --ds-placeholder: #9a9ba7; /* 입력칸 안내 글씨 (크몽 값) */
   /* SNS 브랜드 색 (각 플랫폼 가이드 유지) */
   --ds-kakao: #fee500;
@@ -64,16 +66,19 @@
   --ds-shadow-search: rgba(0, 0, 0, .06) 0 0 8px 0;
 }
 
-/* 업체 화면: 포인트 색을 연한 페리윙클로 · 위 글씨는 잉크 (DESIGN.md color.biz-*) */
+/* 잉크 버튼 글씨 = 업체 민트: 업체 화면 본문 + 업체 모드(결심 Biz)일 때의 헤더 (예비부부 화면 본문은 모드와 상관없이 메인 핑크) */
+.biz-theme, .biz-mode > header { --ds-ink-btn-text: #b2ffe9; }
+
+/* 업체 화면: 포인트 색을 민트로 · 위 글씨는 잉크 (DESIGN.md color.biz-*) */
 .biz-theme {
-  --ds-brand: #cecfff;
-  --ds-brand-hover: #b8b9ff;
-  --ds-brand-soft: #f0f0ff;
+  --ds-brand: #b2ffe9;
+  --ds-brand-hover: #94f9dd;
+  --ds-brand-soft: #ebfff9;
   --ds-on-brand: #212224;
-  --ds-illust-pink: #e5e5fa;
-  --ds-illust-lilac: #eee7f9;
-  --ds-illust-mint: #e7eef9;
-  --ds-illust-sand: #f0eef6;
+  --ds-illust-pink: #def7f0;
+  --ds-illust-lilac: #e0f3f5;
+  --ds-illust-mint: #e7f3ea;
+  --ds-illust-sand: #e4f0f6;
 }
 
 @media (max-width: 760px) {

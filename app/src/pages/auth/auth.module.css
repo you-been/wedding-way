@@ -11,6 +11,7 @@
 .back:hover { color: var(--ds-ink); }
 
 .panel { margin-bottom: var(--ds-s-base); }
+.bizPanel { --ds-ink-btn-text: #b2ffe9; } /* 웨딩 업체 탭: 로그인 버튼 글씨 = 업체 민트 */
 .lead { margin-bottom: var(--ds-s-base); font-size: 16px; font-weight: 700; text-align: center; }
 .center { text-align: center; }
 .current { margin-bottom: var(--ds-s-base); padding: var(--ds-s-base); border-radius: var(--ds-r-control); background: var(--ds-panel); font-size: 14px; }

@@ -3,6 +3,7 @@ import { BadgeCheck, Bookmark, Star } from 'lucide-react';
 import { categoryIcon } from '../../data/categories';
 import { imageUrl, type Vendor } from '../../data/vendors';
 import { vendorPath } from '../../routes';
+import { useAuthStore } from '../../stores/authStore';
 import { useFavoriteStore } from '../../stores/favoriteStore';
 import { toast } from '../../stores/toastStore';
 import { useMemberAction } from '../../hooks/useMemberAction';
@@ -20,6 +21,7 @@ export default function VendorCard({ vendor: v, height = 180, reasons }: Props) 
   const saved = useFavoriteStore((s) => s.ids.includes(v.id));
   const toggle = useFavoriteStore((s) => s.toggle);
   const member = useMemberAction('user');
+  const isBiz = useAuthStore((s) => s.user?.type === 'biz'); // 찜은 예비부부만
   const Icon = categoryIcon(v.cat);
   const src = imageUrl(v.photo);
 
@@ -44,9 +46,9 @@ export default function VendorCard({ vendor: v, height = 180, reasons }: Props) 
           </div>
         </div>
       </Link>
-      <button className={`${styles.like} ${saved ? styles.on : ''}`} onClick={onLike} aria-pressed={saved} aria-label={`${v.name} 찜하기`}>
+      {!isBiz && <button className={`${styles.like} ${saved ? styles.on : ''}`} onClick={onLike} aria-pressed={saved} aria-label={`${v.name} 찜하기`}>
         <Bookmark />
-      </button>
+      </button>}
     </article>
   );
 }

@@ -13,6 +13,7 @@ import { useMyTier } from '../../stores/budgetStore';
 import { imageUrl, type Vendor } from '../../data/vendors';
 import { useMemberAction } from '../../hooks/useMemberAction';
 import { PATHS } from '../../routes';
+import { useAuthStore } from '../../stores/authStore';
 import { useFavoriteStore } from '../../stores/favoriteStore';
 import { usePrefStore } from '../../stores/prefStore';
 import { toast } from '../../stores/toastStore';
@@ -29,10 +30,11 @@ export default function VendorPage({ vendor: given }: { vendor?: Vendor }) {
   const { id } = useParams();
   const v = given ?? getVendor(Number(id));
   if (!v) return <PlaceholderPage title="업체를 찾을 수 없어요" />;
-  return <VendorDetail key={v.id} v={v} />;
+  return <VendorDetail key={v.id} v={v} preview={!!given} />;
 }
 
-function VendorDetail({ v }: { v: Vendor }) {
+function VendorDetail({ v, preview }: { v: Vendor; preview: boolean }) {
+  const isBiz = useAuthStore((s) => s.user?.type === 'biz') && !preview; // 업체 회원은 찜 · 예산에 담기 같은 예비부부 동작을 보지 않음
   const [tab, setTab] = useState<Tab>('info');
   const moods = usePrefStore((s) => s.moods);
   const myTier = useMyTier();
@@ -74,15 +76,16 @@ function VendorDetail({ v }: { v: Vendor }) {
                 <small>{v.price ? '평균 견적' : '가격'}</small>
                 <strong>{v.price ?? '상담 후 안내'}</strong>
                 {!v.price && avg && <small>{v.cat} 시장 평균 {avg}</small>}
-                <Tag tone="brand" className={styles.tier}>{v.tier}</Tag>
               </div>
               <Button block onClick={inquire('문의 요청을 보냈어요 (프로토타입)')}>상담 · 예약 문의</Button>
+              {!isBiz && (
               <div className={styles.sideBtns}>
                 <Button variant="ghost" className={saved ? styles.liked : undefined} aria-pressed={saved} onClick={() => member(() => toast(toggleFav(v.id) ? '찜 목록에 담았어요' : '찜을 해제했어요'))}>
                   <Bookmark />{saved ? '찜함' : '찜하기'}
                 </Button>
                 <Button variant="ghost" onClick={() => toast('예산 진단에 추가했어요')}><Plus />예산에 담기</Button>
               </div>
+              )}
               {v.insta && <button className={styles.insta} onClick={() => toast('인스타그램으로 이동 (프로토타입)')}><AtSign />{v.handle ?? 'instagram'}</button>}
               {reasons.length > 0 && (
                 <div className={styles.why}>

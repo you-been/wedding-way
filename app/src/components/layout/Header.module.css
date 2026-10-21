@@ -15,7 +15,7 @@
 .switch:focus-visible { outline: 2px solid var(--ds-ink); outline-offset: 2px; border-radius: var(--ds-r-control); }
 .track { position: relative; flex: none; width: 40px; height: 24px; border-radius: var(--ds-r-chip); background: var(--ds-control-border); transition: background-color .2s; }
 .track i { position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; border-radius: 50%; background: var(--ds-canvas); box-shadow: 0 1px 2px rgba(0, 0, 0, .2); transition: transform .25s cubic-bezier(.34, 1.56, .64, 1); }
-.on .track { background: #6c6fe0; } /* 업체 모드: 업체 포인트 색의 진한 버전 (흰 손잡이 대비 4.2:1) */
+.on .track { background: var(--ds-biz-switch); }
 .on .track i { transform: translateX(16px); }
 
 /* 첫 방문 안내 말풍선 */
@@ -29,7 +29,7 @@
 @keyframes tip-in { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
 
 /* 로그인 · 사용자 */
-.login { display: inline-flex; align-items: center; height: 36px; padding: 0 14px; border-radius: var(--ds-r-control); background: var(--ds-ink); color: var(--ds-on-ink); font-size: 14px; font-weight: 500; }
+.login { display: inline-flex; align-items: center; height: 36px; padding: 0 14px; border-radius: var(--ds-r-control); background: var(--ds-ink); color: var(--ds-ink-btn-text); font-size: 14px; font-weight: 500; }
 .login:hover { background: var(--ds-ink-hover); }
 .user { display: flex; align-items: center; gap: 10px; font-size: 14px; }
 .name { font-weight: 700; }

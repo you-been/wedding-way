@@ -78,7 +78,7 @@ export default function LoginPage() {
             </button>
           </Panel>
         ) : (
-          <Panel className={styles.panel}>
+          <Panel className={`${styles.panel} ${styles.bizPanel}`}>
             <p className={styles.lead}>업체회원은 이메일로 로그인해요</p>
             <TextField label="이메일 (아이디)" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="hello@filmharu.kr" autoComplete="username" />
             <TextField label="비밀번호" type="password" value={pw} onChange={(e) => setPw(e.target.value)} placeholder="비밀번호" autoComplete="current-password" onKeyDown={(e) => e.key === 'Enter' && bizLogin()} />

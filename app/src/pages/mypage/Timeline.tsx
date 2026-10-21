@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import { Link } from 'react-router';
-import { ArrowRight, Calendar, Check, ChevronDown, ChevronUp, GripVertical, NotebookPen, Pencil, Plus } from 'lucide-react';
+import { ArrowRight, Calendar, Check, GripVertical, NotebookPen, Pencil, Plus } from 'lucide-react';
 import Button from '../../components/ui/Button';
 import Tag from '../../components/ui/Tag';
 import { TL_PHASES, fmtMD, type TlItem } from '../../data/timeline';
@@ -55,9 +55,9 @@ function PhaseNameEditor({ phase, title, onDone }: { phase: number; title: strin
   );
 }
 
-/** 내 타임라인: 단계별 카드, 손잡이로 끌어서 순서 · 단계 변경 (마우스 · 터치) */
+/** 내 타임라인: 단계별 카드, 손잡이로 끌어서 순서 · 단계 변경 (마우스 · 터치). 단계는 항목 상세에서도 바꿀 수 있음 */
 export default function Timeline({ items, nowIdx, onOpen }: { items: TlItem[]; nowIdx: number; onOpen: (id: string) => void }) {
-  const { update, move, nudge } = useTimelineStore();
+  const { update, move } = useTimelineStore();
   const phaseTitle = usePhaseTitle();
   const [open, setOpen] = useState<number[]>([nowIdx]);
   const [editing, setEditing] = useState<number | null>(null);
@@ -141,7 +141,7 @@ export default function Timeline({ items, nowIdx, onOpen }: { items: TlItem[]; n
               {isOpen && (
                 <div className={styles.phaseBody}>
                   {list.length === 0 && <p className={styles.tlEmpty}>항목이 없어요. 여기로 끌어다 놓을 수 있어요.</p>}
-                  {list.map((it, idx) => {
+                  {list.map((it) => {
                     const mark = drop && drop.kind !== 'into' && drop.id === it.id ? (drop.kind === 'before' ? styles.dropBefore : styles.dropAfter) : '';
                     return (
                       <div key={it.id} data-item={it.id} className={[styles.tlItem, it.done && styles.done, dragId === it.id && styles.dragging, mark].filter(Boolean).join(' ')}
@@ -185,10 +185,6 @@ export default function Timeline({ items, nowIdx, onOpen }: { items: TlItem[]; n
                         <div className={styles.tlSide}>
                           <button type="button" className={styles.openBtn} onClick={() => onOpen(it.id)} aria-label={`${it.t} 자세히`}>자세히</button>
                           {it.link && <Link className={styles.linkMore} to={it.link[1]}>{it.link[0]} <ArrowRight /></Link>}
-                          <span className={styles.arrows}>
-                            <button type="button" aria-label="위로" disabled={idx === 0} onClick={() => nudge(it.id, -1)}><ChevronUp /></button>
-                            <button type="button" aria-label="아래로" disabled={idx === list.length - 1} onClick={() => nudge(it.id, 1)}><ChevronDown /></button>
-                          </span>
                         </div>
                       </div>
                     );

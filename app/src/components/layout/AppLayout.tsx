@@ -21,8 +21,9 @@ export default function AppLayout() {
   if (pathname === PATHS.home && !splashDone) return <Navigate to={PATHS.welcome} replace />;
 
   const isBiz = BIZ_PATHS.some((p) => pathname === p);
+  const bizMode = useModeStore((s) => s.bizMode);
   return (
-    <div className={isBiz ? 'biz-theme' : undefined}>
+    <div className={[isBiz && 'biz-theme', bizMode && 'biz-mode'].filter(Boolean).join(' ') || undefined}>
       {!isWelcome && <Header />}
       <main>
         <Outlet />

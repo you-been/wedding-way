@@ -12,16 +12,16 @@ import styles from './AppLayout.module.css';
 export default function AppLayout() {
   const { pathname } = useLocation();
   const splashDone = useModeStore((s) => s.splashDone);
+  const bizMode = useModeStore((s) => s.bizMode);
   const isWelcome = pathname === PATHS.welcome;
 
   // 화면이 바뀌면 맨 위로
   useEffect(() => { window.scrollTo(0, 0); }, [pathname]);
 
-  // 첫 방문이면 홈 대신 갈림길로
+  // 첫 방문이면 홈 대신 갈림길로 (훅은 모두 이 위에서 호출: 조기 return 뒤에 두면 렌더마다 훅 개수가 달라짐)
   if (pathname === PATHS.home && !splashDone) return <Navigate to={PATHS.welcome} replace />;
 
   const isBiz = BIZ_PATHS.some((p) => pathname === p);
-  const bizMode = useModeStore((s) => s.bizMode);
   return (
     <div className={[isBiz && 'biz-theme', bizMode && 'biz-mode'].filter(Boolean).join(' ') || undefined}>
       {!isWelcome && <Header />}

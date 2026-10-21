@@ -5,6 +5,7 @@ import { ArrowRight, BadgeCheck, CalendarDays, Check, ChevronDown, FilePenLine, 
 import Button from '../../components/ui/Button';
 import { BUSINESS_CATEGORIES } from '../../data/categories';
 import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion';
+import { publicImage } from '../../data/vendors';
 import { PATHS } from '../../routes';
 import { toast } from '../../stores/toastStore';
 import PartnerFlow from './PartnerFlow';
@@ -73,7 +74,7 @@ export default function PartnerPage() {
           <div className={styles.preview} aria-label="업체 소개 미리보기 예시">
             <span className={styles.previewLabel}>예비부부에게 이렇게 보여요</span>
             <div className={styles.card}>
-              <img src="/images/biz_07.jpg" alt="" />
+              <img src={publicImage('biz_07.jpg')} alt="" />
               <div className={styles.cardBody}>
                 <span className={styles.tag}>아이폰스냅</span>
                 <b>필름하루 스냅</b>

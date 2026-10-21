@@ -4,7 +4,7 @@ import { ArrowRight, BadgeCheck, Bookmark, CalendarCheck, Camera, Check, Chevron
 import Button from '../../components/ui/Button';
 import { BUSINESS_CATEGORIES } from '../../data/categories';
 import { getFeedVendors } from '../../data/api';
-import { imageUrl } from '../../data/vendors';
+import { imageUrl, publicImage } from '../../data/vendors';
 import { useMemberAction } from '../../hooks/useMemberAction';
 import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion';
 import { PATHS, vendorPath } from '../../routes';
@@ -25,8 +25,8 @@ const HERO_BAR_MAX = 3100; // 막대 길이 기준 (시나리오끼리 비교되
 const sum = (a: number[]) => a.reduce((s, n) => s + n, 0);
 
 const PROMOS = [
-  { to: `${PATHS.directory}?cat=${encodeURIComponent('아이폰스냅')}`, img: '/images/banner_01.jpg', alt: '빈티지 제주스냅 찾는다면? 들꽃스냅 패키지 프로모션 · 제주스냅+드레스+헤어메이크업 패키지 할인 중' },
-  { to: PATHS.guide, img: '/images/banner_02.jpg', alt: '웨딩준비 뭐부터 해야 할지 모르겠다면? 블라썸 웨딩 페스타 · 결심회원 한정 프로모션 진행 중' },
+  { to: `${PATHS.directory}?cat=${encodeURIComponent('아이폰스냅')}`, img: publicImage('banner_01.jpg'), alt: '빈티지 제주스냅 찾는다면? 들꽃스냅 패키지 프로모션 · 제주스냅+드레스+헤어메이크업 패키지 할인 중' },
+  { to: PATHS.guide, img: publicImage('banner_02.jpg'), alt: '웨딩준비 뭐부터 해야 할지 모르겠다면? 블라썸 웨딩 페스타 · 결심회원 한정 프로모션 진행 중' },
 ];
 
 function HeroCard() {

@@ -4,6 +4,7 @@ import { ArrowRight, Lightbulb } from 'lucide-react';
 import Button from '../../components/ui/Button';
 import Chip, { ChipGroup } from '../../components/ui/Chip';
 import Stepper from '../../components/ui/Stepper';
+import { publicImage } from '../../data/vendors';
 import { PATHS } from '../../routes';
 import { usePrefStore, type PrepMethod } from '../../stores/prefStore';
 import { toast } from '../../stores/toastStore';
@@ -98,7 +99,7 @@ export default function OnboardingPage() {
                   const on = pref.moods.includes(m);
                   return (
                     <button key={m} type="button" aria-pressed={on} className={`${styles.mood} ${on ? styles.moodOn : ''}`} onClick={() => pref.toggleMood(m)}>
-                      <img src={`/images/${photo}.jpg`} alt="" loading="lazy" />{m}
+                      <img src={publicImage(`${photo}.jpg`)} alt="" loading="lazy" />{m}
                     </button>
                   );
                 })}

@@ -63,7 +63,7 @@ const router = createBrowserRouter([
       { path: '*', element: <PlaceholderPage title="없는 화면이에요" /> },
     ],
   },
-]);
+], { basename: import.meta.env.BASE_URL.replace(/\/$/, '') || '/' }); // 깃허브 페이지 배포 경로(/wedding-way)
 
 export default function App() {
   return <RouterProvider router={router} />;

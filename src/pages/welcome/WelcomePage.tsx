@@ -2,6 +2,7 @@ import type { CSSProperties } from 'react';
 import { Link } from 'react-router';
 import { ArrowRight, Heart, Store } from 'lucide-react';
 import Logo from '../../components/layout/Logo';
+import { publicImage } from '../../data/vendors';
 import { PATHS } from '../../routes';
 import { useModeStore } from '../../stores/modeStore';
 import styles from './WelcomePage.module.css';
@@ -30,7 +31,7 @@ export default function WelcomePage() {
         {HEARTS.map((h, i) => (
           <img
             key={i}
-            src="/images/heart.png"
+            src={publicImage('heart.png')}
             alt=""
             className={h.far ? styles.far : undefined}
             style={{ '--x': h.x, '--y': h.y, '--w': `${h.w}px`, '--dur': `${h.dur}s`, '--delay': `${h.delay}s`, '--rot': `${h.rot}deg` } as CSSProperties}

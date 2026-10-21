@@ -52,4 +52,6 @@ export const VENDORS: Vendor[] = [
 export const FEED_IDS = [1, 4, 20, 8, 5, 21, 9, 14, 23, 10, 6, 2, 22, 19, 15, 16, 7];
 
 /** 목업 사진 주소 (없으면 null) */
-export const imageUrl = (photo?: string | null) => (photo ? `/images/${photo}.jpg` : null);
+/** public/images 안 파일 주소 (배포 경로 기준) */
+export const publicImage = (file: string) => `${import.meta.env.BASE_URL}images/${file}`;
+export const imageUrl = (photo?: string | null) => (photo ? publicImage(`${photo}.jpg`) : null);

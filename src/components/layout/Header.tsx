@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, NavLink, useLocation, useNavigate } from 'react-router';
 import { Menu, X } from 'lucide-react';
+import { useSignOut } from '../../hooks/useSignOut';
 import { PATHS } from '../../routes';
 import { authLabel, useAuthStore } from '../../stores/authStore';
 import { useModeStore } from '../../stores/modeStore';
@@ -14,6 +15,7 @@ export default function Header() {
   const { bizMode, tipClosed, setBizMode, closeTip } = useModeStore();
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
+  const signOut = useSignOut();
   const { pathname } = useLocation();
 
   // '내 업체': 업체 로그인 상태면 내 업체 페이지, 아니면 우리 업체 알리기
@@ -34,11 +36,7 @@ export default function Header() {
     toast(on ? '업체 모드로 전환했어요' : '예비부부 모드로 전환했어요');
   };
 
-  const onLogout = () => {
-    logout();
-    toast('로그아웃했어요');
-    navigate(PATHS.home);
-  };
+  const onLogout = () => signOut(logout, '로그아웃했어요');
 
   return (
     <header className={styles.gnb}>

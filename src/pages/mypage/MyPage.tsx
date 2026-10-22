@@ -13,6 +13,7 @@ import { useCoupleStore } from '../../stores/coupleStore';
 import { useFavoriteStore } from '../../stores/favoriteStore';
 import { toast } from '../../stores/toastStore';
 import { usePhaseTitle, useTimelineStore } from '../../stores/timelineStore';
+import Account from './Account';
 import InviteModal from './InviteModal';
 import ItemDrawer from './ItemDrawer';
 import MyCalendar from './MyCalendar';
@@ -20,7 +21,8 @@ import Timeline from './Timeline';
 import styles from './MyPage.module.css';
 import inv from './Invite.module.css';
 
-type Tab = 'timeline' | 'budget';
+type Tab = 'timeline' | 'budget' | 'account';
+const TABS: Tab[] = ['timeline', 'budget', 'account'];
 
 // 예산 · 찜 탭 (프로토타입 예시 수치)
 const CONFIRMED: { name: string; reco: string; amount: string; status: string; tone: TagTone }[] = [
@@ -33,7 +35,7 @@ const CONFIRMED: { name: string; reco: string; amount: string; status: string; t
 /** 내 웨딩: 배너(D-day · 진행률 · 짝꿍) + 타임라인 · 캘린더 / 예산 · 찜 */
 export default function MyPage() {
   const [params, setParams] = useSearchParams();
-  const tab: Tab = params.get('tab') === 'budget' ? 'budget' : 'timeline';
+  const tab: Tab = TABS.find((t) => t === params.get('tab')) ?? 'timeline';
   const user = useAuthStore((s) => s.user);
   const me = user?.type === 'user' ? user.nick : '민지';
   const couple = useCoupleStore((s) => s.couple);
@@ -114,9 +116,12 @@ export default function MyPage() {
         <div className={styles.tabs}><Tabs stretch label="내 웨딩" value={tab} onChange={(t) => setParams(t === 'timeline' ? {} : { tab: t }, { replace: true })} items={[
           { value: 'timeline', label: '타임라인 · 캘린더' },
           { value: 'budget', label: '예산 · 찜' },
+          { value: 'account', label: '계정' },
         ]} /></div>
 
-        {tab === 'timeline' ? (
+        {tab === 'account' ? (
+          user?.type === 'user' && <Account key={JSON.stringify(user)} user={user} />
+        ) : tab === 'timeline' ? (
           <div className={styles.panelIn}>
             <Panel className={styles.calPanel}>
               <MyCalendar items={items} wedding={wedding} view={calView} setView={setCalView} onOpen={setOpenId} />

@@ -1,6 +1,6 @@
 .tabs { display: flex; margin: var(--ds-s-xl) 0; border-bottom: 1px solid var(--ds-panel-border); overflow-x: auto; scrollbar-width: none; }
 .tabs::-webkit-scrollbar { display: none; }
-.tab { display: inline-flex; align-items: center; gap: 6px; flex: none; height: 48px; padding: 0 var(--ds-s-lg); margin-bottom: -1px; border-bottom: 2px solid transparent; color: var(--ds-muted); font-size: 16px; font-weight: 500; }
+.tab { display: inline-flex; align-items: center; gap: 6px; flex: none; height: 48px; padding: 0 var(--ds-s-lg); margin-bottom: -1px; border-bottom: 2px solid transparent; color: var(--ds-muted); font-size: 16px; font-weight: 500; white-space: nowrap; }
 .active { color: var(--ds-ink); font-weight: 700; border-color: var(--ds-ink); }
 .fill .tab { flex: 1; justify-content: center; }
 .tab:focus-visible { outline: 2px solid var(--ds-ink); outline-offset: -2px; }

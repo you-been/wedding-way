@@ -110,7 +110,7 @@
 .acc > div { display: grid; grid-template-columns: 140px 1fr; align-items: center; gap: var(--ds-s-base); padding: 14px 0; border-bottom: 1px solid var(--ds-hairline); }
 .acc dt { font-size: 14px; color: var(--ds-muted); }
 .acc dd { display: flex; flex-wrap: wrap; align-items: center; gap: var(--ds-s-sm); font-size: 15px; font-weight: 500; }
-.accActions { display: flex; gap: var(--ds-s-sm); margin-top: var(--ds-s-lg); }
+.accActions { display: flex; align-items: center; gap: var(--ds-s-sm); margin-top: var(--ds-s-lg); }
 
 @media (max-width: 960px) {
   .head, .profile { grid-template-columns: 1fr; }
@@ -138,3 +138,8 @@
 @media (prefers-reduced-motion: reduce) {
   .bar i { transition: none; }
 }
+
+/* 회원 탈퇴: 눈에 덜 띄는 글자 버튼 (오른쪽 끝) */
+.withdraw { margin-left: auto; font-size: 13px; color: var(--ds-muted); text-decoration: underline; text-underline-offset: 3px; }
+.withdraw:hover { color: var(--ds-ink); }
+.withdraw:focus-visible { outline: 2px solid var(--ds-ink); outline-offset: 2px; }

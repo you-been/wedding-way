@@ -11,10 +11,12 @@ import VendorPreviewCard from '../../components/vendor/VendorPreviewCard';
 import { NEXT_STATUS, bizChecks, bizDayStatus, bizPriceText, dayKey, type BizProfile, type BizTab } from '../../data/biz';
 import { BUSINESS_CATEGORIES, MOODS } from '../../data/categories';
 import { VENDORS, imageUrl } from '../../data/vendors';
+import { useSignOut } from '../../hooks/useSignOut';
 import { PATHS } from '../../routes';
 import { useAuthStore } from '../../stores/authStore';
 import { useBizStore } from '../../stores/bizStore';
 import { toast } from '../../stores/toastStore';
+import { withdraw } from '../../stores/withdraw';
 import type { BizUser } from '../../types';
 import styles from './PartnerDashPage.module.css';
 
@@ -98,6 +100,7 @@ function ProfileForm({ user }: { user: BizUser }) {
 /** 내 업체: 배너(요약 · 프로필 완성도) + 대시보드 · 업체 정보 · 문의 · 일정 · 계정 */
 export default function PartnerDashPage() {
   const navigate = useNavigate();
+  const signOut = useSignOut();
   const [params, setParams] = useSearchParams();
   const tab = (TABS as string[]).includes(params.get('tab') ?? '') ? (params.get('tab') as BizTab) : 'home';
   const go = (t: BizTab) => setParams(t === 'home' ? {} : { tab: t }, { replace: true });
@@ -258,7 +261,11 @@ export default function PartnerDashPage() {
             </dl>
             <div className={styles.accActions}>
               <Button size="sm" variant="ghost" onClick={() => toast('비밀번호 변경 메일을 보냈어요 (프로토타입)')}>비밀번호 변경</Button>
-              <Button size="sm" variant="ghost" onClick={() => { auth.logout(); navigate(PATHS.home); toast('로그아웃했어요'); }}>로그아웃</Button>
+              <Button size="sm" variant="ghost" onClick={() => signOut(auth.logout, '로그아웃했어요')}>로그아웃</Button>
+              <button type="button" className={styles.withdraw} onClick={() => {
+                if (!confirm('정말 탈퇴할까요?\n업체 정보 · 예약 일정이 모두 지워지고 디렉토리에서도 내려가요. 되돌릴 수 없어요.')) return;
+                signOut(() => withdraw('biz'), '탈퇴했어요. 그동안 함께해 주셔서 고마워요');
+              }}>회원 탈퇴</button>
             </div>
           </Panel>
         )}

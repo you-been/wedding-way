@@ -234,3 +234,21 @@ button.weddingMark:hover { background: var(--ds-brand-hover); }
   .statBar i, .progressBar i, .miniBar i, .tlItem, .coupleBtn { transition: none; }
   .panelIn { animation: none; }
 }
+
+/* 계정 탭: 기본 정보 수정 */
+.accPanel { max-width: 760px; }
+.accNote { margin: 0 0 var(--ds-s-xl); font-size: 14px; color: var(--ds-muted); }
+.accGrid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--ds-s-lg) var(--ds-s-base); }
+.accGrid > * { margin-bottom: 0; }
+.accError { margin: var(--ds-s-base) 0 0; font-size: 14px; font-weight: 500; }
+.accSave { display: flex; justify-content: flex-end; margin-top: var(--ds-s-xl); }
+.accActions { display: flex; align-items: center; gap: var(--ds-s-sm); max-width: 760px; margin-top: var(--ds-s-base); }
+@media (max-width: 760px) {
+  .accGrid { grid-template-columns: 1fr; }
+  .accSave > * { width: 100%; }
+}
+
+/* 회원 탈퇴: 눈에 덜 띄는 글자 버튼 (오른쪽 끝) */
+.withdraw { margin-left: auto; font-size: 13px; color: var(--ds-muted); text-decoration: underline; text-underline-offset: 3px; }
+.withdraw:hover { color: var(--ds-ink); }
+.withdraw:focus-visible { outline: 2px solid var(--ds-ink); outline-offset: 2px; }

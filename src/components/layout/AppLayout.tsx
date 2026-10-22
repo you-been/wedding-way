@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { Link, Navigate, Outlet, useLocation } from 'react-router';
+import { runPendingSignOut } from '../../hooks/useSignOut';
 import { BIZ_PATHS, PATHS } from '../../routes';
 import { useModeStore } from '../../stores/modeStore';
 import Header from './Header';
@@ -15,8 +16,8 @@ export default function AppLayout() {
   const bizMode = useModeStore((s) => s.bizMode);
   const isWelcome = pathname === PATHS.welcome;
 
-  // 화면이 바뀌면 맨 위로
-  useEffect(() => { window.scrollTo(0, 0); }, [pathname]);
+  // 화면이 바뀌면 맨 위로 + 로그아웃 · 탈퇴로 홈에 온 거면 이제 계정을 지움
+  useEffect(() => { window.scrollTo(0, 0); runPendingSignOut(); }, [pathname]);
 
   // 첫 방문이면 홈 대신 갈림길로 (훅은 모두 이 위에서 호출: 조기 return 뒤에 두면 렌더마다 훅 개수가 달라짐)
   if (pathname === PATHS.home && !splashDone) return <Navigate to={PATHS.welcome} replace />;

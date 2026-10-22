@@ -6,7 +6,7 @@
 .head p { margin-top: 4px; font-size: 16px; color: var(--ds-muted); }
 
 /* 히어로: 잉크 단색 면 */
-.hero { display: flex; align-items: center; min-height: var(--ds-hero-h); padding: 56px 0; background: var(--ds-ink); color: var(--ds-on-ink); } /* 홈 히어로와 같은 높이 */
+.hero { display: flex; align-items: center; min-height: var(--ds-hero-h); padding: 48px 0; background: var(--ds-ink); color: var(--ds-on-ink); } /* 홈 히어로와 같은 높이 */
 .hero > :global(.wrap) { width: 100%; }
 .heroInner { display: grid; grid-template-columns: 1.2fr 1fr; gap: 56px; align-items: center; }
 .kicker { display: inline-flex; align-items: center; height: 28px; margin-bottom: var(--ds-s-base); padding: 0 10px; border-radius: var(--ds-r-cta); background: var(--ds-brand); color: var(--ds-on-brand); font-size: 13px; font-weight: 700; }
@@ -19,8 +19,8 @@
 
 .preview { display: flex; flex-direction: column; align-items: flex-start; gap: var(--ds-s-md); }
 .previewLabel { font-size: 13px; font-weight: 500; color: rgba(255, 255, 255, .7); }
-.card { width: 100%; max-width: 400px; overflow: hidden; border-radius: var(--ds-r-panel); background: var(--ds-canvas); color: var(--ds-ink); box-shadow: 8px 8px 0 var(--ds-brand); }
-.card img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
+.card { width: 100%; max-width: 380px; overflow: hidden; border-radius: var(--ds-r-panel); background: var(--ds-canvas); color: var(--ds-ink); box-shadow: 8px 8px 0 var(--ds-brand); }
+.card img { display: block; width: 100%; aspect-ratio: 2 / 1; object-fit: cover; }
 .cardBody { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; padding: var(--ds-s-lg) var(--ds-s-lg) var(--ds-s-base); }
 .tag { height: 24px; padding: 0 8px; border-radius: var(--ds-r-cta); background: var(--ds-hairline); font-size: 12px; font-weight: 500; line-height: 24px; }
 .cardBody b { margin-top: 4px; font-size: 18px; font-weight: 700; }

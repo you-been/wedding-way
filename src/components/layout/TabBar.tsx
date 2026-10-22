@@ -1,13 +1,13 @@
 import { NavLink, useLocation } from 'react-router';
 import { Home, Wallet, LayoutGrid, Star, Heart, Store } from 'lucide-react';
+import { useBizMode } from '../../hooks/useBizMode';
 import { PATHS } from '../../routes';
 import { useAuthStore } from '../../stores/authStore';
-import { useModeStore } from '../../stores/modeStore';
 import styles from './TabBar.module.css';
 
 /** 모바일 하단 탭바 (760px 이하) */
 export default function TabBar() {
-  const bizMode = useModeStore((s) => s.bizMode);
+  const bizMode = useBizMode();
   const isBizUser = useAuthStore((s) => s.user?.type === 'biz');
   const { pathname } = useLocation();
   const tabs = [

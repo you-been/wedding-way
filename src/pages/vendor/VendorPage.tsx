@@ -6,6 +6,7 @@ import Calendar, { CalendarLegend, type DayStatus } from '../../components/ui/Ca
 import Tabs from '../../components/ui/Tabs';
 import Tag from '../../components/ui/Tag';
 import ReviewCard from '../../components/vendor/ReviewCard';
+import ReviewLock from '../../components/vendor/ReviewLock';
 import { categoryAvg, categoryIcon } from '../../data/categories';
 import { getReviews, getVendor, getVendors } from '../../data/api';
 import { recoReasons } from '../../data/recommend';
@@ -35,6 +36,7 @@ export default function VendorPage({ vendor: given }: { vendor?: Vendor }) {
 
 function VendorDetail({ v, preview }: { v: Vendor; preview: boolean }) {
   const isBiz = useAuthStore((s) => s.user?.type === 'biz') && !preview; // 업체 회원은 찜 · 예산에 담기 같은 예비부부 동작을 보지 않음
+  const canSeeReviews = useAuthStore((s) => !!s.user) || preview; // 후기는 로그인해야 볼 수 있어요 (업체 미리보기는 본인 화면이라 보임)
   const [tab, setTab] = useState<Tab>('info');
   const moods = usePrefStore((s) => s.moods);
   const myTier = useMyTier();
@@ -146,8 +148,12 @@ function VendorDetail({ v, preview }: { v: Vendor; preview: boolean }) {
 
             {tab === 'review' && (
               <section className={styles.panel}>
-                <div className={styles.reviews}>{getReviews().slice(0, 2).map((r) => <ReviewCard key={r.id} review={r} />)}</div>
-                <Link to={PATHS.reviews} className={styles.moreLink}>전체 후기 보기 <ArrowRight /></Link>
+                {canSeeReviews ? (
+                  <>
+                    <div className={styles.reviews}>{getReviews().slice(0, 2).map((r) => <ReviewCard key={r.id} review={r} />)}</div>
+                    <Link to={PATHS.reviews} className={styles.moreLink}>전체 후기 보기 <ArrowRight /></Link>
+                  </>
+                ) : <ReviewLock />}
               </section>
             )}
 

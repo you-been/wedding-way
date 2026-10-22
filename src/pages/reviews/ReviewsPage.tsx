@@ -4,6 +4,7 @@ import Button from '../../components/ui/Button';
 import Chip, { ChipGroup } from '../../components/ui/Chip';
 import PageHead from '../../components/ui/PageHead';
 import ReviewCard from '../../components/vendor/ReviewCard';
+import ReviewLock from '../../components/vendor/ReviewLock';
 import { getReviews } from '../../data/api';
 import type { Review } from '../../data/reviews';
 import { PATHS } from '../../routes';
@@ -22,8 +23,10 @@ const FILTERS: { label: string; test: (r: Review) => boolean }[] = [
 
 export default function ReviewsPage() {
   const [filter, setFilter] = useState(FILTERS[0].label);
-  const isBiz = useAuthStore((s) => s.user?.type === 'biz'); // 후기는 예비부부만 써요
-  const list = getReviews().filter(FILTERS.find((f) => f.label === filter)!.test);
+  const user = useAuthStore((s) => s.user); // 후기는 로그인해야 볼 수 있어요
+  const isBiz = user?.type === 'biz'; // 후기는 예비부부만 써요
+  const reviews = getReviews();
+  const list = reviews.filter(FILTERS.find((f) => f.label === filter)!.test);
 
   return (
     <div className="page">
@@ -31,12 +34,16 @@ export default function ReviewsPage() {
         <PageHead title="인증 실후기" desc="견적서 · 결제 내역으로 실제 계약이 확인된 후기만 인증 배지가 붙어요.">
           {!isBiz && <Button to={PATHS.reviewWrite} className={styles.write}><PenLine />후기 쓰기</Button>}
         </PageHead>
-        <ChipGroup label="후기 필터" scroll className={styles.filters}>
-          {FILTERS.map((f) => <Chip key={f.label} active={filter === f.label} onClick={() => setFilter(f.label)}>{f.label}</Chip>)}
-        </ChipGroup>
-        <div className={styles.list}>
-          {list.length ? list.map((r) => <ReviewCard key={r.id} review={r} />) : <p className={styles.empty}>해당하는 후기가 아직 없어요.</p>}
-        </div>
+        {user ? (
+          <>
+            <ChipGroup label="후기 필터" scroll className={styles.filters}>
+              {FILTERS.map((f) => <Chip key={f.label} active={filter === f.label} onClick={() => setFilter(f.label)}>{f.label}</Chip>)}
+            </ChipGroup>
+            <div className={styles.list}>
+              {list.length ? list.map((r) => <ReviewCard key={r.id} review={r} />) : <p className={styles.empty}>해당하는 후기가 아직 없어요.</p>}
+            </div>
+          </>
+        ) : <ReviewLock />}
       </div>
     </div>
   );

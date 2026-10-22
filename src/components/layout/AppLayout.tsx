@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { Link, Navigate, Outlet, useLocation } from 'react-router';
+import { useBizMode } from '../../hooks/useBizMode';
 import { runPendingSignOut } from '../../hooks/useSignOut';
 import { BIZ_PATHS, PATHS } from '../../routes';
 import { useModeStore } from '../../stores/modeStore';
@@ -13,7 +14,7 @@ import styles from './AppLayout.module.css';
 export default function AppLayout() {
   const { pathname } = useLocation();
   const splashDone = useModeStore((s) => s.splashDone);
-  const bizMode = useModeStore((s) => s.bizMode);
+  const bizMode = useBizMode();
   const isWelcome = pathname === PATHS.welcome;
 
   // 화면이 바뀌면 맨 위로 + 로그아웃 · 탈퇴로 홈에 온 거면 이제 계정을 지움

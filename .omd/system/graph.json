@@ -761,9 +761,9 @@
         }
       },
       "size.hero": {
-        "$description": "결심 디테일 — 홈 · 우리 업체 알리기 상단 비주얼 최소 높이 (두 칸으로 놓이는 961px 이상, 사용자 요청으로 두 히어로 높이를 맞춤). 960px 이하는 내용 높이",
+        "$description": "결심 디테일 — 홈 · 우리 업체 알리기 상단 비주얼 최소 높이 (두 칸으로 놓이는 961px 이상, 사용자 요청으로 두 히어로 높이를 맞추고 568 → 520px로 낮춤 · 위아래 여백 48px). 960px 이하는 내용 높이",
         "$type": "dimension",
-        "$value": "568px"
+        "$value": "520px"
       },
       "size.search": {
         "$description": "크몽 값 — 검색창 셸 크기",
@@ -914,7 +914,7 @@
   "projection": {
     "locale": "en",
     "path": "DESIGN.md",
-    "sha256": "4c1a583ce0dfb7b64a0aadef7697f858357715312b0a13f2fb1ef3dc8ef2d153"
+    "sha256": "420a33275c1654e1d501e8d11b308bb7172e186425ee6bb2e9e3dd1862ceac11"
   },
   "schema_version": "2.0.0",
   "typography_assets": {

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, NavLink, useLocation, useNavigate } from 'react-router';
 import { Menu, X } from 'lucide-react';
+import { useBizMode } from '../../hooks/useBizMode';
 import { useSignOut } from '../../hooks/useSignOut';
 import { PATHS } from '../../routes';
 import { authLabel, useAuthStore } from '../../stores/authStore';
@@ -12,7 +13,8 @@ import styles from './Header.module.css';
 export default function Header() {
   const user = useAuthStore((s) => s.user);
   const logout = useAuthStore((s) => s.logout);
-  const { bizMode, tipClosed, setBizMode, closeTip } = useModeStore();
+  const { tipClosed, setBizMode, closeTip } = useModeStore();
+  const bizMode = useBizMode();
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
   const signOut = useSignOut();

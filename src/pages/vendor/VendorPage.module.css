@@ -31,6 +31,7 @@
 .rating { display: flex; align-items: center; gap: 4px; margin: var(--ds-s-md) 0 var(--ds-s-base); font-size: 15px; font-variant-numeric: tabular-nums; }
 .rating svg { width: 16px; height: 16px; fill: var(--ds-ink); }
 .rating span { margin-left: 4px; font-size: 13px; color: var(--ds-muted); }
+.rating .noReview { margin-left: 0; }
 .priceBox { position: relative; display: flex; flex-direction: column; margin-bottom: var(--ds-s-base); padding: var(--ds-s-base); border-radius: var(--ds-r-control); background: var(--ds-panel); }
 .priceBox small { font-size: 13px; color: var(--ds-muted); }
 .priceBox strong { font-size: 22px; font-weight: 700; font-variant-numeric: tabular-nums; }

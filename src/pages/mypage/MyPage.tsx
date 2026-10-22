@@ -1,19 +1,16 @@
 import { useState } from 'react';
-import { Link, useSearchParams } from 'react-router';
-import { ArrowRight, Calendar, CalendarHeart, GripVertical, Heart, Link as LinkIcon, MapPin, Plus, UserPlus } from 'lucide-react';
+import { useSearchParams } from 'react-router';
+import { Calendar, CalendarHeart, Check, GripVertical, Heart, Link as LinkIcon, MapPin, Pencil, Plus, UserPlus } from 'lucide-react';
 import Panel from '../../components/ui/Panel';
 import Tabs from '../../components/ui/Tabs';
-import Tag, { type TagTone } from '../../components/ui/Tag';
-import VendorCard from '../../components/vendor/VendorCard';
-import { getVendorsByIds } from '../../data/api';
+import { won } from '../../data/budget';
 import { TL_PHASES, ddayText, weddingInfo, weekday } from '../../data/timeline';
-import { PATHS } from '../../routes';
 import { useAuthStore } from '../../stores/authStore';
 import { useCoupleStore } from '../../stores/coupleStore';
-import { useFavoriteStore } from '../../stores/favoriteStore';
 import { toast } from '../../stores/toastStore';
 import { usePhaseTitle, useTimelineStore } from '../../stores/timelineStore';
 import Account from './Account';
+import BudgetTab, { useBudgetSummary } from './BudgetTab';
 import InviteModal from './InviteModal';
 import ItemDrawer from './ItemDrawer';
 import MyCalendar from './MyCalendar';
@@ -22,15 +19,38 @@ import styles from './MyPage.module.css';
 import inv from './Invite.module.css';
 
 type Tab = 'timeline' | 'budget' | 'account';
-const TABS: Tab[] = ['timeline', 'budget', 'account'];
 
-// 예산 · 찜 탭 (프로토타입 예시 수치)
-const CONFIRMED: { name: string; reco: string; amount: string; status: string; tone: TagTone }[] = [
-  { name: '예식장', reco: '870만', amount: '920만', status: '+50만', tone: 'brand' },
-  { name: '스드메', reco: '1,040만', amount: '-', status: '탐색 중', tone: 'default' },
-  { name: '아이폰스냅', reco: '45만', amount: '48만', status: '계약 완료', tone: 'ink' },
-  { name: '헤어변형', reco: '50만', amount: '-', status: '미정', tone: 'default' },
-];
+/** 배너 예식장 칩: 누르면 이름을 입력 (빈 값으로 저장하면 미정) */
+function VenueChip() {
+  const { venue, setVenue } = useTimelineStore();
+  const [editing, setEditing] = useState(false);
+  const [value, setValue] = useState(venue);
+  const open = () => { setValue(venue); setEditing(true); };
+  const save = () => {
+    const next = value.trim();
+    if (next !== venue) { setVenue(next); toast(next ? '예식장을 저장했어요' : '예식장을 미정으로 바꿨어요'); }
+    setEditing(false);
+  };
+  if (editing) {
+    return (
+      <li className={styles.venueEdit}>
+        <MapPin />
+        <input type="text" autoFocus maxLength={30} value={value} placeholder="예식장 이름 (예: 더채플 강남)" aria-label="예식장 이름"
+          onChange={(e) => setValue(e.target.value)} onBlur={save}
+          onKeyDown={(e) => { if (e.key === 'Enter') e.currentTarget.blur(); if (e.key === 'Escape') setEditing(false); }} />
+        <button type="button" aria-label="예식장 저장" onMouseDown={(e) => e.preventDefault()} onClick={save}><Check /></button>
+      </li>
+    );
+  }
+  return (
+    <li className={styles.venueChip}>
+      <button type="button" onClick={open} aria-label={venue ? `예식장 ${venue} · 고치기` : '예식장 정하기'}>
+        <MapPin />{venue ? <span>{venue}</span> : <span className={styles.venueEmpty}>예식장 미정 · <u>정하기</u></span>}<Pencil className={styles.venuePen} />
+      </button>
+    </li>
+  );
+}
+const TABS: Tab[] = ['timeline', 'budget', 'account'];
 
 /** 내 웨딩: 배너(D-day · 진행률 · 짝꿍) + 타임라인 · 캘린더 / 예산 · 찜 */
 export default function MyPage() {
@@ -39,10 +59,10 @@ export default function MyPage() {
   const user = useAuthStore((s) => s.user);
   const me = user?.type === 'user' ? user.nick : '민지';
   const couple = useCoupleStore((s) => s.couple);
-  const favIds = useFavoriteStore((s) => s.ids);
   const { wedding, items, setWedding, update, reset } = useTimelineStore();
   const { days, nowIdx } = weddingInfo(wedding);
   const phaseTitle = usePhaseTitle();
+  const spend = useBudgetSummary();
   const [openId, setOpenId] = useState<string | null>(null);
   const [inviteOpen, setInviteOpen] = useState(false);
   const [showHidden, setShowHidden] = useState(false);
@@ -71,7 +91,7 @@ export default function MyPage() {
             <h1>{couple ? `${couple.a} ♥ ${couple.b} 님의 웨딩` : `${me} 님의 웨딩`}</h1>
             <ul className={styles.meta}>
               <li><CalendarHeart />본식 <b>{wedding.replaceAll('-', '.')} ({weekday(wedding)})</b></li>
-              <li><MapPin />더채플 강남</li>
+              <VenueChip />
             </ul>
             <div className={styles.couple}>
               {couple ? (
@@ -101,8 +121,8 @@ export default function MyPage() {
               </div>
               <div className={styles.stat}>
                 <small>예산 사용</small>
-                <strong>1,420만</strong>
-                <span className={styles.statNote}>/ 3,000만 원</span>
+                <strong>{won(spend.used)}</strong>
+                <span className={styles.statNote}>/ {won(spend.total)}</span>
               </div>
             </div>
           </div>
@@ -154,34 +174,7 @@ export default function MyPage() {
             <Timeline items={items} nowIdx={nowIdx} onOpen={setOpenId} />
           </div>
         ) : (
-          <div className={styles.panelIn}>
-            <div className={styles.dashGrid}>
-              <Panel>
-                <small className={styles.muted}>예산 사용 현황</small>
-                <div className={styles.money}><b>1,420만</b> / 3,000만 원</div>
-                <div className={styles.miniBar}><i style={{ width: '47%' }} /></div>
-                <Link to={PATHS.budgetResult} className={styles.more}>진단 리포트 <ArrowRight /></Link>
-              </Panel>
-              <Panel>
-                <small className={styles.muted}>이번 달 할 일</small>
-                <ul className={styles.todo}>
-                  <li className={styles.done}>웨딩홀 계약</li>
-                  <li>준비 방식 결정</li>
-                  <li>스드메 업체 서칭</li>
-                </ul>
-              </Panel>
-            </div>
-            <Panel title="예산 항목별 확정 현황">
-              <table className={styles.table}>
-                <thead><tr><th>항목</th><th>권장 예산</th><th>확정 금액</th><th>상태</th></tr></thead>
-                <tbody>{CONFIRMED.map((r) => <tr key={r.name}><td>{r.name}</td><td>{r.reco}</td><td>{r.amount}</td><td><Tag tone={r.tone}>{r.status}</Tag></td></tr>)}</tbody>
-              </table>
-            </Panel>
-            <div className={styles.sectionHead}><h2>찜한 업체</h2><Link to={PATHS.directory} className={styles.more}>디렉토리 <ArrowRight /></Link></div>
-            {favIds.length
-              ? <div className={styles.vendors}>{getVendorsByIds(favIds).map((v) => <VendorCard key={v.id} vendor={v} />)}</div>
-              : <p className={styles.empty}>아직 찜한 업체가 없어요. 디렉토리에서 마음에 드는 업체를 찜해 보세요.</p>}
-          </div>
+          <BudgetTab onShowTimeline={() => setParams({}, { replace: true })} />
         )}
       </div>
 

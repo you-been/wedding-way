@@ -4,7 +4,7 @@ import Button from '../../components/ui/Button';
 import Chip, { ChipGroup } from '../../components/ui/Chip';
 import PageHead from '../../components/ui/PageHead';
 import ReviewCard from '../../components/vendor/ReviewCard';
-import ReviewLock from '../../components/vendor/ReviewLock';
+import ReviewLock, { ReviewEmpty } from '../../components/vendor/ReviewLock';
 import { getReviews } from '../../data/api';
 import type { Review } from '../../data/reviews';
 import { PATHS } from '../../routes';
@@ -34,7 +34,7 @@ export default function ReviewsPage() {
         <PageHead title="인증 실후기" desc="견적서 · 결제 내역으로 실제 계약이 확인된 후기만 인증 배지가 붙어요.">
           {!isBiz && <Button to={PATHS.reviewWrite} className={styles.write}><PenLine />후기 쓰기</Button>}
         </PageHead>
-        {user ? (
+        {reviews.length === 0 ? <ReviewEmpty /> : user ? (
           <>
             <ChipGroup label="후기 필터" scroll className={styles.filters}>
               {FILTERS.map((f) => <Chip key={f.label} active={filter === f.label} onClick={() => setFilter(f.label)}>{f.label}</Chip>)}

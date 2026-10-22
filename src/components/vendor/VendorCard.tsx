@@ -40,9 +40,13 @@ export default function VendorCard({ vendor: v, height = 180, reasons }: Props) 
           <PriceLine price={v.price} cat={v.cat} />
           {reasons && reasons.length > 0 && <div className={styles.why}>{reasons.map((r) => <span key={r}>{r}</span>)}</div>}
           <div className={styles.foot}>
-            <span className={styles.rating}><Star />{v.rating}</span>
-            <span>후기 {v.reviews}</span>
-            <span className={styles.verified}><BadgeCheck />인증 {v.verified}</span>
+            {v.reviews > 0 ? (
+              <>
+                <span className={styles.rating}><Star />{v.rating}</span>
+                <span>후기 {v.reviews}</span>
+                <span className={styles.verified}><BadgeCheck />인증 {v.verified}</span>
+              </>
+            ) : <span>아직 후기 없음</span>}
           </div>
         </div>
       </Link>

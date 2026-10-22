@@ -12,3 +12,9 @@
   .card h2 { font-size: 18px; }
   .card > a { width: 100%; }
 }
+
+/* 후기 없음 */
+.empty { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 48px var(--ds-s-xl); border: 1px solid var(--ds-panel-border); border-radius: var(--ds-r-panel); text-align: center; }
+.empty svg { width: 32px; height: 32px; margin-bottom: 6px; color: var(--ds-subtle); stroke-width: 1.5; }
+.empty b { font-size: 16px; font-weight: 700; }
+.empty p { font-size: 14px; color: var(--ds-muted); }

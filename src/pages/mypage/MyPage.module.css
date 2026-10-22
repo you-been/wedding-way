@@ -17,6 +17,19 @@
 .meta li { display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 var(--ds-s-md); border-radius: var(--ds-r-chip); background: rgba(255, 255, 255, .55); font-size: 14px; font-weight: 500; }
 .meta b { font-weight: 700; font-variant-numeric: tabular-nums; }
 .meta svg { width: 16px; height: 16px; }
+/* 예식장 칩: 눌러서 이름 입력 */
+.meta li.venueChip { padding: 0; }
+.venueChip button { display: inline-flex; align-items: center; gap: 6px; height: 100%; padding: 0 var(--ds-s-md); border-radius: inherit; font-size: 14px; font-weight: 500; }
+.venueChip button:hover { background: rgba(255, 255, 255, .45); }
+.venueChip button:focus-visible { outline: 2px solid var(--ds-ink); outline-offset: 2px; }
+.venueEmpty u { text-underline-offset: 3px; }
+.meta .venuePen { width: 13px; height: 13px; opacity: .6; }
+.meta li.venueEdit { padding: 0 4px 0 var(--ds-s-md); background: var(--ds-canvas); box-shadow: inset 0 0 0 1.5px var(--ds-ink); }
+.venueEdit input { width: 200px; min-width: 0; height: 100%; padding: 0; border: 0; background: transparent; font-size: 14px; font-weight: 500; }
+.venueEdit input:focus { outline: none; }
+.venueEdit button { display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; }
+.venueEdit button:hover { background: var(--ds-hairline); }
+.venueEdit button:focus-visible { outline: 2px solid var(--ds-ink); outline-offset: 1px; }
 .couple { display: flex; align-items: center; gap: var(--ds-s-md); max-width: 560px; margin-top: var(--ds-s-base); padding: 10px 10px 10px var(--ds-s-md); border-radius: var(--ds-r-control); background: rgba(255, 255, 255, .7); }
 .coupleText { display: flex; flex-direction: column; min-width: 0; }
 .coupleText b { font-size: 14px; font-weight: 700; }
@@ -152,13 +165,51 @@ button.weddingMark:hover { background: var(--ds-brand-hover); }
 .money { margin: 6px 0; font-size: 15px; font-variant-numeric: tabular-nums; }
 .money b { font-size: 28px; font-weight: 700; }
 .miniBar { height: 6px; margin: var(--ds-s-sm) 0 var(--ds-s-base); overflow: hidden; border-radius: var(--ds-r-bar); background: var(--ds-hairline); }
-.todo li { position: relative; padding: 6px 0 6px 26px; font-size: 14px; }
-.todo li::before { content: ""; position: absolute; left: 0; top: 9px; width: 16px; height: 16px; border: 1.5px solid var(--ds-control-border); border-radius: 4px; }
-.todo li.done { color: var(--ds-muted); text-decoration: line-through; }
-.todo li.done::before { border-color: var(--ds-ink); background: var(--ds-ink); }
-.table { width: 100%; border-collapse: collapse; font-size: 14px; }
-.table th { padding: 8px 6px; border-bottom: 1px solid var(--ds-panel-border); font-size: 13px; font-weight: 500; color: var(--ds-muted); text-align: left; }
-.table td { padding: 12px 6px; border-bottom: 1px solid var(--ds-hairline); font-variant-numeric: tabular-nums; }
+.spendNote { font-size: 13px; line-height: 1.5; color: var(--ds-muted); }
+.spendNote b { color: var(--ds-ink); font-weight: 700; font-variant-numeric: tabular-nums; }
+/* 지금 할 일: 실제 체크박스 (타임라인 항목과 연동) */
+.todoNote { margin: -4px 0 var(--ds-s-md); font-size: 13px; color: var(--ds-muted); }
+.todoList { display: grid; gap: 2px; }
+.todoList label { display: flex; align-items: center; gap: 10px; min-height: 40px; padding: 0 8px; margin: 0 -8px; border-radius: var(--ds-r-control); font-size: 14px; cursor: pointer; }
+.todoList label:hover { background: var(--ds-panel); }
+.todoList input { flex: none; width: 18px; height: 18px; margin: 0; accent-color: var(--ds-ink); cursor: pointer; }
+.todoList input:focus-visible { outline: 2px solid var(--ds-ink); outline-offset: 2px; }
+.todoDone span { color: var(--ds-muted); text-decoration: line-through; }
+/* 예산 항목별 확정 현황: 예산(예산 진단) · 확정 금액(여기서 입력) · 상태(자동) */
+.spendPanel, .prefPanel { margin-bottom: var(--ds-s-base); }
+.spendGuide { margin: -4px 0 var(--ds-s-base); font-size: 13px; line-height: 1.6; color: var(--ds-muted); }
+.spendGuide b { color: var(--ds-ink); font-weight: 700; }
+.spendHead, .spendRow { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr) minmax(0, 1.4fr) minmax(0, 1.1fr) minmax(0, 1.1fr); align-items: center; gap: var(--ds-s-md); }
+.spendHead { padding: 0 0 8px; border-bottom: 1px solid var(--ds-panel-border); font-size: 13px; color: var(--ds-muted); }
+.spendRow { min-height: 60px; padding: 8px 0; border-bottom: 1px solid var(--ds-hairline); font-size: 14px; font-variant-numeric: tabular-nums; }
+.spendRow:last-child { border-bottom: 0; }
+.spendName { display: flex; align-items: center; gap: 8px; font-weight: 700; }
+.spendName i { flex: none; width: 10px; height: 10px; border-radius: 50%; }
+.spendPlan small { display: none; }
+.spendInput { display: flex; align-items: center; gap: 6px; }
+.spendInput small { display: none; }
+.payCol { display: grid; gap: 4px; }
+.balance { font-size: 12px; color: var(--ds-muted); font-variant-numeric: tabular-nums; }
+.reflectBtn { display: inline-flex; align-items: center; gap: 4px; height: 26px; padding: 0 8px; border: 1px solid var(--ds-control-border); border-radius: var(--ds-r-chip); background: var(--ds-canvas); font-size: 12px; font-weight: 500; white-space: nowrap; }
+.reflectBtn:hover { border-color: var(--ds-ink); }
+.reflectBtn:focus-visible { outline: 2px solid var(--ds-ink); outline-offset: 2px; }
+.reflectBtn svg, .reflected svg { width: 12px; height: 12px; }
+.spendState small.reflected { display: inline-flex; align-items: center; gap: 3px; }
+.spendState { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
+.spendState small { font-size: 12px; color: var(--ds-muted); font-variant-numeric: tabular-nums; }
+.payStats { display: grid; grid-template-columns: 1fr 1fr; gap: var(--ds-s-base); margin-top: var(--ds-s-md); padding-top: var(--ds-s-md); border-top: 1px solid var(--ds-hairline); }
+.payStats dt { font-size: 12px; color: var(--ds-muted); }
+.payStats dd { margin-top: 2px; font-size: 16px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.spendInput input { width: 100%; max-width: 120px; height: 34px; padding: 0 10px; border: 1px solid var(--ds-control-border); border-radius: var(--ds-r-control); background: var(--ds-canvas); font-size: 14px; text-align: right; font-variant-numeric: tabular-nums; }
+.spendInput input::placeholder { color: var(--ds-placeholder); }
+.spendInput input:focus { outline: 2px solid var(--ds-ink); outline-offset: -1px; border-color: var(--ds-ink); }
+.spendInput em { flex: none; font-size: 13px; font-style: normal; color: var(--ds-muted); }
+/* 내 취향 */
+.prefList { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--ds-s-base) var(--ds-s-xl); }
+.prefList dt { margin-bottom: 4px; font-size: 13px; color: var(--ds-muted); }
+.prefList dd { font-size: 15px; font-weight: 700; }
+.prefMoods { grid-column: 1 / -1; }
+.prefMoods dd { display: flex; flex-wrap: wrap; gap: 6px; font-weight: 400; }
 .sectionHead { display: flex; justify-content: space-between; align-items: center; margin: var(--ds-s-xxl) 0 var(--ds-s-base); }
 .vendors { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--ds-s-base); margin-bottom: 60px; }
 .empty { padding: var(--ds-s-xl) 0 60px; font-size: 14px; color: var(--ds-muted); }
@@ -222,6 +273,18 @@ button.weddingMark:hover { background: var(--ds-brand-hover); }
   .monthList .isWedding .mlDate small { color: rgba(255, 255, 255, .75); }
   .linkMore { display: none; }
   .dashGrid { grid-template-columns: 1fr; }
+  .spendHead { display: none; }
+  .spendRow { grid-template-columns: 1fr 1fr; grid-template-areas: "name state" "plan plan" "pay done"; row-gap: 8px; padding: 14px 0; }
+  .spendName { grid-area: name; }
+  .spendState { grid-area: state; justify-self: end; align-items: flex-end; }
+  .spendPlan { grid-area: plan; color: var(--ds-muted); }
+  .spendPlan small { display: inline; margin-right: 6px; }
+  .spendInput { flex-wrap: wrap; row-gap: 4px; }
+  .payCol { grid-area: pay; align-self: start; }
+  .spendRow > .spendInput { grid-area: done; align-self: start; }
+  .spendInput small { display: block; width: 100%; font-size: 12px; color: var(--ds-muted); }
+  .spendInput input { flex: 1; max-width: none; }
+  .prefList { grid-template-columns: 1fr 1fr; }
   .progress { min-width: 0; flex: 1 1 100%; }
 }
 /* 아주 좁은 화면(~400px): 요약 수치 3칸이 잘리지 않게 2칸 + 예산 사용은 아래 한 줄 */

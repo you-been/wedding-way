@@ -12,6 +12,7 @@
 .input:focus { outline: 2px solid var(--ds-ink); outline-offset: -1px; border-color: var(--ds-ink); }
 .hint { display: flex; align-items: flex-start; gap: var(--ds-s-sm); margin-top: var(--ds-s-base); padding: var(--ds-s-base); border-radius: var(--ds-r-control); background: var(--ds-panel); font-size: 14px; line-height: 1.6; }
 .hint svg { flex: none; width: 18px; height: 18px; margin-top: 2px; }
+.customBudget { max-width: 280px; margin: var(--ds-s-base) 0 0; }
 .textLink { display: inline-flex; align-items: center; gap: 4px; margin-top: var(--ds-s-base); font-size: 14px; font-weight: 500; text-decoration: underline; text-underline-offset: 3px; }
 .textLink svg { width: 16px; height: 16px; }
 .step { animation: step-in .25s ease; }

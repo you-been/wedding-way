@@ -4,9 +4,13 @@ import { ArrowRight, Lightbulb } from 'lucide-react';
 import Button from '../../components/ui/Button';
 import Chip, { ChipGroup } from '../../components/ui/Chip';
 import Stepper from '../../components/ui/Stepper';
+import { won } from '../../data/budget';
+import { BUDGET_CHOICES, GUEST_CHOICES, REGION_CHOICES, VENUE_CHOICES, budgetFromPref, prefAverage, prefTotal } from '../../data/prefBudget';
 import { publicImage } from '../../data/vendors';
 import { PATHS } from '../../routes';
+import { useBudgetStore } from '../../stores/budgetStore';
 import { usePrefStore, type PrepMethod } from '../../stores/prefStore';
+import { useTimelineStore } from '../../stores/timelineStore';
 import { toast } from '../../stores/toastStore';
 import styles from './steps.module.css';
 
@@ -16,9 +20,6 @@ const METHODS: [PrepMethod, string][] = [
   ['일부 동행', '드레스 투어 등 중요한 순간만 함께'],
   ['완전 워크인 (셀프)', '발품 팔아도 내 취향대로 온전히 커스텀'],
 ];
-const GUESTS = ['50명 이하', '50~100명', '100~200명', '200명 이상'];
-const VENUES = ['웨딩홀', '호텔', '하우스·카페 스몰웨딩', '야외', '미정'];
-const BUDGETS = ['3천만 원대', '4~5천만 원대', '5,500만 원 이상', '직접 입력'];
 // 무드 사진: 업체 목업 사진 중 무드에 어울리는 것
 const MOOD_PHOTOS: [string, string][] = [
   ['#감성적', 'biz_03'], ['#클래식', 'biz_09'], ['#빈티지', 'biz_02'], ['#미니멀', 'biz_06'],
@@ -35,7 +36,11 @@ export default function OnboardingPage() {
   const navigate = useNavigate();
 
   const next = () => {
+    if (step === 3 && prefTotal(pref) === null) { toast('총 예산을 입력해 주세요'); return; }
     if (step < TOTAL) { setStep(step + 1); return; }
+    // 진단 결과 반영: 예산 진단 시작값(예식장 추천 · 총예산) + 내 웨딩 예식일
+    useBudgetStore.getState().edit((d) => { Object.assign(d, budgetFromPref(pref)); });
+    useTimelineStore.getState().setWedding(pref.weddingDate);
     toast('진단 완료! 맞춤 예산을 계산했어요');
     navigate(PATHS.budget);
   };
@@ -72,11 +77,15 @@ export default function OnboardingPage() {
               </label>
               <div className={styles.field}>
                 <span>예상 하객 수</span>
-                <ChipGroup label="예상 하객 수">{GUESTS.map((g) => <Chip key={g} active={pref.guests === g} onClick={() => pref.set({ guests: g })}>{g}</Chip>)}</ChipGroup>
+                <ChipGroup label="예상 하객 수">{GUEST_CHOICES.map(([g]) => <Chip key={g} active={pref.guests === g} onClick={() => pref.set({ guests: g })}>{g}</Chip>)}</ChipGroup>
               </div>
               <div className={styles.field}>
                 <span>예식 형태</span>
-                <ChipGroup label="예식 형태">{VENUES.map((v) => <Chip key={v} active={pref.venue === v} onClick={() => pref.set({ venue: v })}>{v}</Chip>)}</ChipGroup>
+                <ChipGroup label="예식 형태">{VENUE_CHOICES.map(([v]) => <Chip key={v} active={pref.venue === v} onClick={() => pref.set({ venue: v })}>{v}</Chip>)}</ChipGroup>
+              </div>
+              <div className={styles.field}>
+                <span>예식 지역</span>
+                <ChipGroup label="예식 지역">{REGION_CHOICES.map((r) => <Chip key={r.id} active={pref.region === r.id} onClick={() => pref.set({ region: r.id })}>{r.name}</Chip>)}</ChipGroup>
               </div>
             </>
           )}
@@ -85,8 +94,15 @@ export default function OnboardingPage() {
             <>
               <h2 className={styles.stepTitle}>생각하는 총 예산은요?</h2>
               <p className={styles.stepDesc}>시장 평균 프리셋 중에 고르거나 직접 입력하세요.</p>
-              <ChipGroup label="총 예산">{BUDGETS.map((b) => <Chip key={b} size="lg" active={pref.budgetPreset === b} onClick={() => pref.set({ budgetPreset: b })}>{b}</Chip>)}</ChipGroup>
-              <div className={styles.hint}><Lightbulb /><span>하객 {pref.guests} · {pref.venue} 기준, 비슷한 커플의 평균 예산은 <b>약 3,200만 원</b>이에요.</span></div>
+              <ChipGroup label="총 예산">{BUDGET_CHOICES.map(([b]) => <Chip key={b} size="lg" active={pref.budgetPreset === b} onClick={() => pref.set({ budgetPreset: b })}>{b}</Chip>)}</ChipGroup>
+              {pref.budgetPreset === '직접 입력' && (
+                <label className={`${styles.field} ${styles.customBudget}`}>
+                  <span>총 예산 (만 원)</span>
+                  <input type="number" inputMode="numeric" min={0} step={100} className={styles.input} value={pref.budgetCustom || ''}
+                    onChange={(e) => pref.set({ budgetCustom: Math.max(0, Math.round(Number(e.target.value) || 0)) })} placeholder="예: 4000" />
+                </label>
+              )}
+              <div className={styles.hint}><Lightbulb /><span>하객 {pref.guests} · {pref.venue} · {REGION_CHOICES.find((r) => r.id === pref.region)!.name} 기준, 항목별 평균가로 계산하면 <b>약 {won(prefAverage(pref))}</b>이에요.</span></div>
             </>
           )}
 

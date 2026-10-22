@@ -83,7 +83,7 @@ export const CUSTOM_MAX = 10000; // 직접 정하는 항목: 0 ~ 1억 원
 export const HALL_TYPES = [
   { id: 'hall', name: '웨딩홀', d: '가장 일반적인 예식장', meal: 6.5, base: { gangnam: 800, seoul: 700, metro: 400, city: 250, jeju: 200, local: 200 } },
   { id: 'hotel', name: '호텔', d: '호텔 연회장 · 고급 코스 식사', meal: 13, base: { gangnam: 1400, seoul: 1100, metro: 700, city: 500, jeju: 600, local: 400 } },
-  { id: 'house', name: '하우스 · 스몰웨딩', d: '소규모 단독 공간', meal: 9, base: { gangnam: 1100, seoul: 800, metro: 600, city: 400, jeju: 500, local: 350 } },
+  { id: 'house', name: '하우스 · 스몰웨딩', d: '소규모 단독 공간', meal: 8, base: { gangnam: 1100, seoul: 800, metro: 600, city: 400, jeju: 500, local: 350 } },
   { id: 'outdoor', name: '야외', d: '가든 · 야외 정원 예식', meal: 8, base: { gangnam: 1400, seoul: 1100, metro: 800, city: 500, jeju: 800, local: 500 } },
   { id: 'chapel', name: '종교시설', d: '성당 · 교회 · 사찰', meal: 5, base: { gangnam: 250, seoul: 200, metro: 150, city: 100, jeju: 100, local: 100 } },
 ] as const;
@@ -224,6 +224,24 @@ export function setAmount(b: BudgetData, key: string, value: number) {
 }
 
 /* 총예산을 직접 바꾸면: 고정 안 한 항목의 배수를 같은 비율로 조정해서 합계를 맞춤. 조정할 항목이 없으면 false */
+/* 항목(스드메는 묶음 전체) 금액을 정하고 고정: 내 웨딩에서 확정 금액을 예산 진단에 반영할 때. 항목이 없으면 false */
+export function pinAmount(b: BudgetData, key: string, value: number) {
+  const cat = b.cats.find((c) => c.id === key);
+  if (!cat) return false;
+  const pin = (k: string) => { if (!b.locks.includes(k)) b.locks.push(k); };
+  if (cat.subs) {
+    const ls = leaves(b).filter((l) => l.cat === cat);
+    const cur = ls.reduce((a, l) => a + leafAmount(l), 0);
+    if (cur <= 0) return false;
+    cat.w *= Math.max(value, 0) / cur; // 세부 항목 비율은 그대로 두고 합계만 맞춤
+    ls.forEach((l) => pin(l.key));
+  } else {
+    setAmount(b, key, value);
+    pin(key);
+  }
+  return true;
+}
+
 export function setTotal(b: BudgetData, total: number) {
   const ls = leaves(b);
   const pinnedSum = ls.filter((l) => b.locks.includes(l.key)).reduce((a, l) => a + leafAmount(l), 0);

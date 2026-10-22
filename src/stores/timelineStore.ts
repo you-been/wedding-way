@@ -6,9 +6,11 @@ import { usePrefStore } from './prefStore';
 // 내 타임라인 (이 브라우저에 저장). 순서 = 배열 순서, phase로 단계 구분
 interface TimelineState {
   wedding: string;
+  venue: string; // 예식장 이름 (내 웨딩 배너에서 입력, 빈 값이면 미정). 타임라인 초기화와 상관없이 유지
   items: TlItem[];
   phaseNames: Record<number, string>; // 사용자가 바꾼 단계 이름 (없으면 기본 이름)
   setWedding: (date: string) => void;
+  setVenue: (name: string) => void;
   update: (id: string, patch: Partial<TlItem>) => void;
   move: (id: string, toPhase: number, beforeId?: string | null) => void;
   add: (phase: number, title: string) => void;
@@ -29,12 +31,14 @@ export const useTimelineStore = create<TimelineState>()(
   persist(
     (set, get) => ({
       wedding: DEFAULT_WEDDING,
+      venue: '',
       items: fresh(DEFAULT_WEDDING),
       phaseNames: {},
       setWedding: (wedding) => {
         set({ wedding, items: get().items.map((it) => (it.id === WEDDING_ITEM ? { ...it, date: wedding } : it)) });
         usePrefStore.getState().set({ weddingDate: wedding });
       },
+      setVenue: (name) => set({ venue: name.trim() }),
       update: (id, patch) => set({ items: get().items.map((it) => (it.id === id ? { ...it, ...patch } : it)) }),
       move: (id, toPhase, beforeId = null) => set({ items: moveItem(get().items, id, toPhase, beforeId) }),
       add: (phase, title) => {
@@ -53,7 +57,7 @@ export const useTimelineStore = create<TimelineState>()(
     {
       name: 'gs-timeline',
       onRehydrateStorage: () => (_state, error) => { if (error) console.error('[timeline] 저장된 타임라인을 불러오지 못했어요', error); },
-      partialize: ({ wedding, items, phaseNames }) => ({ wedding, items, phaseNames }),
+      partialize: ({ wedding, venue, items, phaseNames }) => ({ wedding, venue, items, phaseNames }),
       // 저장된 순서 · 사용자 입력은 유지하고 기본 항목 문구는 최신으로. 새로 생긴 기본 항목은 해당 단계 끝에
       merge: (persisted, current) => {
         const saved = persisted as Partial<TimelineState> | undefined;
@@ -63,7 +67,7 @@ export const useTimelineStore = create<TimelineState>()(
           .filter((it) => it.custom || defaults.has(it.id))
           .map((it) => (it.custom ? it : { ...it, ...pickCopy(defaults.get(it.id)!) }));
         defaults.forEach((it, id) => { if (!items.some((x) => x.id === id)) items = moveItem([...items, it], id, it.phase); });
-        return { ...current, wedding: saved.wedding ?? current.wedding, items, phaseNames: saved.phaseNames ?? {} };
+        return { ...current, wedding: saved.wedding ?? current.wedding, venue: saved.venue ?? '', items, phaseNames: saved.phaseNames ?? {} };
       },
     },
   ),

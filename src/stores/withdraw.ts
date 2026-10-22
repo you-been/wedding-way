@@ -6,6 +6,7 @@ import { useCoupleStore } from './coupleStore';
 import { useFavoriteStore } from './favoriteStore';
 import { useModeStore } from './modeStore';
 import { usePrefStore } from './prefStore';
+import { useSpendStore } from './spendStore';
 import { useTimelineStore } from './timelineStore';
 
 interface PersistedStore<T> {
@@ -23,7 +24,7 @@ const wipe = <T,>(store: PersistedStore<T>) => {
 /** 회원 탈퇴 (프로토타입: 서버 없이 이 브라우저의 계정 · 회원 데이터를 지움) */
 export function withdraw(type: AccountType) {
   if (type === 'biz') wipe(useBizStore);
-  else [useFavoriteStore, useTimelineStore, useBudgetStore, usePrefStore, useCoupleStore].forEach((s) => wipe(s as PersistedStore<unknown>));
+  else [useFavoriteStore, useTimelineStore, useBudgetStore, useSpendStore, usePrefStore, useCoupleStore].forEach((s) => wipe(s as PersistedStore<unknown>));
   wipe(useAuthStore);
   useModeStore.getState().setBizMode(false);
 }

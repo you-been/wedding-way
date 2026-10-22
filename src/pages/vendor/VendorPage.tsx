@@ -6,7 +6,7 @@ import Calendar, { CalendarLegend, type DayStatus } from '../../components/ui/Ca
 import Tabs from '../../components/ui/Tabs';
 import Tag from '../../components/ui/Tag';
 import ReviewCard from '../../components/vendor/ReviewCard';
-import ReviewLock from '../../components/vendor/ReviewLock';
+import ReviewLock, { ReviewEmpty } from '../../components/vendor/ReviewLock';
 import { categoryAvg, categoryIcon } from '../../data/categories';
 import { getReviews, getVendor, getVendors } from '../../data/api';
 import { recoReasons } from '../../data/recommend';
@@ -73,7 +73,9 @@ function VendorDetail({ v, preview }: { v: Vendor; preview: boolean }) {
               <span className={styles.cat}>{v.cat}</span>
               <h1>{v.name}</h1>
               <p className={styles.meta}>{v.region} · {v.type}</p>
-              <div className={styles.rating}><Star /><b>{v.rating}</b><span>후기 {v.reviews} · 인증 {v.verified}</span></div>
+              {v.reviews > 0
+                ? <div className={styles.rating}><Star /><b>{v.rating}</b><span>후기 {v.reviews} · 인증 {v.verified}</span></div>
+                : <div className={styles.rating}><span className={styles.noReview}>아직 후기가 없어요</span></div>}
               <div className={styles.priceBox}>
                 <small>{v.price ? '평균 견적' : '가격'}</small>
                 <strong>{v.price ?? '상담 후 안내'}</strong>
@@ -148,7 +150,7 @@ function VendorDetail({ v, preview }: { v: Vendor; preview: boolean }) {
 
             {tab === 'review' && (
               <section className={styles.panel}>
-                {canSeeReviews ? (
+                {v.verified === 0 ? <ReviewEmpty /> : canSeeReviews ? (
                   <>
                     <div className={styles.reviews}>{getReviews().slice(0, 2).map((r) => <ReviewCard key={r.id} review={r} />)}</div>
                     <Link to={PATHS.reviews} className={styles.moreLink}>전체 후기 보기 <ArrowRight /></Link>

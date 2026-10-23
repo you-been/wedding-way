@@ -10,6 +10,8 @@
 .cats { padding-bottom: var(--ds-s-xl); border-bottom: 1px solid var(--ds-panel-border); }
 .filters { display: flex; flex-wrap: wrap; gap: 0 var(--ds-s-xxl); padding: var(--ds-s-base) 0; border-bottom: 1px solid var(--ds-hairline); }
 .filterRow { display: flex; align-items: center; gap: 6px; margin: 6px 0; }
+.wide { flex-basis: 100%; } /* 세부 지역: 한 줄을 다 씀 */
+.chipSep { flex: none; width: 1px; height: 20px; margin: 0 4px; background: var(--ds-panel-border); }
 .filterLabel { flex: none; min-width: 40px; font-size: 14px; font-weight: 700; }
 
 .toolbar { display: flex; justify-content: space-between; align-items: center; gap: var(--ds-s-base); margin: var(--ds-s-xl) 0 var(--ds-s-base); }

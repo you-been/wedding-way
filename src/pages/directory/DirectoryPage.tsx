@@ -8,6 +8,7 @@ import VendorCard from '../../components/vendor/VendorCard';
 import { ALL_CATEGORY, CATEGORIES } from '../../data/categories';
 import { getVendors } from '../../data/api';
 import { priceNumber, vendorScore } from '../../data/recommend';
+import { REGION_GROUPS, areaWords, inArea } from '../../data/regions';
 import { TIER_ORDER, type Tier, type Vendor } from '../../data/vendors';
 import { useColumns } from '../../hooks/useColumns';
 import { useMyTier } from '../../stores/budgetStore';
@@ -15,7 +16,8 @@ import { usePrefStore } from '../../stores/prefStore';
 import styles from './DirectoryPage.module.css';
 
 const TIERS: Tier[] = ['가성비', '표준', '프리미엄'];
-const REGIONS = ['서울', '경기', '제주', '해외'];
+type Reach = 'nationwide' | 'online';
+const REACHES: [Reach, string][] = [['nationwide', '전국 출장 가능'], ['online', '온라인 진행']];
 const OPTIONS: { label: string; test: (v: Vendor) => boolean }[] = [
   { label: '인증후기 있음', test: (v) => v.verified > 0 },
   { label: '이번 달 예약 가능', test: (v) => v.schedule !== false },
@@ -36,19 +38,24 @@ export default function DirectoryPage() {
   const myTier = useMyTier();
   // 처음엔 예산 진단 결과의 '예산 범위 안' 가격대만 (표준이면 가성비 · 표준)
   const [tiers, setTiers] = useState<Tier[]>(() => TIER_ORDER.slice(0, TIER_ORDER.indexOf(myTier) + 1));
-  const [regions, setRegions] = useState<string[]>([]);
+  const [sido, setSido] = useState<string | null>(null); // 시 · 도는 하나만
+  const [subs, setSubs] = useState<string[]>([]); // 세부 지역은 여러 개 (비우면 시 · 도 전체)
+  const [reach, setReach] = useState<Reach[]>([]); // 전국 출장 · 온라인은 지역과 따로
   const [options, setOptions] = useState<string[]>([]);
   const [sort, setSort] = useState<Sort>('취향 맞춤순');
   const { ref, cols } = useColumns<HTMLDivElement>();
+  // 고른 시 · 도의 세부 지역 중 업체가 있는 곳만 칩으로
+  const subOptions = sido ? REGION_GROUPS.find((g) => g.name === sido)!.subs.filter((sub) => getVendors().some((v) => v.area.areas[sido]?.includes(sub))) : [];
+  const pickSido = (name: string) => { setSido(sido === name ? null : name); setSubs([]); };
 
   const list = useMemo(() => {
     const q = submitted.trim().replace(/^#/, '');
     const filtered = getVendors().filter((v) =>
       (cat === ALL_CATEGORY || v.cat === cat)
       && (!tiers.length || tiers.includes(v.tier))
-      && (!regions.length || regions.some((r) => v.region.includes(r)))
+      && (!(sido || reach.length) || (!!sido && inArea(v.area, sido, subs)) || reach.some((r) => v.area[r]))
       && OPTIONS.filter((o) => options.includes(o.label)).every((o) => o.test(v))
-      && (!q || [v.name, v.region, v.cat, ...v.moods].some((t) => t.includes(q))));
+      && (!q || [v.name, v.cat, ...areaWords(v.area), ...v.moods].some((t) => t.includes(q))));
     const by: Record<Sort, (a: Vendor, b: Vendor) => number> = {
       '취향 맞춤순': (a, b) => vendorScore(b, moods) - vendorScore(a, moods),
       '후기 많은 순': (a, b) => b.reviews - a.reviews,
@@ -56,7 +63,7 @@ export default function DirectoryPage() {
       '최신 등록순': (a, b) => b.id - a.id,
     };
     return [...filtered].sort(by[sort]);
-  }, [cat, tiers, regions, options, submitted, sort, moods]);
+  }, [cat, tiers, sido, subs, reach, options, submitted, sort, moods]);
 
   // 메이슨리: 순위대로 가장 짧은 기둥에 차례로 넣음 (가로로 읽어도 순위가 유지됨)
   const columns = useMemo(() => {
@@ -88,7 +95,17 @@ export default function DirectoryPage() {
 
         <div className={styles.filters}>
           <FilterRow label="가격대">{TIERS.map((t) => <Chip key={t} active={tiers.includes(t)} onClick={() => setTiers(toggle(tiers, t))}>{t}</Chip>)}</FilterRow>
-          <FilterRow label="지역">{REGIONS.map((r) => <Chip key={r} active={regions.includes(r)} onClick={() => setRegions(toggle(regions, r))}>{r}</Chip>)}</FilterRow>
+          <FilterRow label="지역">
+            {REGION_GROUPS.map((g) => <Chip key={g.name} active={sido === g.name} onClick={() => pickSido(g.name)}>{g.name}</Chip>)}
+            <span className={styles.chipSep} aria-hidden="true" />
+            {REACHES.map(([r, label]) => <Chip key={r} active={reach.includes(r)} onClick={() => setReach(toggle(reach, r))}>{label}</Chip>)}
+          </FilterRow>
+          {sido && subOptions.length > 0 && (
+            <FilterRow label="세부 지역" wide>
+              <Chip active={!subs.length} onClick={() => setSubs([])}>{sido} 전체</Chip>
+              {subOptions.map((sub) => <Chip key={sub} active={subs.includes(sub)} onClick={() => setSubs(toggle(subs, sub))}>{sub}</Chip>)}
+            </FilterRow>
+          )}
           <FilterRow label="옵션">{OPTIONS.map((o) => <Chip key={o.label} active={options.includes(o.label)} onClick={() => setOptions(toggle(options, o.label))}>{o.label}</Chip>)}</FilterRow>
         </div>
 
@@ -116,9 +133,9 @@ export default function DirectoryPage() {
   );
 }
 
-function FilterRow({ label, children }: { label: string; children: React.ReactNode }) {
+function FilterRow({ label, children, wide }: { label: string; children: React.ReactNode; wide?: boolean }) {
   return (
-    <div className={styles.filterRow}>
+    <div className={`${styles.filterRow} ${wide ? styles.wide : ''}`}>
       <span className={styles.filterLabel}>{label}</span>
       <ChipGroup label={label}>{children}</ChipGroup>
     </div>

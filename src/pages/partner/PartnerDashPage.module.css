@@ -59,7 +59,6 @@
 .field input { height: 52px; padding: 0 var(--ds-s-base); }
 .field textarea, .replyForm textarea { padding: 14px var(--ds-s-base); resize: vertical; }
 :is(.field input, .field textarea, .replyForm textarea):focus { border-color: var(--ds-ink); outline: 2px solid var(--ds-ink); outline-offset: -1px; }
-.row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--ds-s-md); }
 .uploadRow { display: flex; flex-wrap: wrap; gap: var(--ds-s-sm); }
 .thumbWrap { position: relative; }
 .thumb { display: block; width: 88px; height: 88px; border-radius: var(--ds-r-control); object-fit: cover; }
@@ -127,7 +126,6 @@
   .stat strong { font-size: 18px; }
   .sideCard { padding: var(--ds-s-lg); box-shadow: 4px 4px 0 var(--ds-brand); }
   .proofBanner { flex-direction: column; align-items: stretch; }
-  .row { grid-template-columns: 1fr; gap: 0; }
   .inq { padding: var(--ds-s-base); }
   .inqList button { grid-template-columns: 1fr auto; row-gap: 4px; }
   .inqText { grid-column: 1 / -1; grid-row: 2; }

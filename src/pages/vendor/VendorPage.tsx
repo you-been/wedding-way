@@ -11,6 +11,7 @@ import VendorMap from '../../components/vendor/VendorMap';
 import { categoryAvg, categoryIcon } from '../../data/categories';
 import { getReviews, getVendor, getVendors } from '../../data/api';
 import { recoReasons } from '../../data/recommend';
+import { areaLabel } from '../../data/regions';
 import { useMyTier } from '../../stores/budgetStore';
 import { imageUrl, vendorPlace, type Vendor } from '../../data/vendors';
 import { useMemberAction } from '../../hooks/useMemberAction';
@@ -74,7 +75,7 @@ function VendorDetail({ v, preview }: { v: Vendor; preview: boolean }) {
             <div className={styles.card}>
               <span className={styles.cat}>{v.cat}</span>
               <h1>{v.name}</h1>
-              <p className={styles.meta}>{v.region} · {v.type}</p>
+              <p className={styles.meta}>{areaLabel(v.area) || '지역 미입력'} · {v.type}</p>
               {v.reviews > 0
                 ? <div className={styles.rating}><Star /><b>{v.rating}</b><span>후기 {v.reviews} · 인증 {v.verified}</span></div>
                 : <div className={styles.rating}><span className={styles.noReview}>아직 후기가 없어요</span></div>}

@@ -23,6 +23,20 @@ export const useBizStore = create<BizState>()(
       mark: (key, s) => set({ marks: { ...get().marks, [key]: s } }),
       reply: (id, text) => set({ inquiries: get().inquiries.map((q) => (q.id === id ? { ...q, status: 'done', reply: text } : q)) }),
     }),
-    { name: 'gs-biz', partialize: ({ profile, marks }) => ({ profile, marks }) },
+    {
+      name: 'gs-biz',
+      partialize: ({ profile, marks }) => ({ profile, marks }),
+      // v1: 활동 지역을 글자(region)에서 시 · 도 · 세부 지역(area)으로 바꿈 → 예전 저장값은 기본 활동 지역으로
+      version: 1,
+      migrate: (saved) => {
+        const s = saved as { profile?: Partial<BizProfile> & { region?: string } };
+        if (s.profile && !s.profile.area) {
+          const profile = { ...s.profile, area: BIZ_DEFAULT.area };
+          delete profile.region;
+          s.profile = profile;
+        }
+        return s as unknown as BizState;
+      },
+    },
   ),
 );

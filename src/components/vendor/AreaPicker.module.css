@@ -1,0 +1,5 @@
+.picker { display: grid; gap: var(--ds-s-md); }
+.subs, .reach { display: grid; gap: var(--ds-s-sm); }
+.subs { padding: var(--ds-s-md); border-radius: var(--ds-r-control); background: var(--ds-panel); }
+.subs small, .reach small { font-size: 13px; color: var(--ds-muted); }
+.hint { font-size: 13px; line-height: 1.5; color: var(--ds-muted); }

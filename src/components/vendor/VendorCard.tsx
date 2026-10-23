@@ -8,6 +8,7 @@ import { useFavoriteStore } from '../../stores/favoriteStore';
 import { toast } from '../../stores/toastStore';
 import { useMemberAction } from '../../hooks/useMemberAction';
 import PriceLine from './PriceLine';
+import { areaLabel } from '../../data/regions';
 import styles from './VendorCard.module.css';
 
 interface Props {
@@ -36,7 +37,7 @@ export default function VendorCard({ vendor: v, height = 180, reasons }: Props) 
         <div className={styles.body}>
           <span className={styles.tag}>{v.cat}</span>
           <h4>{v.name}</h4>
-          <div className={styles.meta}>{v.region} · {v.type}</div>
+          <div className={styles.meta}>{areaLabel(v.area) || '지역 미입력'} · {v.type}</div>
           <PriceLine price={v.price} cat={v.cat} />
           {reasons && reasons.length > 0 && <div className={styles.why}>{reasons.map((r) => <span key={r}>{r}</span>)}</div>}
           <div className={styles.foot}>

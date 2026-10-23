@@ -7,9 +7,11 @@ import Chip, { ChipGroup } from '../../components/ui/Chip';
 import Panel from '../../components/ui/Panel';
 import Tabs from '../../components/ui/Tabs';
 import Tag from '../../components/ui/Tag';
+import AreaPicker from '../../components/vendor/AreaPicker';
 import VendorPreviewCard from '../../components/vendor/VendorPreviewCard';
 import { NEXT_STATUS, bizChecks, bizDayStatus, bizPriceText, dayKey, type BizProfile, type BizTab } from '../../data/biz';
 import { BUSINESS_CATEGORIES, MOODS } from '../../data/categories';
+import { areaLabel } from '../../data/regions';
 import { VENDORS, imageUrl } from '../../data/vendors';
 import { useSignOut } from '../../hooks/useSignOut';
 import { PATHS } from '../../routes';
@@ -63,10 +65,8 @@ function ProfileForm({ user }: { user: BizUser }) {
           <ChipGroup label="업종">{BUSINESS_CATEGORIES.map((c) => <Chip key={c.name} active={p.cat === c.name} onClick={() => set({ cat: c.name })}>{c.name}</Chip>)}</ChipGroup>
         </div>
         <label className={styles.field}><span>업체 / 활동명 <small>필수</small></span><input maxLength={20} value={name} onChange={(e) => setName(e.target.value)} /></label>
-        <div className={styles.row}>
-          <label className={styles.field}><span>활동 지역</span><input value={p.region} onChange={(e) => set({ region: e.target.value })} placeholder="예: 서울, 제주" /></label>
-          <label className={styles.field}><span>유형</span><input value={p.type} onChange={(e) => set({ type: e.target.value })} placeholder="예: 1인 작가" /></label>
-        </div>
+        <label className={styles.field}><span>유형</span><input value={p.type} onChange={(e) => set({ type: e.target.value })} placeholder="예: 1인 작가" /></label>
+        <div className={styles.field}><span>활동 지역</span><AreaPicker value={p.area} onChange={(area) => set({ area })} /></div>
         <div className={styles.field}><span>가격 공개</span>
           <ChipGroup label="가격 공개">
             <Chip active={p.priceMode === 'none'} onClick={() => set({ priceMode: 'none' })}>공개 안 함</Chip>
@@ -90,7 +90,7 @@ function ProfileForm({ user }: { user: BizUser }) {
       </Panel>
       <aside className={styles.previewCol}>
         <small className={styles.previewLabel}>예비부부에게 이렇게 보여요</small>
-        <VendorPreviewCard photo={p.photos[0]} cat={p.cat} name={name.trim()} meta={[p.region, p.type].filter(Boolean).join(' · ') || '지역 · 유형'}
+        <VendorPreviewCard photo={p.photos[0]} cat={p.cat} name={name.trim()} meta={[areaLabel(p.area), p.type].filter(Boolean).join(' · ') || '지역 · 유형'}
           price={bizPriceText(p)} moods={p.moods} insta={p.insta.trim().replace(/^@/, '') || undefined} />
       </aside>
     </div>
@@ -139,7 +139,7 @@ export default function PartnerDashPage() {
             <h1>{user.bizName}</h1>
             <ul className={styles.meta}>
               <li><TagIcon />{profile.cat}</li>
-              <li><MapPin />{profile.region || '지역 미입력'}</li>
+              <li><MapPin />{areaLabel(profile.area) || '지역 미입력'}</li>
               <li className={`${styles.status} ${open ? '' : styles.off}`}><i />{open ? '디렉토리 공개 중' : '비공개 · 증빙 필요'}</li>
             </ul>
             <div className={styles.stats}>

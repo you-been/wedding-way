@@ -6,8 +6,10 @@ import Calendar from '../../components/ui/Calendar';
 import Chip, { ChipGroup } from '../../components/ui/Chip';
 import Stepper from '../../components/ui/Stepper';
 import Tag from '../../components/ui/Tag';
+import AreaPicker from '../../components/vendor/AreaPicker';
 import VendorPreviewCard from '../../components/vendor/VendorPreviewCard';
 import { BUSINESS_CATEGORIES, MOODS } from '../../data/categories';
+import { EMPTY_AREA, areaLabel } from '../../data/regions';
 import { imageUrl } from '../../data/vendors';
 import { PATHS } from '../../routes';
 import { useAuthStore } from '../../stores/authStore';
@@ -34,7 +36,7 @@ export default function PartnerJoinPage() {
   const [idx, setIdx] = useState(0);
   const [cats, setCats] = useState<string[]>(['아이폰스냅']);
   const [name, setName] = useState(user?.type === 'biz' ? user.bizName : '필름하루 스냅');
-  const [region, setRegion] = useState('');
+  const [area, setArea] = useState(EMPTY_AREA);
   const [moods, setMoods] = useState<string[]>([]);
   const [moodError, setMoodError] = useState(false);
   const [picked, setPicked] = useState<Opt[]>([]);
@@ -56,7 +58,7 @@ export default function PartnerJoinPage() {
     if (seq[idx + 1] === 'done') {
       // 입력한 내용으로 내 업체 정보를 채움
       saveProfile({
-        ...profile, cat: cats[0] ?? profile.cat, region: region.trim() || profile.region, moods,
+        ...profile, cat: cats[0] ?? profile.cat, area: areaLabel(area) ? area : profile.area, moods,
         priceMode: price ? 'range' : 'none', priceMin, priceMax,
         intro: intro.trim() || profile.intro, insta: picked.includes('insta') ? 'filmharu.snap' : profile.insta,
       });
@@ -90,7 +92,7 @@ export default function PartnerJoinPage() {
                 <ChipGroup label="업종">{BUSINESS_CATEGORIES.map((c) => <Chip key={c.name} active={cats.includes(c.name)} onClick={() => setCats(toggle(cats, c.name))}>{c.name}</Chip>)}</ChipGroup>
               </div>
               <label className={steps.field}><span>업체 / 활동명</span><input className={steps.input} value={name} onChange={(e) => setName(e.target.value)} /></label>
-              <label className={steps.field}><span>활동 지역 <small className={styles.muted}>선택</small></span><input className={steps.input} value={region} onChange={(e) => setRegion(e.target.value)} placeholder="예: 서울, 제주" /></label>
+              <div className={steps.field}><span>활동 지역 <small className={styles.muted}>선택</small></span><AreaPicker value={area} onChange={setArea} /></div>
             </>
           )}
 
@@ -184,7 +186,7 @@ export default function PartnerJoinPage() {
               <p className={styles.muted}>{user?.type === 'biz' && !user.proof ? '증빙 서류를 올리면 검토 후 예비부부에게 소개돼요.' : '검토 후 24시간 이내에 예비부부에게 소개돼요.'}</p>
               <div className={styles.preview}>
                 <small>예비부부에게는 이렇게 보여요</small>
-                <VendorPreviewCard photo="biz_07" cat={cats[0] ?? '업종'} name={name} meta={region.trim() || undefined} price={price} moods={moods} height={150} />
+                <VendorPreviewCard photo="biz_07" cat={cats[0] ?? '업종'} name={name} meta={areaLabel(area) || undefined} price={price} moods={moods} height={150} />
               </div>
               {later.length > 0 && <p className={styles.hint}>{later.join(' · ')}은(는) 내 업체에서 언제든 추가할 수 있어요.</p>}
               <Button to={PATHS.partnerDash}>내 업체로</Button>

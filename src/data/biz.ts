@@ -1,11 +1,12 @@
 // 내 업체 (업체 회원 페이지) 더미 데이터 · 계산
 import type { DayStatus } from '../components/ui/Calendar';
+import type { ServiceArea } from './regions';
 import { VENDORS, type Vendor } from './vendors';
 
 export interface BizProfile {
   photos: string[]; // public/images/*.jpg 파일 이름
   cat: string;
-  region: string;
+  area: ServiceArea; // 활동 지역 (시 · 도별 세부 지역 · 전국 출장 · 온라인)
   type: string;
   priceMode: 'none' | 'range';
   priceMin: string;
@@ -16,7 +17,7 @@ export interface BizProfile {
 }
 
 export const BIZ_DEFAULT: BizProfile = {
-  photos: ['biz_07', 'biz_03'], cat: '아이폰스냅', region: '서울 · 제주', type: '1인 작가',
+  photos: ['biz_07', 'biz_03'], cat: '아이폰스냅', area: { areas: { 서울: [], 제주: [] }, nationwide: false, online: false }, type: '1인 작가',
   priceMode: 'range', priceMin: '35만 원', priceMax: '75만 원', moods: ['#클래식', '#빈티지', '#내추럴'],
   intro: '자연광과 필름 감성을 담는 1인 아이폰스냅 작가입니다. 제주 · 서울 야외 촬영 위주로 진행해요.', insta: '',
 };
@@ -62,6 +63,6 @@ export const bizPriceText = (p: BizProfile) => (p.priceMode === 'range' && p.pri
 /** 예비부부에게 보이는 업체 상세용 (저장된 정보 기준) */
 export const profileToVendor = (p: BizProfile, name: string): Vendor => ({
   ...VENDORS[0], id: 0, photo: p.photos[0], name, cat: p.cat,
-  region: p.region || '지역 미입력', type: p.type || '유형 미입력', price: bizPriceText(p), moods: p.moods,
+  area: p.area, type: p.type || '유형 미입력', price: bizPriceText(p), moods: p.moods,
   insta: !!p.insta, handle: p.insta || undefined, intro: p.intro.trim().length >= 10,
 });

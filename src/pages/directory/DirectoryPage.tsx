@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router';
-import { Info, Search } from 'lucide-react';
+import { Info, Search, X } from 'lucide-react';
 import Button from '../../components/ui/Button';
 import Chip, { ChipGroup } from '../../components/ui/Chip';
 import PageHead from '../../components/ui/PageHead';
@@ -8,11 +8,11 @@ import VendorCard from '../../components/vendor/VendorCard';
 import { ALL_CATEGORY, CATEGORIES } from '../../data/categories';
 import { getVendors } from '../../data/api';
 import { priceNumber, vendorScore } from '../../data/recommend';
-import { REGION_GROUPS, areaWords, inArea } from '../../data/regions';
+import { REGION_GROUPS, areaWords, inArea, subLabel } from '../../data/regions';
 import { TIER_ORDER, type Tier, type Vendor } from '../../data/vendors';
-import { useColumns } from '../../hooks/useColumns';
 import { useMyTier } from '../../stores/budgetStore';
 import { usePrefStore } from '../../stores/prefStore';
+import FilterMenu, { MenuGroup, MenuOption } from './FilterMenu';
 import styles from './DirectoryPage.module.css';
 
 const TIERS: Tier[] = ['가성비', '표준', '프리미엄'];
@@ -26,7 +26,14 @@ const OPTIONS: { label: string; test: (v: Vendor) => boolean }[] = [
 const SORTS = ['취향 맞춤순', '후기 많은 순', '낮은 가격순', '최신 등록순'] as const;
 type Sort = (typeof SORTS)[number];
 
+/** 필터 값: 가격대 · 지역(시 · 도 하나 + 세부 지역 여러 개) · 전국 출장 · 온라인 · 옵션 */
+interface Filters { tiers: Tier[]; sido: string | null; subs: string[]; reach: Reach[]; options: string[] }
+const NO_FILTER: Filters = { tiers: [], sido: null, subs: [], reach: [], options: [] };
+
 const toggle = <T,>(list: T[], x: T) => (list.includes(x) ? list.filter((y) => y !== x) : [...list, x]);
+const more = (list: string[]) => (list.length > 1 ? `${list[0]} 외 ${list.length - 1}` : list[0]);
+/** 시 · 도마다 업체가 있는 세부 지역 */
+const subsWithVendors = (sido: string) => REGION_GROUPS.find((g) => g.name === sido)!.subs.filter((sub) => getVendors().some((v) => v.area.areas[sido]?.includes(sub)));
 
 /** 업체 디렉토리: 카테고리 · 가격대 · 지역 · 옵션 · 검색으로 같은 기준에서 비교 (광고 · 유료 우선 노출 없음) */
 export default function DirectoryPage() {
@@ -37,24 +44,18 @@ export default function DirectoryPage() {
   const [submitted, setSubmitted] = useState('');
   const myTier = useMyTier();
   // 처음엔 예산 진단 결과의 '예산 범위 안' 가격대만 (표준이면 가성비 · 표준)
-  const [tiers, setTiers] = useState<Tier[]>(() => TIER_ORDER.slice(0, TIER_ORDER.indexOf(myTier) + 1));
-  const [sido, setSido] = useState<string | null>(null); // 시 · 도는 하나만
-  const [subs, setSubs] = useState<string[]>([]); // 세부 지역은 여러 개 (비우면 시 · 도 전체)
-  const [reach, setReach] = useState<Reach[]>([]); // 전국 출장 · 온라인은 지역과 따로
-  const [options, setOptions] = useState<string[]>([]);
+  const [f, setF] = useState<Filters>(() => ({ ...NO_FILTER, tiers: TIER_ORDER.slice(0, TIER_ORDER.indexOf(myTier) + 1) }));
+  const [draft, setDraft] = useState<Filters>(f); // 열린 선택 창에서 고르는 중인 값 (적용하면 f로)
   const [sort, setSort] = useState<Sort>('취향 맞춤순');
-  const { ref, cols } = useColumns<HTMLDivElement>();
-  // 고른 시 · 도의 세부 지역 중 업체가 있는 곳만 칩으로
-  const subOptions = sido ? REGION_GROUPS.find((g) => g.name === sido)!.subs.filter((sub) => getVendors().some((v) => v.area.areas[sido]?.includes(sub))) : [];
-  const pickSido = (name: string) => { setSido(sido === name ? null : name); setSubs([]); };
+  const d = (patch: Partial<Filters>) => setDraft({ ...draft, ...patch });
 
   const list = useMemo(() => {
     const q = submitted.trim().replace(/^#/, '');
     const filtered = getVendors().filter((v) =>
       (cat === ALL_CATEGORY || v.cat === cat)
-      && (!tiers.length || tiers.includes(v.tier))
-      && (!(sido || reach.length) || (!!sido && inArea(v.area, sido, subs)) || reach.some((r) => v.area[r]))
-      && OPTIONS.filter((o) => options.includes(o.label)).every((o) => o.test(v))
+      && (!f.tiers.length || f.tiers.includes(v.tier))
+      && (!(f.sido || f.reach.length) || (!!f.sido && inArea(v.area, f.sido, f.subs)) || f.reach.some((r) => v.area[r]))
+      && OPTIONS.filter((o) => f.options.includes(o.label)).every((o) => o.test(v))
       && (!q || [v.name, v.cat, ...areaWords(v.area), ...v.moods].some((t) => t.includes(q))));
     const by: Record<Sort, (a: Vendor, b: Vendor) => number> = {
       '취향 맞춤순': (a, b) => vendorScore(b, moods) - vendorScore(a, moods),
@@ -63,20 +64,23 @@ export default function DirectoryPage() {
       '최신 등록순': (a, b) => b.id - a.id,
     };
     return [...filtered].sort(by[sort]);
-  }, [cat, tiers, sido, subs, reach, options, submitted, sort, moods]);
-
-  // 메이슨리: 순위대로 가장 짧은 기둥에 차례로 넣음 (가로로 읽어도 순위가 유지됨)
-  const columns = useMemo(() => {
-    const out = Array.from({ length: cols }, () => ({ h: 0, items: [] as Vendor[] }));
-    list.forEach((v) => {
-      const col = out.reduce((min, c) => (c.h < min.h ? c : min));
-      col.items.push(v);
-      col.h += v.h + 170; // 사진 높이 + 카드 본문 대략치
-    });
-    return out;
-  }, [list, cols]);
+  }, [cat, f, submitted, sort, moods]);
 
   const setCat = (name: string) => setParams(name === ALL_CATEGORY ? {} : { cat: name }, { replace: true });
+  const regionValue = [
+    ...(f.sido ? [f.subs.length ? more(f.subs.map((sub) => subLabel(f.sido!, sub))) : `${f.sido} 전체`] : []),
+    ...REACHES.filter(([r]) => f.reach.includes(r)).map(([, label]) => label),
+  ];
+  // 고른 조건 태그 (× 누르면 그 조건만 뺌)
+  const tags: { label: string; remove: Partial<Filters> }[] = [
+    ...f.tiers.map((t) => ({ label: t, remove: { tiers: f.tiers.filter((x) => x !== t) } })),
+    ...(f.sido && !f.subs.length ? [{ label: `${f.sido} 전체`, remove: { sido: null, subs: [] } }] : []),
+    ...(f.sido ? f.subs.map((sub) => ({ label: subLabel(f.sido!, sub), remove: { subs: f.subs.filter((x) => x !== sub) } })) : []),
+    ...REACHES.filter(([r]) => f.reach.includes(r)).map(([r, label]) => ({ label, remove: { reach: f.reach.filter((x) => x !== r) } })),
+    ...f.options.map((o) => ({ label: o, remove: { options: f.options.filter((x) => x !== o) } })),
+  ];
+  const open = () => setDraft(f);
+  const apply = () => setF(draft);
 
   return (
     <div className="page">
@@ -93,25 +97,40 @@ export default function DirectoryPage() {
           {CATEGORIES.map(({ name, Icon }) => <Chip key={name} variant="category" active={cat === name} onClick={() => setCat(name)}><Icon />{name}</Chip>)}
         </ChipGroup>
 
-        <div className={styles.filters}>
-          <FilterRow label="가격대">{TIERS.map((t) => <Chip key={t} active={tiers.includes(t)} onClick={() => setTiers(toggle(tiers, t))}>{t}</Chip>)}</FilterRow>
-          <FilterRow label="지역">
-            {REGION_GROUPS.map((g) => <Chip key={g.name} active={sido === g.name} onClick={() => pickSido(g.name)}>{g.name}</Chip>)}
-            <span className={styles.chipSep} aria-hidden="true" />
-            {REACHES.map(([r, label]) => <Chip key={r} active={reach.includes(r)} onClick={() => setReach(toggle(reach, r))}>{label}</Chip>)}
-          </FilterRow>
-          {sido && subOptions.length > 0 && (
-            <FilterRow label="세부 지역" wide>
-              <Chip active={!subs.length} onClick={() => setSubs([])}>{sido} 전체</Chip>
-              {subOptions.map((sub) => <Chip key={sub} active={subs.includes(sub)} onClick={() => setSubs(toggle(subs, sub))}>{sub}</Chip>)}
-            </FilterRow>
-          )}
-          <FilterRow label="옵션">{OPTIONS.map((o) => <Chip key={o.label} active={options.includes(o.label)} onClick={() => setOptions(toggle(options, o.label))}>{o.label}</Chip>)}</FilterRow>
-        </div>
-
         <div className={styles.toolbar}>
-          <p className={styles.count}><b className="num">{list.length}</b>개 업체</p>
+          <div className={styles.filterBar} role="group" aria-label="필터">
+            <FilterMenu label="가격대" value={f.tiers.length ? f.tiers.join(', ') : undefined} onOpen={open} onApply={apply} onReset={() => d({ tiers: [] })}>
+              <MenuGroup title="여러 개 선택 가능">
+                {TIERS.map((t) => <MenuOption key={t} checked={draft.tiers.includes(t)} onChange={() => d({ tiers: toggle(draft.tiers, t) })}>{t}</MenuOption>)}
+              </MenuGroup>
+            </FilterMenu>
+            <FilterMenu label="지역" wide value={regionValue.length ? regionValue.join(' · ') : undefined} onOpen={open} onApply={apply} onReset={() => d({ sido: null, subs: [], reach: [] })}>
+              <MenuGroup title="시 · 도 · 하나만 선택">
+                <ChipGroup label="시 · 도" className={styles.sidoChips}>
+                  <Chip active={!draft.sido} onClick={() => d({ sido: null, subs: [] })}>전체</Chip>
+                  {REGION_GROUPS.map((g) => <Chip key={g.name} active={draft.sido === g.name} onClick={() => d({ sido: g.name, subs: [] })}>{g.name}</Chip>)}
+                </ChipGroup>
+              </MenuGroup>
+              {draft.sido && (
+                <MenuGroup title="세부 지역 · 여러 개 선택 가능">
+                  <div className={styles.subGrid}>
+                    <MenuOption checked={!draft.subs.length} onChange={() => d({ subs: [] })}>{draft.sido} 전체</MenuOption>
+                    {subsWithVendors(draft.sido).map((sub) => <MenuOption key={sub} checked={draft.subs.includes(sub)} onChange={() => d({ subs: toggle(draft.subs, sub) })}>{sub}</MenuOption>)}
+                  </div>
+                </MenuGroup>
+              )}
+              <MenuGroup title="지역과 상관없이">
+                {REACHES.map(([r, label]) => <MenuOption key={r} checked={draft.reach.includes(r)} onChange={() => d({ reach: toggle(draft.reach, r) })}>{label}</MenuOption>)}
+              </MenuGroup>
+            </FilterMenu>
+            <FilterMenu label="옵션" value={f.options.length ? more(f.options) : undefined} onOpen={open} onApply={apply} onReset={() => d({ options: [] })}>
+              <MenuGroup title="여러 개 선택 가능">
+                {OPTIONS.map((o) => <MenuOption key={o.label} checked={draft.options.includes(o.label)} onChange={() => d({ options: toggle(draft.options, o.label) })}>{o.label}</MenuOption>)}
+              </MenuGroup>
+            </FilterMenu>
+          </div>
           <div className={styles.sortWrap}>
+            <p className={styles.count}><b className="num">{list.length}</b>개 업체</p>
             <button type="button" className={styles.info} aria-label="정렬 기준 안내" aria-describedby="sortTip"><Info /></button>
             <span className={styles.tip} id="sortTip" role="tooltip">정보 충실도 · 인증 후기 · 취향 일치 기준이에요. 광고나 유료 우선 노출은 없어요.</span>
             <select className={styles.sort} value={sort} onChange={(e) => setSort(e.target.value as Sort)} aria-label="정렬">
@@ -120,24 +139,21 @@ export default function DirectoryPage() {
           </div>
         </div>
 
-        <div ref={ref} className={styles.masonry}>
-          {list.length === 0 && <p className={styles.empty}>조건에 맞는 업체가 아직 없어요. 필터를 줄여 보세요.</p>}
-          {list.length > 0 && columns.map((c, i) => (
-            <div key={i} className={styles.col}>
-              {c.items.map((v) => <VendorCard key={v.id} vendor={v} height={v.h} />)}
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
+        {tags.length > 0 && (
+          <div className={styles.tags}>
+            {tags.map((t) => (
+              <button key={t.label} type="button" className={styles.tag} onClick={() => setF({ ...f, ...t.remove })} aria-label={`${t.label} 조건 빼기`}>
+                {t.label}<X aria-hidden="true" />
+              </button>
+            ))}
+            <button type="button" className={styles.clear} onClick={() => setF(NO_FILTER)}>초기화</button>
+          </div>
+        )}
 
-function FilterRow({ label, children, wide }: { label: string; children: React.ReactNode; wide?: boolean }) {
-  return (
-    <div className={`${styles.filterRow} ${wide ? styles.wide : ''}`}>
-      <span className={styles.filterLabel}>{label}</span>
-      <ChipGroup label={label}>{children}</ChipGroup>
+        {list.length === 0
+          ? <p className={styles.empty}>조건에 맞는 업체가 아직 없어요. 필터를 줄여 보세요.</p>
+          : <div className={styles.grid}>{list.map((v) => <VendorCard key={v.id} vendor={v} />)}</div>}
+      </div>
     </div>
   );
 }

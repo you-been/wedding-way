@@ -267,11 +267,11 @@ Required.
 
 ### Component: chip
 
-**Semantics:** button 요소. 단일 선택은 role=tab · aria-selected, 복수 선택은 active 클래스로 표시
+**Semantics:** button 요소. 단일 선택은 role=tab · aria-selected, 복수 선택은 active 클래스로 표시. 비활성(결심 디테일): 업체 활동 지역에서 전국 출장 가능 · 온라인 진행을 고르면 시 · 도 · 세부 지역 칩을 fieldset disabled로 흐리게(투명도 0.4) 두고 이유를 한 줄로 알린다
 
 - Anatomy: 알약 모양 면, 레이블, 선택적 아이콘(16px)
 - Variants: category 36px · 둥글기 8px · 테두리 #e4e5ed · 14px/400 (크몽 category-filter-control) + Lucide 아이콘(결심), filter 36px · 알약 · #f2f3f7 · 좌우 16px · 14px/400 (크몽 keyword-chip), 선택 상태 잉크 채움 (결심 디테일)
-- States: default, hover, focus-visible, selected
+- States: default, hover, focus-visible, disabled, selected
 - Token references: color.hairline, color.panel-border, color.ink, color.on-ink, radius.chip, size.chip
 
 - Interaction kind: interactive
@@ -283,16 +283,38 @@ Required.
 | default | applicable |  |
 | hover | applicable |  |
 | focus-visible | applicable |  |
-| disabled | not-applicable | 선택할 수 없는 칩은 보여주지 않는다 |
+| disabled | applicable |  |
 | loading | not-applicable | 필터는 즉시 반영된다 |
 | error | not-applicable | 칩 선택에는 오류가 없다 |
 | success | not-applicable | 선택 상태가 곧 결과다 |
+
+### Component: filter-menu
+
+**Semantics:** 업체 디렉토리 필터: button(aria-expanded) + role=dialog 선택 창. 크몽 category-filter-control 크기로 가격대 · 지역 · 옵션을 업체 수 · 정렬과 한 줄에 둔다. 값을 고르면 버튼 테두리를 잉크로(결심 디테일 — 칩처럼 채우면 한 줄이 무거워짐), 적용을 눌러야 반영, 바깥 클릭 · Esc로 닫힘. 760px 이하에서 선택 창은 화면 아래 시트로 열린다
+
+- Anatomy: 필터 버튼(36px · 흰 면 · 1px #e4e5ed · 8px 둥글기 · 14px/400): 필터 이름 + 고른 값 요약(700) + 아래 화살표, 선택 창: 패널 면(흰 면 · 1px panel-border · 12px 둥글기 · 그림자 없음), 체크 목록(줄 36px), 초기화 글자 버튼 + 적용 잉크 버튼(36px). 지역 창은 위에서 아래로 시 · 도 칩(하나, 선택 시 잉크 채움) → 시 · 도를 골랐을 때만 세부 지역 체크(여러 개, 3열 · 모바일 2열) → 전국 출장 · 온라인 진행, 고른 조건 태그: 28px 알약 · color.hairline 면 · 13px/500 + 빼기(×), 끝에 초기화
+- States: default, hover, focus-visible, selected, expanded
+- Token references: color.canvas, color.panel-border, color.control-border, color.ink, color.hairline, color.muted, radius.control, radius.panel, radius.chip, size.button-small
+
+- Interaction kind: interactive
+
+#### State applicability
+
+| State | Applicability | Reason |
+|---|---|---|
+| default | applicable |  |
+| hover | applicable |  |
+| focus-visible | applicable |  |
+| disabled | not-applicable | 고를 수 없는 필터는 보여주지 않는다 |
+| loading | not-applicable | 더미 데이터를 즉시 거른다 |
+| error | not-applicable | 필터 선택에는 오류가 없다 |
+| success | not-applicable | 적용하면 목록과 업체 수가 곧 결과다 |
 
 ### Component: vendor-card
 
 **Semantics:** 업체 상세로 가는 링크. 테두리 · 그림자 없음, hover 시 사진 3% 확대와 업체명 밑줄
 
-- Anatomy: 사진 썸네일(8px 둥글기) 또는 회색 면 + 카테고리 아이콘, 찜 버튼(36px 흰 원 · 북마크), 카테고리 태그, 업체명(16px/700), 지역 · 유형, 가격 또는 '상담 후 안내' + 시장 평균, 평점 · 후기 수 · 인증 수
+- Anatomy: 사진 썸네일(4:3 · 8px 둥글기) 또는 회색 면 + 카테고리 아이콘, 찜 버튼(36px 흰 원 · 북마크), 카테고리 태그, 업체명(16px/700), 지역 · 유형, 가격 또는 '상담 후 안내' + 시장 평균, 평점 · 후기 수 · 인증 수
 - States: default, hover, focus-visible, saved
 - Token references: color.panel, color.panel-border, color.hairline, color.ink, color.muted, radius.control, radius.cta
 
@@ -369,7 +391,7 @@ Required.
 
 - 모바일에서는 하단 탭바가 생기므로 화면 하단 여백을 확보한다
 
-- 업체 디렉토리는 폭에 따라 4 · 3 · 2열 메이슨리로 배치한다
+- 업체 디렉토리는 폭에 따라 4 · 3 · 2열 격자로, 정렬 순위대로 왼쪽 → 오른쪽 · 위 → 아래에 배치한다 (결심 디테일 — 사용자 요청으로 메이슨리 대신 순서가 보이는 격자)
 
 ### Platform: web
 

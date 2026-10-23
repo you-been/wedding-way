@@ -13,12 +13,11 @@ import styles from './VendorCard.module.css';
 
 interface Props {
   vendor: Vendor;
-  height?: number; // 사진 높이 (디렉토리 메이슨리는 업체마다 다름)
   reasons?: string[]; // 추천 이유 (진단 리포트)
 }
 
 /** DESIGN.md vendor-card: 사진 + 아래 정보, 테두리 · 그림자 없음. 사진 없는 업체는 회색 면 + 카테고리 아이콘 */
-export default function VendorCard({ vendor: v, height = 180, reasons }: Props) {
+export default function VendorCard({ vendor: v, reasons }: Props) {
   const saved = useFavoriteStore((s) => s.ids.includes(v.id));
   const toggle = useFavoriteStore((s) => s.toggle);
   const member = useMemberAction('user');
@@ -31,7 +30,7 @@ export default function VendorCard({ vendor: v, height = 180, reasons }: Props) 
   return (
     <article className={styles.card}>
       <Link to={vendorPath(v.id)} className={styles.link}>
-        <div className={styles.thumb} style={{ height }}>
+        <div className={styles.thumb}>
           {src ? <img src={src} alt={`${v.name} · ${v.cat}`} loading="lazy" /> : <span className={styles.empty} aria-hidden="true"><Icon /></span>}
         </div>
         <div className={styles.body}>

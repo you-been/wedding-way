@@ -183,8 +183,7 @@
               "applicability": "applicable"
             },
             "disabled": {
-              "applicability": "not-applicable",
-              "reason": "선택할 수 없는 칩은 보여주지 않는다"
+              "applicability": "applicable"
             },
             "error": {
               "applicability": "not-applicable",
@@ -206,11 +205,12 @@
             }
           }
         },
-        "semantics": "button 요소. 단일 선택은 role=tab · aria-selected, 복수 선택은 active 클래스로 표시",
+        "semantics": "button 요소. 단일 선택은 role=tab · aria-selected, 복수 선택은 active 클래스로 표시. 비활성(결심 디테일): 업체 활동 지역에서 전국 출장 가능 · 온라인 진행을 고르면 시 · 도 · 세부 지역 칩을 fieldset disabled로 흐리게(투명도 0.4) 두고 이유를 한 줄로 알린다",
         "states": [
           "default",
           "hover",
           "focus-visible",
+          "disabled",
           "selected"
         ],
         "token_refs": [
@@ -229,7 +229,65 @@
       },
       {
         "anatomy": [
-          "사진 썸네일(8px 둥글기) 또는 회색 면 + 카테고리 아이콘",
+          "필터 버튼(36px · 흰 면 · 1px #e4e5ed · 8px 둥글기 · 14px/400): 필터 이름 + 고른 값 요약(700) + 아래 화살표",
+          "선택 창: 패널 면(흰 면 · 1px panel-border · 12px 둥글기 · 그림자 없음), 체크 목록(줄 36px), 초기화 글자 버튼 + 적용 잉크 버튼(36px). 지역 창은 위에서 아래로 시 · 도 칩(하나, 선택 시 잉크 채움) → 시 · 도를 골랐을 때만 세부 지역 체크(여러 개, 3열 · 모바일 2열) → 전국 출장 · 온라인 진행",
+          "고른 조건 태그: 28px 알약 · color.hairline 면 · 13px/500 + 빼기(×), 끝에 초기화"
+        ],
+        "id": "filter-menu",
+        "interaction": {
+          "kind": "interactive",
+          "state_applicability": {
+            "default": {
+              "applicability": "applicable"
+            },
+            "disabled": {
+              "applicability": "not-applicable",
+              "reason": "고를 수 없는 필터는 보여주지 않는다"
+            },
+            "error": {
+              "applicability": "not-applicable",
+              "reason": "필터 선택에는 오류가 없다"
+            },
+            "focus-visible": {
+              "applicability": "applicable"
+            },
+            "hover": {
+              "applicability": "applicable"
+            },
+            "loading": {
+              "applicability": "not-applicable",
+              "reason": "더미 데이터를 즉시 거른다"
+            },
+            "success": {
+              "applicability": "not-applicable",
+              "reason": "적용하면 목록과 업체 수가 곧 결과다"
+            }
+          }
+        },
+        "semantics": "업체 디렉토리 필터: button(aria-expanded) + role=dialog 선택 창. 크몽 category-filter-control 크기로 가격대 · 지역 · 옵션을 업체 수 · 정렬과 한 줄에 둔다. 값을 고르면 버튼 테두리를 잉크로(결심 디테일 — 칩처럼 채우면 한 줄이 무거워짐), 적용을 눌러야 반영, 바깥 클릭 · Esc로 닫힘. 760px 이하에서 선택 창은 화면 아래 시트로 열린다",
+        "states": [
+          "default",
+          "hover",
+          "focus-visible",
+          "selected",
+          "expanded"
+        ],
+        "token_refs": [
+          "color.canvas",
+          "color.panel-border",
+          "color.control-border",
+          "color.ink",
+          "color.hairline",
+          "color.muted",
+          "radius.control",
+          "radius.panel",
+          "radius.chip",
+          "size.button-small"
+        ]
+      },
+      {
+        "anatomy": [
+          "사진 썸네일(4:3 · 8px 둥글기) 또는 회색 면 + 카테고리 아이콘",
           "찜 버튼(36px 흰 원 · 북마크)",
           "카테고리 태그",
           "업체명(16px/700)",
@@ -908,13 +966,13 @@
       "중단점은 960px(2단 레이아웃을 1단으로)과 760px(모바일)",
       "모바일에서 칩 · 카테고리 목록은 줄바꿈 대신 한 줄 가로 스크롤로 바꾸고 좌우 여백까지 확장한다",
       "모바일에서는 하단 탭바가 생기므로 화면 하단 여백을 확보한다",
-      "업체 디렉토리는 폭에 따라 4 · 3 · 2열 메이슨리로 배치한다"
+      "업체 디렉토리는 폭에 따라 4 · 3 · 2열 격자로, 정렬 순위대로 왼쪽 → 오른쪽 · 위 → 아래에 배치한다 (결심 디테일 — 사용자 요청으로 메이슨리 대신 순서가 보이는 격자)"
     ]
   },
   "projection": {
     "locale": "en",
     "path": "DESIGN.md",
-    "sha256": "420a33275c1654e1d501e8d11b308bb7172e186425ee6bb2e9e3dd1862ceac11"
+    "sha256": "861945adea43ca245d8ba35293f3a1613fa79a711a2981516677d701b5a19288"
   },
   "schema_version": "2.0.0",
   "typography_assets": {

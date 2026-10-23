@@ -405,7 +405,7 @@
       "source_class": "prompt-fact"
     }
   ],
-  "design_md_sha256": "420a33275c1654e1d501e8d11b308bb7172e186425ee6bb2e9e3dd1862ceac11",
-  "graph_sha256": "bb668d1c662262527d59605b562555756d88e97c1f20c904f3ed1906ec793382",
+  "design_md_sha256": "861945adea43ca245d8ba35293f3a1613fa79a711a2981516677d701b5a19288",
+  "graph_sha256": "ff19222324f0826ceab02ef5c2b7933bcf6968d8aea555e337263a7bb2128b61",
   "schema_version": "2.0.0"
 }

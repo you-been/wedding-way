@@ -1,0 +1,19 @@
+.map { margin-top: var(--ds-s-xxl); }
+.head h2 { font-size: 20px; font-weight: 700; letter-spacing: -.01em; }
+.head p { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 6px; margin-top: 6px; font-size: 14px; }
+.head p svg { width: 16px; height: 16px; }
+.head p span { font-size: 13px; color: var(--ds-muted); }
+.frame { margin-top: var(--ds-s-md); overflow: hidden; border: 1px solid var(--ds-panel-border); border-radius: var(--ds-r-panel); background: var(--ds-panel); }
+.frame iframe, .kakao { display: block; width: 100%; height: 280px; border: 0; }
+.links { display: flex; flex-wrap: wrap; gap: var(--ds-s-sm); margin-top: var(--ds-s-md); }
+/* 크몽 outline-link-button: 40px · 둥글기 8px · 테두리 #c8cad2 · 14px/700 */
+.links a { display: inline-flex; align-items: center; gap: 6px; height: 40px; padding: 0 var(--ds-s-base); border: 1px solid var(--ds-control-border); border-radius: var(--ds-r-control); font-size: 14px; font-weight: 700; }
+.links a:hover { border-color: var(--ds-ink); }
+.links a:focus-visible { outline: 2px solid var(--ds-ink); outline-offset: 2px; }
+.links svg { width: 16px; height: 16px; }
+
+@media (max-width: 760px) {
+  .head h2 { font-size: 18px; }
+  .frame iframe, .kakao { height: 220px; }
+  .links a { flex: 1; justify-content: center; }
+}

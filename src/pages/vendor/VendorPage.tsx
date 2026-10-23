@@ -7,11 +7,12 @@ import Tabs from '../../components/ui/Tabs';
 import Tag from '../../components/ui/Tag';
 import ReviewCard from '../../components/vendor/ReviewCard';
 import ReviewLock, { ReviewEmpty } from '../../components/vendor/ReviewLock';
+import VendorMap from '../../components/vendor/VendorMap';
 import { categoryAvg, categoryIcon } from '../../data/categories';
 import { getReviews, getVendor, getVendors } from '../../data/api';
 import { recoReasons } from '../../data/recommend';
 import { useMyTier } from '../../stores/budgetStore';
-import { imageUrl, type Vendor } from '../../data/vendors';
+import { imageUrl, vendorPlace, type Vendor } from '../../data/vendors';
 import { useMemberAction } from '../../hooks/useMemberAction';
 import { PATHS } from '../../routes';
 import { useAuthStore } from '../../stores/authStore';
@@ -45,6 +46,7 @@ function VendorDetail({ v, preview }: { v: Vendor; preview: boolean }) {
   const member = useMemberAction('user');
   const reasons = recoReasons(v, moods, myTier);
   const avg = categoryAvg(v.cat);
+  const place = vendorPlace(v); // 찾아가는 업종만 위치 지도
   const Icon = categoryIcon(v.cat);
 
   // 갤러리: 큰 칸은 이 업체 사진, 작은 칸은 다른 목업 사진을 이어서 (프로토타입용)
@@ -175,6 +177,8 @@ function VendorDetail({ v, preview }: { v: Vendor; preview: boolean }) {
                 )}
               </section>
             )}
+
+            {place && <VendorMap name={v.name} place={place} />}
           </div>
         </div>
       </div>

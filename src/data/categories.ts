@@ -42,3 +42,6 @@ export const categoryAvg = (name: string) => CATEGORIES.find((c) => c.name === n
 /** 무드 태그 (취향 진단 · 업체 정보 · 추천) */
 export const MOODS = ['#클래식', '#빈티지', '#미니멀', '#내추럴', '#러블리', '#유니크', '#모던', '#로맨틱', '#감성적', '#고급스러움', '#따뜻함', '#전통적', '#경건함'] as const;
 export type Mood = (typeof MOODS)[number];
+
+/** 매장을 직접 찾아가는 업종: 업체 상세에 위치 지도를 보여줌 (출장 · 온라인 업종은 제외) */
+export const MAP_CATEGORIES = ['웨딩홀', '스튜디오', '드레스', '메이크업', '헤어변형', '예복·한복', '웨딩플라워'];

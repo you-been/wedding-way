@@ -1,6 +1,8 @@
 // 업체 더미 데이터 (프로토타입)
 // price: null → 가격 비공개('상담 후 안내'), schedule: false → 일정 미공개('일정 문의')
 
+import { MAP_CATEGORIES } from './categories';
+
 export type Tier = '가성비' | '표준' | '프리미엄';
 export const TIER_ORDER: Tier[] = ['가성비', '표준', '프리미엄'];
 
@@ -55,3 +57,22 @@ export const FEED_IDS = [1, 4, 20, 8, 5, 21, 9, 14, 23, 10, 6, 2, 22, 19, 15, 16
 /** public/images 안 파일 주소 (배포 경로 기준) */
 export const publicImage = (file: string) => `${import.meta.env.BASE_URL}images/${file}`;
 export const imageUrl = (photo?: string | null) => (photo ? publicImage(`${photo}.jpg`) : null);
+
+/* ---------- 위치 (지도) ---------- */
+export interface VendorPlace { area: string; lat: number; lng: number }
+// 가상 업체라 실제 가게 주소 대신 동네 단위의 대략적인 위치 (예시 좌표)
+const PLACES: Record<number, VendorPlace> = {
+  2: { area: '서울 강남구 신사동', lat: 37.5207, lng: 127.0230 },
+  4: { area: '서울 성동구 성수동', lat: 37.5446, lng: 127.0557 },
+  8: { area: '서울 마포구 연남동', lat: 37.5627, lng: 126.9255 },
+  9: { area: '서울 강남구 청담동', lat: 37.5250, lng: 127.0470 },
+  10: { area: '서울 강남구 압구정동', lat: 37.5271, lng: 127.0285 },
+  15: { area: '서울 종로구 종로3가', lat: 37.5714, lng: 126.9918 },
+  19: { area: '서울 용산구 한남동', lat: 37.5345, lng: 127.0010 },
+  20: { area: '서울 성동구 성수동', lat: 37.5425, lng: 127.0505 },
+  21: { area: '서울 종로구 인사동', lat: 37.5740, lng: 126.9850 },
+  22: { area: '서울 마포구 망원동', lat: 37.5560, lng: 126.9019 },
+  23: { area: '서울 강남구 청담동', lat: 37.5232, lng: 127.0435 },
+};
+/** 업체 위치: 찾아가는 업종(MAP_CATEGORIES)이고 위치가 있을 때만 */
+export const vendorPlace = (v: Vendor): VendorPlace | undefined => (MAP_CATEGORIES.includes(v.cat) ? PLACES[v.id] : undefined);
